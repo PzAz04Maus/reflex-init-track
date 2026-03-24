@@ -6,6 +6,8 @@ Initialized 23MAR2026
 
 # Installation
 
+# UI prototype
+
 ![](drawing.png)
 
 # Mechanics
