@@ -1,0 +1,10 @@
+// {
+// "files.exclude": {
+//   "**/package.json": false,
+//   "**/node_modules": true,
+//   "**/.eslintrc.cjs": true,
+//   "**/.prettierrc": true,
+//   "**/vite.config.ts": true,
+//     "**/tsconfig.json": true,
+// }
+// }
