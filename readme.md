@@ -10,7 +10,11 @@ Initialized 23MAR2026
 
 ![](drawing.png)
 
-# Mechanics
+# Big Picture
+
+Twilight 2013 uses a scheduled-turn initiative system, where every actor's actions are placed on a track, and turns are resolved as a queue.
+
+# Book Mechanics
 
 ## Exchanges of fire
 At the beginning of an exchange of fire, every participant in the combat receives a base initiative value determined by his current encumbrance  (see  p.  206  for  rules  on  determining  a  character’s encumbrance level): 
