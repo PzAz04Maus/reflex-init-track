@@ -61,7 +61,7 @@ function ActorRow({
         minWidth: 36,
         textAlign: "center",
         letterSpacing: 1,
-      }}>{actor.initiative.currentInit}</span>
+      }}>{actor.init.val}</span>
     </div>
   );
 }
@@ -73,7 +73,7 @@ export function ActorList({
   getActorColor,
 }: ActorListProps) {
   const sorted = [...actors].sort(
-    (a, b) => a.initiative.currentInit - b.initiative.currentInit || a.name.localeCompare(b.name)
+    (a, b) => a.init.val - b.init.val || a.name.localeCompare(b.name)
   );
 
   return (

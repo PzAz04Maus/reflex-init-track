@@ -19,7 +19,7 @@ export interface CharacterRecord {
   bio: CharacterBio;
   equipment: EquipmentState;
 
-  initiative: InitiativeState;
+  init: InitiativeState;
   action?: ActionState | null;
 }
 
@@ -40,17 +40,17 @@ export interface CharacterBio {
 
 export interface careerData{
     job: string;
-    description: string;
     years: number;
     dateStarted?: string;
     dateEnded?: string;
+    description: string;
 }
 
 // Transient, per-combat initiative state
 export interface InitiativeState {
-  baseInit: number;
-  startingInit: number;
-  currentInit: number;
+  base: number;
+  initial: number;
+  val: number;
   joined: boolean;
   joinedMidFight?: boolean;
 }

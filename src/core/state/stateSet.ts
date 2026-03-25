@@ -10,7 +10,7 @@ export function CombatReducer(state: CombatState, action: any): CombatState {
 				...state,
 				actors: state.actors.map(actor =>
 					actor.id === action.actorId
-						? { ...actor, initiative: { ...actor.initiative, currentInit: action.tick } }
+						? { ...actor, init: { ...actor.init, currentInit: action.tick } }
 						: actor
 				),
 			};
@@ -21,7 +21,7 @@ export function CombatReducer(state: CombatState, action: any): CombatState {
 				...state,
 				actors: state.actors.map(actor =>
 					actor.id === action.actorId
-						? { ...actor, initiative: { ...actor.initiative, joined: !actor.initiative.joined } }
+						? { ...actor, init: { ...actor.init, joined: !actor.init.joined } }
 						: actor
 				),
 			};

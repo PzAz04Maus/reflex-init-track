@@ -23,8 +23,8 @@ export default function App() {
     const currentIdx = state.actors.findIndex(a => a.id === currentActor?.id);
 
     // Initiative track bar markers
-    const minTick = Math.min(...state.actors.map(a => a.initiative.currentInit));
-    const maxTick = Math.max(...state.actors.map(a => a.initiative.currentInit));
+    const minTick = Math.min(...state.actors.map(a => a.init.val));
+    const maxTick = Math.max(...state.actors.map(a => a.init.val));
     const trackRange = maxTick - minTick || 1;
 
     // Handlers
@@ -53,7 +53,7 @@ export default function App() {
                 <div style={{ position: "relative", height: 32, marginBottom: 16 }}>
                     <div style={{ height: 6, background: "#888", borderRadius: 3, position: "absolute", top: 13, left: 0, right: 0 }} />
                     {state.actors.map((actor, i) => {
-                        const left = ((actor.initiative.currentInit - minTick) / trackRange) * 100;
+                        const left = ((actor.init.val - minTick) / trackRange) * 100;
                         return (
                             <div key={actor.id} style={{
                                 position: "absolute",
