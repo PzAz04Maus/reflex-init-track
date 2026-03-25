@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
     "build": "tsc && node ./scripts/copy-assets.mjs",
-    "preview": "vite preview",
+    "package:foundry": "node ./scripts/copy-foundry-assets.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -21,13 +20,10 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/testing-library__react": "^10.2.0",
-    "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-react": "^7.0.0",
     "prettier": "^3.0.0",
-    "typescript": "^5.0.0",
-    "vite": "^8.0.2",
-    "vitest": "^4.1.1"
+    "typescript": "^5.0.0"
   }
 }
