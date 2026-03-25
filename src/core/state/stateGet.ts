@@ -1,58 +1,34 @@
-import type { CombatAction, CombatState } from "../types";
-import { advanceTurn } from "../rules/advanceTurn";
+import type { ReflexState, CombatActor, CharacterId, InitiativeState, CharacterData } from '../types';
 
-export function combatReducer(
-  state: CombatState,
-  action: CombatAction
-): CombatState {
-  switch (action.type) {
-    case "addActor":
-      return {
-        ...state,
-        actors: [...state.actors, action.actor],
-      };
+// Create an empty initial state
+export function createInitialState(): ReflexState {
+  return {
+    actors: [],
+    lastActingIds: [],
+    round: 1
+  };
+}
 
-    case "removeActor":
-      return {
-        ...state,
-        actors: state.actors.filter((actor) => actor.id !== action.actorId),
-      };
+// Get all actors, sorted by tick then name
+export function getActors(state: ReflexState): CombatActor[] {
+  return [...state.actors].sort((a, b) => {
+    if (a.state.tick !== b.state.tick) return a.state.tick - b.state.tick;
+    return a.character.name.localeCompare(b.character.name);
+  });
+}
 
-    case "setActionCost":
-      return {
-        ...state,
-        actors: state.actors.map((actor) =>
-          actor.id === action.actorId
-            ? { ...actor, actionCost: action.actionCost }
-            : actor
-        ),
-      };
+// Find a CombatActor by characterId
+export function getActorById(state: ReflexState, characterId: CharacterId): CombatActor | null {
+  return getActors(state).find((actor) => actor.character.id === characterId) ?? null;
+}
 
-    case "setTick":
-      return {
-        ...state,
-        actors: state.actors.map((actor) =>
-          actor.id === action.actorId ? { ...actor, tick: action.tick } : actor
-        ),
-      };
-
-    case "toggleJoined":
-      return {
-        ...state,
-        actors: state.actors.map((actor) =>
-          actor.id === action.actorId
-            ? { ...actor, joined: !actor.joined }
-            : actor
-        ),
-      };
-
-    case "advanceTurn":
-      return advanceTurn(state);
-
-    case "reset":
-      return action.state;
-
-    default:
-      return state;
-  }
+// Replace the actors array (with sorting)
+export function withActors(state: ReflexState, actors: CombatActor[]): ReflexState {
+  return {
+    ...state,
+    actors: [...actors].sort((a, b) => {
+      if (a.state.tick !== b.state.tick) return a.state.tick - b.state.tick;
+      return a.character.name.localeCompare(b.character.name);
+    })
+  };
 }

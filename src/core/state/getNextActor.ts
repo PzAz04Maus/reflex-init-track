@@ -1,9 +1,15 @@
-import type { Actor, CombatState } from "../types";
+import type { CombatActor, ReflexState } from '../types';
+import { getActors } from './stateGet';
 
-export function getNextActors(state: CombatState): Actor[] {
-  const joinedActors = state.actors.filter((actor) => actor.joined);
-  if (joinedActors.length === 0) return [];
+// Returns all joined actors with the lowest tick
+export function getNextActors(state: ReflexState): CombatActor[] {
+  const actors = getActors(state).filter(actor => actor.state.joined);
+  if (actors.length === 0) return [];
+  const minTick = Math.min(...actors.map(actor => actor.state.tick));
+  return actors.filter(actor => actor.state.tick === minTick);
+}
 
-  const minTick = Math.min(...joinedActors.map((actor) => actor.tick));
-  return joinedActors.filter((actor) => actor.tick === minTick);
+// Returns the first joined actor with the lowest tick, or null
+export function getNextActor(state: ReflexState): CombatActor | null {
+  return getNextActors(state)[0] ?? null;
 }

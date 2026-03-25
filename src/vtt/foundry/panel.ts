@@ -1,0 +1,63 @@
+import { advanceTurn, canShoot, updateActorAction, updateActorCost } from '../../core/rules';
+import { getNextActors } from '../../core/state/getNextActor';
+import { getActorById, getActors } from '../../core/state/stateGet';
+import { MODULE_ID } from './constants';
+import { getScheduleState, setScheduleState } from './store';
+
+// This mixin is assumed to be provided by the Foundry VTT environment
+const MixedApplication = HandlebarsApplicationMixin.mixed(ApplicationV2);
+
+export class ReflexSchedulerPanel extends MixedApplication {
+  static DEFAULT_OPTIONS = {
+    id: `${MODULE_ID}-panel`,
+    classes: [MODULE_ID],
+    tag: 'section',
+    window: {
+      title: 'Reflex Scheduler'
+    },
+    position: {
+      width: 760,
+      height: 'auto'
+    }
+  };
+
+  async _prepareContext(): Promise<Record<string, unknown>> {
+    const combat = game.combats?.active;
+    const state = combat ? await getScheduleState(combat) : null;
+    const actors = state ? getActors(state) : [];
+    const activeIds = new Set(state ? getNextActors(state).map((actor) => actor.character.id) : []);
+
+    return {
+      hasCombat: Boolean(combat),
+      round: state?.round ?? 1,
+      actors: actors.map((actor) => ({
+        ...actor,
+        isActive: activeIds.has(actor.character.id),
+        canShoot: canShoot(actor),
+        aheadOfBang: actor.state.tick < 0,
+        onBang: actor.state.tick === 0,
+        lateOfBang: actor.state.tick > 0,
+        margin: (actor.character.roll ?? 0) - (actor.character.oodaTN ?? 0),
+        isOwner: !actor.character.ownerUserId || actor.character.ownerUserId === game.user?.id || game.user?.isGM
+      }))
+    };
+  }
+
+  async _renderHTML(context: Record<string, unknown>): Promise<string> {
+    return renderTemplate(`modules/${MODULE_ID}/templates/foundry/schedule-panel.hbs`, context);
+  }
+
+  async _onRender(_context: Record<string, unknown>, _options: Record<string, unknown>): Promise<void> {
+    const root = document.querySelector(`#${MODULE_ID}-panel`);
+    if (!root) return;
+
+    root.querySelector('[data-action="advance-turn"]')?.addEventListener('click', async () => {
+      const combat = game.combats?.active;
+      if (!combat) return;
+      const state = await getScheduleState(combat);
+      const result = advanceTurn(state);
+      await setScheduleState(combat, result.state);
+      this.render(true);
+    });
+  }
+}

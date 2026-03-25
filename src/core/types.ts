@@ -1,25 +1,65 @@
-export type ActorId = string; // This is the displayed identifier for an actor
-export type ActorCallsign = string; // This is a unique identifier for an actor, used for internal tracking and referencing.
 
-export interface Actor {
-  id: ActorId;
-  callsign: ActorCallsign;
+export type CharacterId = string;
+
+export interface CharacterState {
+  character: Record<CharacterId, CharacterData>;
+  initiative: Record<CharacterId, InitiativeState>;
+  actions: Record<CharacterId, ActionState | null>;
+}
+
+// primart character record
+export interface CharacterRecord {
+  id: CharacterId;
   name: string;
-  tick: number;
-  actionCost: number;
+  ownerUserId?: string | null;
+  actorUuid?: string | null;
+  combatantId?: string | null;
+
+  data: CharacterData;
+  equipment: any; // Placeholder for equipment data
+
+  Initiative: InitiativeState;
+  Action?: ActionState | null;
+}
+
+export interface CharacterData {
+    ooda: number
+}
+
+// Transient, per-combat initiative state
+export interface InitiativeState {
+  id: CharacterId;
+  baseInit: number;
+  startingInit: number;
+  currentInit: number;
   joined: boolean;
+  joinedMidFight?: boolean;
 }
 
-export interface CombatState {
-  actors: Actor[];
-  exchange: number;
+export interface ActionState {
+    id: string;
+    name: string;
+    cost: number;
 }
 
-export type CombatAction =
-  | { type: "addActor"; actor: Actor }
-  | { type: "removeActor"; actorId: ActorId }
-  | { type: "setActionCost"; actorId: ActorId; actionCost: number }
-  | { type: "setTick"; actorId: ActorId; tick: number }
-  | { type: "toggleJoined"; actorId: ActorId }
-  | { type: "advanceTurn" }
-  | { type: "reset"; state: CombatState };
+// Composition for use in combat state (if needed)
+export interface CombatActor {
+  character: CharacterData;
+  state: InitiativeState;
+}
+
+export interface AddActorInput {
+  character: CharacterData;
+  state: Partial<InitiativeState>;
+}
+
+export interface ReflexState {
+  actors: CombatActor[];
+  lastActingIds: CharacterId[];
+  round: number;
+}
+
+export interface TurnAdvanceResult {
+  state: ReflexState;
+  actingIds: CharacterId[];
+}

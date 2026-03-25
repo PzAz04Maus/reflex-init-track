@@ -33,3 +33,9 @@ At  the  end  of  an  exchange  of  fire,  all  participants  in  the combat hav
 
 Remember that a character who is broken (see p. 159) must hold.  His self-preservation drive prevents him from pressing for continued hostilities.
 
+# Future requirements
+
+- initialize with API calls to dice.exe?
+- implementation in a VTT
+- 'multiplayer' integration
+- Player sheet connections
