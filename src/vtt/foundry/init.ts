@@ -2,6 +2,13 @@ import { addActor } from '../../core/rules';
 import type { ReflexState } from '../../core/types';
 import { createInitialState } from '../../core/state/stateGet';
 import { ReflexSchedulerPanel } from './panel';
+import { ReflexDebugPanel } from './debug-panel';
+// Register the debug panel template
+Hooks.once('init', () => {
+  loadTemplates([
+    'templates/foundry/debug-panel.hbs',
+  ]);
+});
 import { getScheduleState, setScheduleState } from './store';
 
 let panel: ReflexSchedulerPanel | null = null;
