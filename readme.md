@@ -6,31 +6,42 @@ Initialized 23MAR2026
 
 # Installation
 
-## For Local UI Sandbox
 
-1. Clone or download this repository.
-2. Run `npm install` to install dependencies.
-3. Start the local UI sandbox with `npm run dev` (or `vite`).
-4. Open the browser at the provided local address to use the standalone initiative tracker and test mechanics.
+## Local UI Sandbox
 
-## For Foundry VTT Integration (Manual/Dev)
-
-1. Build the project for Foundry (ensure your build outputs to a `dist/` directory with the necessary JS and CSS files).
-2. Copy the required files into a new or existing Foundry module folder. You can do this automatically with:
-
+1. **Clone or download** this repository.
+2. **Install dependencies:**
    ```sh
-   node scripts/copy-foundry-assets.js [target-directory]
+   npm install
    ```
-   - If you omit `[target-directory]`, the script will create a `foundry-module/` folder in the project root by default.
+3. **Start the local UI sandbox:**
+   ```sh
+   npm run dev
+   ```
+   This will launch the Vite development server. Open the browser at the provided local address to use the standalone initiative tracker and test mechanics.
+
+## Foundry VTT Integration (Manual/Dev)
+
+1. **Build the project for Foundry:**
+   ```sh
+   npm run build
+   ```
+   This outputs to a `dist/` directory with the necessary JS and CSS files.
+2. **Package the Foundry module:**
+   ```sh
+   npm run package:foundry
+   ```
+   - By default, this creates a `foundry-module/` folder in the project root. You can specify a different target directory as an argument.
    - The script copies your build output (`dist/`), `module.json` (from `src/vtt/foundry/`), `foundry.css` (from `src/styles/`), and `schedule-panel.hbs` (from `src/templates/foundry/`) into the target directory, creating the correct structure for manual installation in Foundry.
    - The script will fail with a clear error if any required file is missing.
    - You must have Node.js installed to run this script.
-
-3. In Foundry, go to **Configuration > Manage Modules** and enable the Reflex Scheduler module.
-4. Open a combat encounter. The Reflex Scheduler panel should be available from the UI or via the module's controls.
+3. **Install the module in Foundry:**
+   - Copy the packaged folder to your Foundry `Data/modules/` directory.
+   - In Foundry, go to **Configuration > Manage Modules** and enable the Reflex Scheduler module.
+   - Open a combat encounter. The Reflex Scheduler panel should be available from the UI or via the module's controls.
 
 **Note:**
-- The current Foundry adapter is a prototype. File locations and module.json may need to be updated as the project matures.
+- The current Foundry adapter is a prototype. File locations and `module.json` may need to be updated as the project matures.
 - This project is not yet published on the Foundry package manager; manual installation is required.
 
 # Big Picture
