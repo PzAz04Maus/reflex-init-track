@@ -7,7 +7,7 @@ export interface CharacterState {
   actions: Record<CharacterId, ActionState | null>;
 }
 
-// primart character record
+// primary character record
 export interface CharacterRecord {
   id: CharacterId;
   name: string;
@@ -16,19 +16,38 @@ export interface CharacterRecord {
   combatantId?: string | null;
 
   data: CharacterData;
-  equipment: any; // Placeholder for equipment data
+  bio: CharacterBio;
+  equipment: EquipmentState;
 
-  Initiative: InitiativeState;
-  Action?: ActionState | null;
+  initiative: InitiativeState;
+  action?: ActionState | null;
 }
 
 export interface CharacterData {
     ooda: number
 }
 
+export interface CharacterBio {
+    age?: number;
+    gender?: string;
+    height?: string;
+    weight?: string;
+    description?: string;
+    ethnicity?: string;
+    imageUrl?: string;
+    career?: careerData[];
+}
+
+export interface careerData{
+    job: string;
+    description: string;
+    years: number;
+    dateStarted?: string;
+    dateEnded?: string;
+}
+
 // Transient, per-combat initiative state
 export interface InitiativeState {
-  id: CharacterId;
   baseInit: number;
   startingInit: number;
   currentInit: number;
@@ -42,24 +61,18 @@ export interface ActionState {
     cost: number;
 }
 
-// Composition for use in combat state (if needed)
-export interface CombatActor {
-  character: CharacterData;
-  state: InitiativeState;
-}
-
 export interface AddActorInput {
   character: CharacterData;
   state: Partial<InitiativeState>;
 }
 
-export interface ReflexState {
-  actors: CombatActor[];
+export interface CombatState {
+  actors: CharacterRecord[];
   lastActingIds: CharacterId[];
   round: number;
 }
 
 export interface TurnAdvanceResult {
-  state: ReflexState;
+  state: CombatState;
   actingIds: CharacterId[];
 }

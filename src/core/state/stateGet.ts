@@ -1,7 +1,7 @@
-import type { ReflexState, CombatActor, CharacterId, InitiativeState, CharacterData } from '../types';
+import type { CombatState, CombatActor, CharacterId, InitiativeState, CharacterData } from '../types';
 
 // Create an empty initial state
-export function createInitialState(): ReflexState {
+export function createInitialState(): CombatState {
   return {
     actors: [],
     lastActingIds: [],
@@ -10,7 +10,7 @@ export function createInitialState(): ReflexState {
 }
 
 // Get all actors, sorted by tick then name
-export function getActors(state: ReflexState): CombatActor[] {
+export function selectActors(state: CombatState): CombatActor[] {
   return [...state.actors].sort((a, b) => {
     if (a.state.tick !== b.state.tick) return a.state.tick - b.state.tick;
     return a.character.name.localeCompare(b.character.name);
@@ -18,12 +18,12 @@ export function getActors(state: ReflexState): CombatActor[] {
 }
 
 // Find a CombatActor by characterId
-export function getActorById(state: ReflexState, characterId: CharacterId): CombatActor | null {
-  return getActors(state).find((actor) => actor.character.id === characterId) ?? null;
+export function selectActorById(state: CombatState, characterId: CharacterId): CombatActor | null {
+  return selectActors(state).find((actor) => actor.character.id === characterId) ?? null;
 }
 
 // Replace the actors array (with sorting)
-export function withActors(state: ReflexState, actors: CombatActor[]): ReflexState {
+export function withActors(state: CombatState, actors: CombatActor[]): CombatState {
   return {
     ...state,
     actors: [...actors].sort((a, b) => {

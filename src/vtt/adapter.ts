@@ -1,7 +1,7 @@
-import type { ReflexState } from '../core/types';
+import type { CombatState } from '../core/types';
 
 export interface VttAdapter {
-  getState(): Promise<ReflexState>;
-  setState(state: ReflexState): Promise<void>;
+  getState(): Promise<CombatState>;
+  setState(state: CombatState): Promise<void>;
   openPanel(): Promise<void> | void;
 }

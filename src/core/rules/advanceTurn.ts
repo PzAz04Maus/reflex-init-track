@@ -1,4 +1,4 @@
-import type { AddActorInput, ReflexState, TurnAdvanceResult, CombatActor, CharacterId, InitiativeState, CharacterData } from '../types';
+import type { AddActorInput, CombatState, TurnAdvanceResult, CombatActor, CharacterId, InitiativeState, CharacterData } from '../types';
 import { getNextActor, getNextActors } from '../state/getNextActor';
 import { getActors, withActors } from '../state/stateGet';
 
@@ -29,7 +29,7 @@ export function sortActors(list: CombatActor[]): CombatActor[] {
 }
 
 // Add a new actor to combat
-export function addActor(state: ReflexState, input: AddActorInput): ReflexState {
+export function addActor(state: CombatState, input: AddActorInput): CombatState {
   const existing = getActors(state);
   const { character, state: stateInput } = input;
   const oodaAdjusted = computeOodaAdjustedInit(character.baseInit, character.roll, character.oodaTN);
@@ -54,7 +54,7 @@ export function addActor(state: ReflexState, input: AddActorInput): ReflexState 
 }
 
 // Update an actor's action cost
-export function updateActorCost(state: ReflexState, characterId: CharacterId, actionCost: number): ReflexState {
+export function updateActorCost(state: CombatState, characterId: CharacterId, actionCost: number): CombatState {
   return withActors(
     state,
     getActors(state).map((actor) =>
@@ -66,7 +66,7 @@ export function updateActorCost(state: ReflexState, characterId: CharacterId, ac
 }
 
 // Update an actor's planned action
-export function updateActorAction(state: ReflexState, characterId: CharacterId, plannedAction: string): ReflexState {
+export function updateActorAction(state: CombatState, characterId: CharacterId, plannedAction: string): CombatState {
   return withActors(
     state,
     getActors(state).map((actor) =>
@@ -79,7 +79,7 @@ export function updateActorAction(state: ReflexState, characterId: CharacterId, 
 
 
 // Advance the turn for all actors with the highest tick
-export function advanceTurn(state: ReflexState): TurnAdvanceResult {
+export function advanceTurn(state: CombatState): TurnAdvanceResult {
   const actors = getActors(state);
   if (actors.length === 0) {
     return {

@@ -1,6 +1,6 @@
-import type { ReflexState } from "../core/types";
+import type { CombatState } from "../core/types";
 
-export const mockCombatState: ReflexState = {
+export const mockCombatState: CombatState = {
   round: 1,
   lastActingIds: [],
   actors: [

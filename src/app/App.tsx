@@ -1,5 +1,5 @@
 import { useReducer, useState } from "react";
-import { combatReducer } from "../core/state/stateSet";
+import { CombatReducer } from "../core/state/stateSet";
 import { getNextActors } from "../core/state/getNextActor";
 import { mockCombatState } from "./mockdata";
 import { ActorList } from "./components/ActorList";
@@ -12,7 +12,7 @@ function getActorColor(idx: number) {
 }
 
 export default function App() {
-    const [state, dispatch] = useReducer(combatReducer, mockCombatState);
+    const [state, dispatch] = useReducer(CombatReducer, mockCombatState);
     const [newName, setNewName] = useState("");
 
     const nextActors = getNextActors(state);
@@ -23,8 +23,8 @@ export default function App() {
     const currentIdx = state.actors.findIndex(a => a.id === currentActor?.id);
 
     // Initiative track bar markers
-    const minTick = Math.min(...state.actors.map(a => a.tick));
-    const maxTick = Math.max(...state.actors.map(a => a.tick));
+    const minTick = Math.min(...state.actors.map(a => a.initiative.currentInit));
+    const maxTick = Math.max(...state.actors.map(a => a.initiative.currentInit));
     const trackRange = maxTick - minTick || 1;
 
     // Handlers
@@ -53,7 +53,7 @@ export default function App() {
                 <div style={{ position: "relative", height: 32, marginBottom: 16 }}>
                     <div style={{ height: 6, background: "#888", borderRadius: 3, position: "absolute", top: 13, left: 0, right: 0 }} />
                     {state.actors.map((actor, i) => {
-                        const left = ((actor.tick - minTick) / trackRange) * 100;
+                        const left = ((actor.initiative.currentInit - minTick) / trackRange) * 100;
                         return (
                             <div key={actor.id} style={{
                                 position: "absolute",

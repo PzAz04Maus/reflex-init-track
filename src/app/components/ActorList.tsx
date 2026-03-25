@@ -1,8 +1,8 @@
-import type { Actor } from "../../core/types";
+import type { CharacterRecord } from "../../core/types";
 
 
 interface ActorListProps {
-  actors: Actor[];
+  actors: CharacterRecord[];
   nextActorIds: string[];
   onSetTick: (actorId: string, tick: number) => void;
   onSetActionCost: (actorId: string, actionCost: number) => void;
@@ -18,7 +18,7 @@ function ActorRow({
   idx,
   getActorColor,
 }: {
-  actor: Actor;
+  actor: CharacterRecord;
   isNext: boolean;
   idx: number;
   getActorColor?: (idx: number) => string;
@@ -61,7 +61,7 @@ function ActorRow({
         minWidth: 36,
         textAlign: "center",
         letterSpacing: 1,
-      }}>{actor.tick}</span>
+      }}>{actor.initiative.currentInit}</span>
     </div>
   );
 }
@@ -73,16 +73,16 @@ export function ActorList({
   getActorColor,
 }: ActorListProps) {
   const sorted = [...actors].sort(
-    (a, b) => a.tick - b.tick || a.name.localeCompare(b.name)
+    (a, b) => a.initiative.currentInit - b.initiative.currentInit || a.name.localeCompare(b.name)
   );
 
   return (
     <div>
       {sorted.map((actor, idx) => (
         <ActorRow
-          key={actor.id}
+          key={actor.name}
           actor={actor}
-          isNext={nextActorIds.includes(actor.id)}
+          isNext={nextActorIds.includes(actor.name)}
           idx={idx}
           getActorColor={getActorColor}
         />

@@ -1,5 +1,5 @@
 import { addActor } from '../../core/rules';
-import type { ReflexState } from '../../core/types';
+import type { CombatState } from '../../core/types';
 import { createInitialState } from '../../core/state/stateGet';
 import { ReflexSchedulerPanel } from './panel';
 import { ReflexDebugPanel } from './debug-panel';
@@ -18,7 +18,7 @@ function randomD20(): number {
 }
 
 // NOTE: This function will need to be updated to use the new AddActorInput structure if the core changes
-async function seedFromCombat(combat: any): Promise<ReflexState> {
+async function seedFromCombat(combat: any): Promise<CombatState> {
   let state = createInitialState();
   const combatants = Array.from(combat.combatants ?? []);
 

@@ -39,3 +39,10 @@ Remember that a character who is broken (see p. 159) must hold.  His self-preser
 - implementation in a VTT
 - 'multiplayer' integration
 - Player sheet connections
+
+
+# Codebase
+
+## Types
+
+See [types](types.md)
