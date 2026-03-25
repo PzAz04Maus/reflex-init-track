@@ -1,0 +1,56 @@
+<section class='reflex-panel'>
+  {{#if hasCombat}}
+    <header class='reflex-panel__header'>
+      <div>
+        <h2>Reflex Schedule</h2>
+        <p>Round {{round}}</p>
+      </div>
+      <button type='button' data-action='advance-turn'>Advance Turn</button>
+    </header>
+
+    <div class='reflex-grid reflex-grid--head'>
+      <div>Name</div>
+      <div>Tick</div>
+      <div>Cost</div>
+      <div>Planned Action</div>
+      <div>Status</div>
+    </div>
+
+    {{#each actors}}
+      <div class='reflex-grid reflex-row {{#if isActive}}is-active{{/if}}'>
+        <div>
+          <strong>{{name}}</strong>
+          <div class='reflex-subtle'>Roll {{roll}} vs TN {{oodaTN}} (94 {{margin}})</div>
+        </div>
+        <div>{{tick}}</div>
+        <div>
+          <input
+            type='number'
+            value='{{actionCost}}'
+            data-action-cost
+            data-actor-id='{{id}}'
+            {{#unless isOwner}}disabled{{/unless}}
+          />
+        </div>
+        <div>
+          <input
+            type='text'
+            value='{{plannedAction}}'
+            data-planned-action
+            data-actor-id='{{id}}'
+            {{#unless isOwner}}disabled{{/unless}}
+          />
+        </div>
+        <div>
+          {{#if isActive}}<span class='badge'>Acting</span>{{/if}}
+          {{#if aheadOfBang}}<span class='badge'>Ahead of Bang</span>{{/if}}
+          {{#if onBang}}<span class='badge'>On Bang</span>{{/if}}
+          {{#if lateOfBang}}<span class='badge'>Late of Bang</span>{{/if}}
+          {{#if canShoot}}<span class='badge'>Can Shoot</span>{{/if}}
+        </div>
+      </div>
+    {{/each}}
+  {{else}}
+    <p>No active combat. Start combat, then import combatants.</p>
+  {{/if}}
+</section>

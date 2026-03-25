@@ -1,6 +1,6 @@
 import type { AddActorInput, CombatState, TurnAdvanceResult, CombatActor, CharacterId, InitiativeState, CharacterData } from '../types';
 import { getNextActor, getNextActors } from '../state/getNextActor';
-import { getActors, withActors } from '../state/stateGet';
+import { selectActors as getActors, withActors } from '../selectors/combatSelectors';
 
 // Calculate margin for roll
 export function computeMargin(roll: number, target: number): number {

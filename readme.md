@@ -6,13 +6,41 @@ Initialized 23MAR2026
 
 # Installation
 
-# UI prototype
+## For Local UI Sandbox
 
-![](drawing.png)
+1. Clone or download this repository.
+2. Run `npm install` to install dependencies.
+3. Start the local UI sandbox with `npm run dev` (or `vite`).
+4. Open the browser at the provided local address to use the standalone initiative tracker and test mechanics.
+
+## For Foundry VTT Integration (Manual/Dev)
+
+1. Build the project for Foundry (ensure your build outputs to a `dist/` directory with the necessary JS and CSS files).
+2. Copy the required files into a new or existing Foundry module folder. You can do this automatically with:
+
+   ```sh
+   node scripts/copy-foundry-assets.js [target-directory]
+   ```
+   - If you omit `[target-directory]`, the script will create a `foundry-module/` folder in the project root by default.
+   - The script copies your build output (`dist/`), `module.json` (from `src/vtt/foundry/`), `foundry.css` (from `src/styles/`), and `schedule-panel.hbs` (from `src/templates/foundry/`) into the target directory, creating the correct structure for manual installation in Foundry.
+   - The script will fail with a clear error if any required file is missing.
+   - You must have Node.js installed to run this script.
+
+3. In Foundry, go to **Configuration > Manage Modules** and enable the Reflex Scheduler module.
+4. Open a combat encounter. The Reflex Scheduler panel should be available from the UI or via the module's controls.
+
+**Note:**
+- The current Foundry adapter is a prototype. File locations and module.json may need to be updated as the project matures.
+- This project is not yet published on the Foundry package manager; manual installation is required.
 
 # Big Picture
 
 Twilight 2013 uses a scheduled-turn initiative system, where every actor's actions are placed on a track, and turns are resolved as a queue.
+
+## UI prototype
+
+![](drawing.png)
+
 
 # Book Mechanics
 

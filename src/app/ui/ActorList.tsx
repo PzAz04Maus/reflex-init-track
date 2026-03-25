@@ -1,7 +1,5 @@
-
 import type { CharacterRecord } from "../../core/types";
-import { useMemo } from "react";
-
+import { useMemo, memo } from "react";
 
 interface ActorListProps {
   actors: CharacterRecord[];
@@ -12,8 +10,6 @@ interface ActorListProps {
   onRemoveActor: (actorId: string) => void;
   getActorColor?: (idx: number) => string;
 }
-
-
 
 // Style constants
 const rowBaseStyle: React.CSSProperties = {
@@ -47,7 +43,7 @@ const tickStyle: React.CSSProperties = {
 };
 
 // Row for a single actor
-function ActorRow({ actor, isNext, idx, getActorColor }: {
+const ActorRow = memo(function ActorRow({ actor, isNext, idx, getActorColor }: {
   actor: CharacterRecord;
   isNext: boolean;
   idx: number;
@@ -76,22 +72,16 @@ function ActorRow({ actor, isNext, idx, getActorColor }: {
       <span style={tickStyle}>{actor.init.val}</span>
     </div>
   );
-}
+});
 
-
-//
-// Main actor list component
-export function ActorList({ actors, nextActorIds, getActorColor }: ActorListProps) {
-  // Memoize sorted actors for performance
-  const sorted = useMemo(() =>
-    [...actors].sort(
-      (a, b) => a.init.val - b.init.val || a.name.localeCompare(b.name)
-    ), [actors]
-  );
+export default function ActorList({ actors, nextActorIds, getActorColor, ...handlers }: ActorListProps) {
+  const sortedActors = useMemo(() => {
+    return [...actors].sort((a, b) => b.init.val - a.init.val);
+  }, [actors]);
 
   return (
     <div>
-      {sorted.map((actor, idx) => (
+      {sortedActors.map((actor, idx) => (
         <ActorRow
           key={actor.id}
           actor={actor}

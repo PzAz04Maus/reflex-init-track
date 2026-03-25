@@ -1,5 +1,5 @@
-import { useReducer, useState } from "react";
-import { CombatReducer } from "../core/state/stateSet";
+import { useReducer, useState, useCallback } from "react";
+import { CombatReducer } from "../core/reducer/combatReducer";
 import { getNextActors } from "../core/state/getNextActor";
 import { mockCombatState } from "./mockdata";
 import { ActorList } from "./components/ActorList";
@@ -7,9 +7,7 @@ import { ActorList } from "./components/ActorList";
 // Color palette for actors (cycle through if needed)
 const actorColors = ["#FFD600", "#4CAF50", "#2196F3", "#F44336", "#9C27B0", "#FF9800"];
 
-function getActorColor(idx: number) {
-    return actorColors[idx % actorColors.length];
-}
+const getActorColor = useCallback((idx: number) => actorColors[idx % actorColors.length], []);
 
 export default function App() {
     const [state, dispatch] = useReducer(CombatReducer, mockCombatState);
@@ -28,9 +26,9 @@ export default function App() {
     const trackRange = maxTick - minTick || 1;
 
     // Handlers
-    const handleAdvanceTurn = () => dispatch({ type: "advanceTurn" });
-    const handleReset = () => dispatch({ type: "reset", state: mockCombatState });
-    const handleAddActor = () => {
+    const handleAdvanceTurn = useCallback(() => dispatch({ type: "advanceTurn" }), [dispatch]);
+    const handleReset = useCallback(() => dispatch({ type: "reset", state: mockCombatState }), [dispatch]);
+    const handleAddActor = useCallback(() => {
         const trimmed = newName.trim();
         if (!trimmed) return;
         dispatch({
@@ -44,7 +42,7 @@ export default function App() {
             },
         });
         setNewName("");
-    };
+    }, [newName, minTick, dispatch]);
 
     return (
         <div style={{ background: "#111", minHeight: "100vh", color: "#eee", fontFamily: "sans-serif", padding: 0 }}>
