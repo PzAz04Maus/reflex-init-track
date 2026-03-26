@@ -2,12 +2,11 @@ import type { CombatState } from '../../core/types';
 // import { createInitialState, setState } from '../../core/selectors/combatSelectors';
 import { COMBAT_FLAG, MODULE_ID } from './constants';
 
+export async function getScheduleState(_combat: any): Promise<CombatState | null> {
+	// TODO: Implement actual Foundry flag read logic
+	return null;
+}
 
-// File intentionally left blank to disable VTT store due to data model changes.
- // export async function getScheduleState(combat: CombatLike): Promise<CombatState> {
- //   const raw = await combat.getFlag(MODULE_ID, COMBAT_FLAG);
- //   return setState(createInitialState(), (raw as Partial<CombatState> | null | undefined) ?? {});
- // }
- // export async function setScheduleState(combat: CombatLike, state: CombatState): Promise<void> {
- //   await combat.setFlag(MODULE_ID, COMBAT_FLAG, state);
- // }
+export async function setScheduleState(_combat: any, _state: CombatState): Promise<void> {
+	// TODO: Implement actual Foundry flag write logic
+}

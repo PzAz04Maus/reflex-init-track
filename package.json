@@ -21,7 +21,13 @@
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-react": "^7.0.0",
+    "fvtt-types": "npm:@league-of-foundry-developers/foundry-vtt-types@^13.346.0-beta.20250812191140",
     "prettier": "^3.0.0",
-    "typescript": "^5.0.0"
-  }
+    "typescript": "^5.9.3"
+  },
+  "description": "Initialized 23MAR2026",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

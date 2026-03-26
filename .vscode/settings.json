@@ -5,6 +5,6 @@
   "**/.eslintrc.cjs": true,
   "**/.prettierrc": true,
   "**/vite.config.ts": true,
-  "**/tsconfig.json": true,
+  "**/tsconfig.json": false,
 }
 }
