@@ -8,14 +8,19 @@ export interface VttActorInput {
 
 export function fromVttActors(actors: VttActorInput[]): CombatState {
   return {
-    exchange: 1,
+    round: 1,
+    lastActingIds: [],
     actors: actors.map((actor) => ({
       id: actor.id,
-      callsign: actor.id,
       name: actor.name,
-      tick: actor.initiative ?? 0,
-      actionCost: 4,
-      joined: true,
+      ownerUserId: null,
+      actorUuid: null,
+      combatantId: null,
+      data: { ooda: 10 },
+      bio: {},
+      equipment: {},
+      init: { base: actor.initiative ?? 0, initial: actor.initiative ?? 0, val: actor.initiative ?? 0, joined: true, actionCost: 4 },
+      action: null
     })),
   };
 }

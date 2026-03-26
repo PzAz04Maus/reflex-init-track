@@ -1,15 +1,15 @@
-import type { CombatActor, CombatState } from '../types';
-import { getActors } from './stateGet';
+import type { CombatState, CharacterRecord } from '../types';
+import { selectActors } from '../selectors/combatSelectors';
 
-// Returns all joined actors with the lowest tick
-export function getNextActors(state: CombatState): CombatActor[] {
-  const actors = getActors(state).filter(actor => actor.state.joined);
+// Returns all joined actors with the lowest initiative value
+export function getNextActors(state: CombatState): CharacterRecord[] {
+  const actors = selectActors(state).filter(actor => actor.init.joined);
   if (actors.length === 0) return [];
-  const minTick = Math.min(...actors.map(actor => actor.state.tick));
-  return actors.filter(actor => actor.state.tick === minTick);
+  const minVal = Math.min(...actors.map(actor => actor.init.val));
+  return actors.filter(actor => actor.init.val === minVal);
 }
 
-// Returns the first joined actor with the lowest tick, or null
-export function getNextActor(state: CombatState): CombatActor | null {
+// Returns the first joined actor with the lowest initiative value, or null
+export function getNextActor(state: CombatState): CharacterRecord | null {
   return getNextActors(state)[0] ?? null;
 }

@@ -7,6 +7,9 @@ export interface CharacterState {
   actions: Record<CharacterId, ActionState | null>;
 }
 
+// Placeholder for equipment state
+export type EquipmentState = Record<string, unknown>;
+
 // primary character record
 export interface CharacterRecord {
   id: CharacterId;

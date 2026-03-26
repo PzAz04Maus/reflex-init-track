@@ -37,6 +37,7 @@ Initialized 23MAR2026
    - You must have Node.js installed to run this script.
 3. **Install the module in Foundry:**
    - Copy the packaged folder to your Foundry `Data/modules/` directory.
+   - By default, the directory is in `%localappdata%/FoundryVTT/`
    - In Foundry, go to **Configuration > Manage Modules** and enable the Reflex Scheduler module.
    - Open a combat encounter. The Reflex Scheduler panel should be available from the UI or via the module's controls.
 

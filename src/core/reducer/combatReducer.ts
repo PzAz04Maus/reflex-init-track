@@ -1,5 +1,12 @@
+// Create an empty initial state
+export function createInitialState(): CombatState {
+  return {
+    actors: [],
+    lastActingIds: [],
+    round: 1
+  };
+}
 import type { CombatState, CharacterRecord, CharacterId } from '../types';
-import { createInitialState } from '../state/stateGet';
 import { selectActors, selectActorById, withActors } from '../selectors/combatSelectors';
 
 // Reducer for combat state, compatible with useReducer

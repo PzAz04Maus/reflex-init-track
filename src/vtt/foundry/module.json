@@ -13,7 +13,7 @@
     }
   ],
   "esmodules": [
-    "dist/index.js"
+    "vtt/foundry/init.js"
   ],
   "scripts": [
   ],

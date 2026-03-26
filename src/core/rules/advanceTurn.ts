@@ -1,6 +1,12 @@
-import type { AddActorInput, CombatState, TurnAdvanceResult, CombatActor, CharacterId, InitiativeState, CharacterData } from '../types';
+import type { CombatState, TurnAdvanceResult, CharacterRecord, CharacterId, InitiativeState } from '../types';
+
+// AddActorInput now requires character to be a CharacterRecord
+export interface AddActorInput {
+  character: CharacterRecord;
+  state?: Partial<InitiativeState>;
+}
 import { getNextActor, getNextActors } from '../state/getNextActor';
-import { selectActors as getActors, withActors } from '../selectors/combatSelectors';
+import { selectActors, withActors } from '../selectors/combatSelectors';
 
 // Calculate margin for roll
 export function computeMargin(roll: number, target: number): number {
@@ -13,53 +19,39 @@ export function computeOodaAdjustedInit(baseInit: number, roll: number, target: 
 }
 
 // Used for late joiners
-// needs to be revised for vanilla init
-export function joinMidFightInitialInit(actors: CombatActor[], baseInit: number): number {
+export function joinMidFightInitialInit(actors: CharacterRecord[], baseInit: number): number {
   if (actors.length === 0) return baseInit;
-  const lowestTick = Math.min(...actors.map((actor) => actor.state.tick));
-  return baseInit + lowestTick;
+  const lowestVal = Math.min(...actors.map((actor) => actor.init.val));
+  return baseInit + lowestVal;
 }
 
 
-export function sortActors(list: CombatActor[]): CombatActor[] {
+export function sortActors(list: CharacterRecord[]): CharacterRecord[] {
   return [...list].sort((a, b) => {
-    if (a.state.tick !== b.state.tick) return a.state.tick - b.state.tick;
-    return a.character.name.localeCompare(b.character.name);
+    if (a.init.val !== b.init.val) return a.init.val - b.init.val;
+    return a.name.localeCompare(b.name);
   });
 }
 
 // Add a new actor to combat
+/**
+ * Add a CharacterRecord to the combat state.
+ * @param state The current combat state
+ * @param input.character The CharacterRecord to add
+ */
 export function addActor(state: CombatState, input: AddActorInput): CombatState {
-  const existing = getActors(state);
-  const { character, state: stateInput } = input;
-  const oodaAdjusted = computeOodaAdjustedInit(character.baseInit, character.roll, character.oodaTN);
-  const joined = stateInput?.joined ?? true;
-  const tick = joined ? joinMidFightInitialInit(existing, oodaAdjusted) : oodaAdjusted;
-
-  const newCombatActor: CombatActor = {
-    character,
-    state: {
-      characterId: character.id,
-      tick,
-      actionCost: character.baseInit,
-      initCost: character.baseInit,
-      joined,
-      plannedAction: stateInput?.plannedAction,
-      joinedMidFight: joined,
-      ...stateInput,
-    },
-  };
-
-  return withActors(state, [...existing, newCombatActor]);
+  const existing = selectActors(state);
+  const { character } = input;
+  return withActors(state, [...existing, character]);
 }
 
 // Update an actor's action cost
 export function updateActorCost(state: CombatState, characterId: CharacterId, actionCost: number): CombatState {
   return withActors(
     state,
-    getActors(state).map((actor) =>
-      actor.character.id === characterId
-        ? { ...actor, state: { ...actor.state, actionCost } }
+    selectActors(state).map((actor) =>
+      actor.id === characterId
+        ? { ...actor, init: { ...actor.init, actionCost } }
         : actor
     )
   );
@@ -69,18 +61,37 @@ export function updateActorCost(state: CombatState, characterId: CharacterId, ac
 export function updateActorAction(state: CombatState, characterId: CharacterId, plannedAction: string): CombatState {
   return withActors(
     state,
-    getActors(state).map((actor) =>
-      actor.character.id === characterId
-        ? { ...actor, state: { ...actor.state, plannedAction } }
-        : actor
-    )
+    selectActors(state).map((actor) => {
+      if (actor.id !== characterId) return actor;
+      // If action exists and has id/cost, preserve them; otherwise, provide defaults
+      const prev = actor.action;
+      if (prev && typeof prev.id === 'string' && typeof prev.cost === 'number') {
+        return {
+          ...actor,
+          action: {
+            ...prev,
+            name: plannedAction
+          }
+        };
+      } else {
+        // If no previous action, create a minimal valid ActionState
+        return {
+          ...actor,
+          action: {
+            id: `${actor.id}-action`,
+            name: plannedAction,
+            cost: 1 // default cost if unknown
+          }
+        };
+      }
+    })
   );
 }
 
 
-// Advance the turn for all actors with the highest tick
+// Advance the turn for all actors with the lowest initiative value
 export function advanceTurn(state: CombatState): TurnAdvanceResult {
-  const actors = getActors(state);
+  const actors = selectActors(state);
   if (actors.length === 0) {
     return {
       state: {
@@ -91,21 +102,23 @@ export function advanceTurn(state: CombatState): TurnAdvanceResult {
     };
   }
 
-  // All actors with the highest tick act simultaneously
-  const maxTick = Math.max(...actors.filter(a => a.state.joined).map(a => a.state.tick));
-  const acting = actors.filter(a => a.state.joined && a.state.tick === maxTick);
-  const actingIds = acting.map((actor) => actor.character.id);
+  // All actors with the lowest initiative value act simultaneously
+  const minVal = Math.min(...actors.filter(a => a.init.joined).map(a => a.init.val));
+  const acting = actors.filter(a => a.init.joined && a.init.val === minVal);
+  const actingIds = acting.map((actor) => actor.id);
 
-  // Subtract actionCost from tick for all acting actors (not below zero)
+  // Subtract action cost from val for all acting actors (not below zero)
   const updatedActors = actors.map((actor) => {
-    if (actingIds.includes(actor.character.id)) {
-      const newTick = Math.max(0, actor.state.tick - actor.state.actionCost);
-      return { ...actor, state: { ...actor.state, tick: newTick } };
+    if (actingIds.includes(actor.id)) {
+      // Use actor.action.cost if available, otherwise default to 1
+      const actionCost = actor.action && typeof actor.action.cost === 'number' ? actor.action.cost : 1;
+      const newVal = Math.max(0, actor.init.val - actionCost);
+      return { ...actor, init: { ...actor.init, val: newVal } };
     }
     return actor;
   });
 
-  const previousLead = getNextActor(state)?.character.id ?? null;
+  const previousLead = getNextActor(state)?.id ?? null;
   const nextState = withActors(
     {
       ...state,
@@ -113,7 +126,7 @@ export function advanceTurn(state: CombatState): TurnAdvanceResult {
     },
     updatedActors
   );
-  const nextLead = getNextActor(nextState)?.character.id ?? null;
+  const nextLead = getNextActor(nextState)?.id ?? null;
 
   return {
     state: {

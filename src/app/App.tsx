@@ -1,5 +1,5 @@
 import { useReducer, useState, useCallback } from "react";
-import { CombatReducer } from "../core/reducer/combatReducer";
+import { combatReducer } from "../core/reducer/combatReducer";
 import { getNextActors } from "../core/state/getNextActor";
 import { mockCombatState } from "./mockdata";
 import { ActorList } from "./components/ActorList";
@@ -10,7 +10,7 @@ const actorColors = ["#FFD600", "#4CAF50", "#2196F3", "#F44336", "#9C27B0", "#FF
 const getActorColor = useCallback((idx: number) => actorColors[idx % actorColors.length], []);
 
 export default function App() {
-    const [state, dispatch] = useReducer(CombatReducer, mockCombatState);
+    const [state, dispatch] = useReducer(combatReducer, mockCombatState);
     const [newName, setNewName] = useState("");
 
     const nextActors = getNextActors(state);
@@ -36,9 +36,11 @@ export default function App() {
             actor: {
                 id: crypto.randomUUID(),
                 name: trimmed,
-                tick: minTick,
-                actionCost: 4,
-                joined: true,
+                data: { ooda: 10 },
+                bio: {},
+                equipment: {},
+                init: { base: minTick, initial: minTick, val: minTick, joined: true },
+                action: null
             },
         });
         setNewName("");
@@ -80,12 +82,12 @@ export default function App() {
                 {/* Current Actor Panel */}
                 <div style={{ background: "#388e3c", color: "#111", borderRadius: 6, boxShadow: "0 2px 8px #0008", padding: 16, marginBottom: 8, position: "relative" }}>
                     <div style={{ fontWeight: 700, fontSize: 24, marginBottom: 4 }}>{currentActor?.name || "-"}</div>
-                    <div style={{ fontSize: 13, opacity: 0.8, marginBottom: 8 }}>starting init: {currentActor?.tick ?? "-"}</div>
+                    <div style={{ fontSize: 13, opacity: 0.8, marginBottom: 8 }}>starting init: {currentActor?.init?.val ?? "-"}</div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <div style={{ fontSize: 18, fontWeight: 600, background: "#222", color: "#eee", borderRadius: 4, padding: "2px 10px" }}>{currentActor?.tick ?? "-"}</div>
+                        <div style={{ fontSize: 18, fontWeight: 600, background: "#222", color: "#eee", borderRadius: 4, padding: "2px 10px" }}>{currentActor?.init?.val ?? "-"}</div>
                         <input
                             type="number"
-                            value={currentActor?.actionCost ?? 5}
+                            value={currentActor?.action?.cost ?? 5}
                             min={1}
                             style={{ width: 40, fontSize: 18, marginLeft: 8, marginRight: 4, borderRadius: 4, border: "1px solid #888", padding: 2 }}
                             onChange={e => dispatch({ type: "setActionCost", actorId: currentActor?.id, actionCost: Number(e.target.value) })}

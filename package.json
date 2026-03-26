@@ -3,10 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "tsc && node ./scripts/copy-assets.mjs",
-    "package:foundry": "node ./scripts/copy-foundry-assets.js",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "build": "tsc",
+    "package:foundry": "node ./scripts/copy-foundry-assets.js"
   },
   "dependencies": {
     "react": "^18.0.0",
