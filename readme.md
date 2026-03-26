@@ -26,13 +26,13 @@ Initialized 23MAR2026
    ```sh
    npm run build
    ```
-   This outputs to a `dist/` directory with the necessary JS and CSS files.
+   This compiles the TypeScript source into the `output/` directory with the necessary JS files.
 2. **Package the Foundry module:**
    ```sh
    npm run package:foundry
    ```
    - By default, this creates a `foundry-module/` folder in the project root. You can specify a different target directory as an argument.
-   - The script copies your build output (`dist/`), `module.json` (from `src/vtt/foundry/`), `foundry.css` (from `src/styles/`), and `schedule-panel.hbs` (from `src/templates/foundry/`) into the target directory, creating the correct structure for manual installation in Foundry.
+   - The script copies your build output (`output/`), `module.json` (from `src/vtt/foundry/`), `foundry.css` (from `src/styles/`), and `schedule-panel.hbs` (from `src/templates/foundry/`) into the target directory, creating the correct structure for manual installation in Foundry.
    - The script will fail with a clear error if any required file is missing.
    - You must have Node.js installed to run this script.
 3. **Install the module in Foundry:**

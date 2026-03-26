@@ -6,13 +6,14 @@ const fs = require('fs');
 const path = require('path');
 
 // Source locations (only copy what Foundry needs)
-const foundryDistDir = path.resolve(__dirname, '..', 'dist', 'vtt', 'foundry');
+const foundryDistDir = path.resolve(__dirname, '..', 'output', 'vtt', 'foundry');
+const coreDistDir = path.resolve(__dirname, '..', 'output', 'core');
 const foundryStyles = path.resolve(__dirname, '..', 'src', 'styles', 'foundry.css');
 const foundryTemplate = path.resolve(__dirname, '..', 'src', 'templates', 'foundry', 'schedule-panel.hbs');
 const moduleJson = path.resolve(__dirname, '..', 'src', 'vtt', 'foundry', 'module.json');
 
 // Target (output) directory (user can override with CLI arg)
-const targetDir = process.argv[2] || path.resolve(__dirname, '..', 'dist', 'foundry-module');
+const targetDir = process.argv[2] || path.resolve(__dirname, '..', 'output', 'reflex-module');
 
 // Validate that all required files exist before copying
 function assertExists(file, label) {
@@ -22,7 +23,8 @@ function assertExists(file, label) {
   }
 }
 
-assertExists(foundryDistDir, 'dist/vtt/foundry directory');
+assertExists(foundryDistDir, 'output/vtt/foundry directory');
+assertExists(coreDistDir, 'output/core directory');
 assertExists(foundryStyles, 'foundry.css');
 assertExists(foundryTemplate, 'schedule-panel.hbs');
 assertExists(moduleJson, 'module.json');
@@ -48,8 +50,10 @@ function copyDir(srcDir, destDir) {
 }
 
 
-// Copy only dist/vtt/foundry -> vtt/foundry in module (no dist/ nesting)
+// Copy output/vtt/foundry -> vtt/foundry in module (no output/ nesting)
 copyDir(foundryDistDir, path.join(targetDir, 'vtt', 'foundry'));
+// Copy output/core -> core in module (no output/ nesting)
+copyDir(coreDistDir, path.join(targetDir, 'core'));
 // Copy foundry.css
 copyFile(foundryStyles, path.join(targetDir, 'styles', 'foundry.css'));
 // Copy schedule-panel.hbs

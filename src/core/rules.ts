@@ -7,4 +7,4 @@ export {
 	sortActors,
 	updateActorAction,
 	updateActorCost
-} from './rules/advanceTurn';
+} from './rules/advanceTurn.js';

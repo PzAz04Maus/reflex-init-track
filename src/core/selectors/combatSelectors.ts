@@ -1,4 +1,4 @@
-import type { CombatState, CharacterRecord, CharacterId } from '../types';
+import type { CombatState, CharacterRecord, CharacterId } from '../types.js';
 
 // Get all actors, sorted by init.val then name
 export function selectActors(state: CombatState): CharacterRecord[] {

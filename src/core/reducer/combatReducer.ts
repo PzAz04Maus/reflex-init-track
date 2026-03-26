@@ -7,7 +7,7 @@ export function createInitialState(): CombatState {
   };
 }
 import type { CombatState, CharacterRecord, CharacterId } from '../types';
-import { selectActors, selectActorById, withActors } from '../selectors/combatSelectors';
+import { selectActors, selectActorById, withActors } from '../selectors/combatSelectors.js';
 
 // Reducer for combat state, compatible with useReducer
 export function combatReducer(state: CombatState, action: any): CombatState {

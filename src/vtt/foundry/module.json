@@ -1,5 +1,5 @@
 {
-  "id": "reflex-scheduler",
+  "id": "reflex",
   "title": "Reflex Scheduler",
   "description": "OODA/tick scheduler for Foundry VTT.",
   "version": "0.2.0",

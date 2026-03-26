@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --outDir output",
     "package:foundry": "node ./scripts/copy-foundry-assets.js"
   },
   "dependencies": {

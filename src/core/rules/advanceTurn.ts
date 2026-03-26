@@ -1,12 +1,12 @@
-import type { CombatState, TurnAdvanceResult, CharacterRecord, CharacterId, InitiativeState } from '../types';
+import type { CombatState, TurnAdvanceResult, CharacterRecord, CharacterId, InitiativeState } from '../types.js';
 
 // AddActorInput now requires character to be a CharacterRecord
 export interface AddActorInput {
   character: CharacterRecord;
   state?: Partial<InitiativeState>;
 }
-import { getNextActor, getNextActors } from '../state/getNextActor';
-import { selectActors, withActors } from '../selectors/combatSelectors';
+import { getNextActor, getNextActors } from '../state/getNextActor.js';
+import { selectActors, withActors } from '../selectors/combatSelectors.js';
 
 // Calculate margin for roll
 export function computeMargin(roll: number, target: number): number {

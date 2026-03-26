@@ -1,9 +1,9 @@
-import { advanceTurn, updateActorAction, updateActorCost } from '../../core/rules';
-import { rollD20 } from '../../core/roller/roll';
-import { getNextActors } from '../../core/state/getNextActor';
-import { selectActors } from '../../core/selectors/combatSelectors';
-import { MODULE_ID } from './constants';
-import { getScheduleState, setScheduleState } from './store';
+import { advanceTurn, updateActorAction, updateActorCost } from '../../core/rules.js';
+import { rollD20 } from '../../core/roller/roll.js';
+import { getNextActors } from '../../core/state/getNextActor.js';
+import { selectActors } from '../../core/selectors/combatSelectors.js';
+import { MODULE_ID } from './constants.js';
+import { getScheduleState, setScheduleState } from './store.js';
 
 // This mixin is assumed to be provided by the Foundry VTT environment
 const MixedApplication = HandlebarsApplicationMixin.mixed(ApplicationV2);

@@ -1,5 +1,5 @@
 import type { CombatState, CharacterRecord } from '../types';
-import { selectActors } from '../selectors/combatSelectors';
+import { selectActors } from '../selectors/combatSelectors.js';
 
 // Returns all joined actors with the lowest initiative value
 export function getNextActors(state: CombatState): CharacterRecord[] {

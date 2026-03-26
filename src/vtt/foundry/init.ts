@@ -1,17 +1,17 @@
 // @ts-ignore: Foundry VTT global
 declare function loadTemplates(paths: string[]): Promise<void>;
-import { addActor } from '../../core/rules';
-import type { CombatState } from '../../core/types';
-import { createInitialState } from '../../core/reducer/combatReducer';
-import { ReflexSchedulerPanel } from './panel';
-import { ReflexDebugPanel } from './debug-panel';
+import { addActor } from '../../core/rules.js';
+import type { CombatState } from '../../core/types.js';
+import { createInitialState } from '../../core/reducer/combatReducer.js';
+import { ReflexSchedulerPanel } from './panel.js';
+import { ReflexDebugPanel } from './debug-panel.js';
 // Register the debug panel template
 Hooks.once('init', () => {
   loadTemplates([
     'templates/foundry/debug-panel.hbs',
   ]);
 });
-import { getScheduleState, setScheduleState } from './store';
+import { getScheduleState, setScheduleState } from './store.js';
 
 let panel: ReflexSchedulerPanel | null = null;
 
@@ -87,3 +87,6 @@ export function registerReflexScheduler(): void {
     });
   });
 }
+
+console.log("Reflex | init.ts loaded");
+console.log("Reflex | Foundry ready hook fired");
