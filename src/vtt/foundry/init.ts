@@ -5,10 +5,10 @@ import type { CombatState } from '../../core/types.js';
 import { createInitialState } from '../../core/reducer/combatReducer.js';
 import { ReflexSchedulerPanel } from './panel.js';
 import { ReflexDebugPanel } from './debug-panel.js';
-// Register the debug panel template
+// Register the debug panel template using the new namespaced loadTemplates and module-relative path
 Hooks.once('init', () => {
-  loadTemplates([
-    'templates/foundry/debug-panel.hbs',
+  foundry.applications.handlebars.loadTemplates([
+    'modules/reflex/templates/foundry/debug-panel.hbs'
   ]);
 });
 import { getScheduleState, setScheduleState } from './store.js';

@@ -5,10 +5,8 @@ import { selectActors } from '../../core/selectors/combatSelectors.js';
 import { MODULE_ID } from './constants.js';
 import { getScheduleState, setScheduleState } from './store.js';
 
-// This mixin is assumed to be provided by the Foundry VTT environment
-const MixedApplication = HandlebarsApplicationMixin.mixed(ApplicationV2);
-
-export class ReflexSchedulerPanel extends MixedApplication {
+// Use Application directly (remove ApplicationV2)
+export class ReflexSchedulerPanel extends Application {
   static DEFAULT_OPTIONS = {
     // id: `${MODULE_ID}-panel`,
     // classes: [MODULE_ID],

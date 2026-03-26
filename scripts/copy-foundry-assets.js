@@ -9,7 +9,7 @@ const path = require('path');
 const foundryDistDir = path.resolve(__dirname, '..', 'output', 'vtt', 'foundry');
 const coreDistDir = path.resolve(__dirname, '..', 'output', 'core');
 const foundryStyles = path.resolve(__dirname, '..', 'src', 'styles', 'foundry.css');
-const foundryTemplate = path.resolve(__dirname, '..', 'src', 'templates', 'foundry', 'schedule-panel.hbs');
+const foundryTemplatesDir = path.resolve(__dirname, '..', 'src', 'templates', 'foundry');
 const moduleJson = path.resolve(__dirname, '..', 'src', 'vtt', 'foundry', 'module.json');
 
 // Target (output) directory (user can override with CLI arg)
@@ -26,7 +26,7 @@ function assertExists(file, label) {
 assertExists(foundryDistDir, 'output/vtt/foundry directory');
 assertExists(coreDistDir, 'output/core directory');
 assertExists(foundryStyles, 'foundry.css');
-assertExists(foundryTemplate, 'schedule-panel.hbs');
+assertExists(foundryTemplatesDir, 'src/templates/foundry directory');
 assertExists(moduleJson, 'module.json');
 
 function copyFile(src, dest) {
@@ -56,8 +56,15 @@ copyDir(foundryDistDir, path.join(targetDir, 'vtt', 'foundry'));
 copyDir(coreDistDir, path.join(targetDir, 'core'));
 // Copy foundry.css
 copyFile(foundryStyles, path.join(targetDir, 'styles', 'foundry.css'));
-// Copy schedule-panel.hbs
-copyFile(foundryTemplate, path.join(targetDir, 'templates', 'foundry', 'schedule-panel.hbs'));
+// Copy all .hbs templates from src/templates/foundry to module's templates/foundry
+fs.readdirSync(foundryTemplatesDir).forEach(file => {
+  if (file.endsWith('.hbs')) {
+    copyFile(
+      path.join(foundryTemplatesDir, file),
+      path.join(targetDir, 'templates', 'foundry', file)
+    );
+  }
+});
 // Copy module.json
 copyFile(moduleJson, path.join(targetDir, 'module.json'));
 
