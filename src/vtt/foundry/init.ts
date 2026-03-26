@@ -58,35 +58,39 @@ async function seedFromCombat(combat: any): Promise<CombatState> {
 }
 
 export function registerReflexScheduler(): void {
-  Hooks.once('ready', () => {
-    panel = new ReflexSchedulerPanel();
-
-    Hooks.on('getSceneControlButtons', (controls: any[]) => {
-      controls.push({
-        name: 'reflex-scheduler',
-        title: 'Reflex Scheduler',
-        icon: 'fas fa-stopwatch',
-        layer: 'TokenLayer',
-        tools: [
-          {
-            name: 'open-reflex-scheduler',
-            title: 'Open Reflex Scheduler',
-            icon: 'fas fa-list-ol',
-            button: true,
-            onClick: () => panel?.render(true)
-          },
-          {
-            name: 'import-combatants',
-            title: 'Import Combatants',
-            icon: 'fas fa-user-plus',
-            button: true,
-            // onClick: () => ...
-          }
-        ]
-      });
-    });
-  });
+// Register the Reflex Scheduler control group at the top level so the hook fires in time
+let panel: ReflexSchedulerPanel | null = null;
+panel = new ReflexSchedulerPanel();
+console.log('Reflex | Registering getSceneControlButtons hook');
+Hooks.on('getSceneControlButtons', (controls: any) => {
+  const group = {
+    name: 'reflex-scheduler',
+    title: 'Reflex Scheduler',
+    icon: 'fas fa-list-ol',
+    layer: 'TokenLayer',
+    tools: [
+      {
+        name: 'open-reflex-scheduler',
+        title: 'Open Reflex Scheduler',
+        icon: 'fas fa-list-ol',
+        button: true,
+        onClick: () => panel?.render(true)
+      },
+      {
+        name: 'import-combatants',
+        title: 'Import Combatants',
+        icon: 'fas fa-user-plus',
+        button: true,
+        // onClick: () => ...
+      }
+    ]
+  };
+  controls['reflex-scheduler'] = group;
+  console.log('Reflex | Added control group:', group);
+});
 }
+
+registerReflexScheduler();
 
 console.log("Reflex | init.ts loaded");
 console.log("Reflex | Foundry ready hook fired");
