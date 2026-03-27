@@ -1,0 +1,70 @@
+{
+  "Actor": {
+    "character": {
+      "stats": {
+        "ooda": 0,
+        "speed": 4,
+        "awareness": 0
+      },
+      "resources": {
+        "hp": { "value": 10, "max": 10 },
+        "fatigue": { "value": 0, "max": 10 }
+      },
+      "combat": {
+        "tick": 0,
+        "actionCost": 4,
+        "declaredAction": "",
+        "joined": true
+      }
+    },
+    "vehicle": {
+      "stats": {
+        "ooda": 0,
+        "speed": 6,
+        "awareness": 0
+      },
+      "resources": {
+        "hp": { "value": 20, "max": 20 },
+        "fatigue": { "value": 0, "max": 10 }
+      },
+      "combat": {
+        "tick": 0,
+        "actionCost": 6,
+        "declaredAction": "",
+        "joined": true
+      }
+    },
+    "unit": {
+      "stats": {
+        "ooda": 0,
+        "speed": 4,
+        "awareness": 0
+      },
+      "resources": {
+        "hp": { "value": 15, "max": 15 },
+        "fatigue": { "value": 0, "max": 10 }
+      },
+      "combat": {
+        "tick": 0,
+        "actionCost": 4,
+        "declaredAction": "",
+        "joined": true
+      }
+    }
+  },
+  "Item": {
+    "weapon": {
+      "tickCost": 4,
+      "damage": "1d6",
+      "equipped": false
+    },
+    "gear": {
+      "weight": 0,
+      "equipped": false
+    },
+    "effect": {
+      "duration": 0,
+      "active": false
+    }
+  }
+}

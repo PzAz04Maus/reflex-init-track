@@ -1,0 +1,35 @@
+{
+  "id": "reflex",
+  "title": "Reflex Scheduler",
+  "description": "OODA/tick scheduler for Foundry VTT.",
+  "version": "0.2.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "OpenAI"
+    }
+  ],
+  "esmodules": [
+    "vtt/foundry/init.js"
+  ],
+  "scripts": [
+  ],
+  "styles": [
+    "styles/foundry.css"
+  ],
+  "packs": [
+  ],
+  "languages": [
+  ],
+  "readme": "README.md",
+  "license": "LICENSE",
+  "bugs": "https://github.com/your-repo/issues",
+  "manifest": "https://yourdomain.com/module.json",
+  "download": "https://yourdomain.com/download.zip",
+  "relationships": {
+    "systems": []
+  }
+}

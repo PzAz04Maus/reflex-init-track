@@ -1,0 +1,19 @@
+.reflex-system.sheet.actor,
+.reflex-system.sheet.item {
+  padding: 0.5rem;
+}
+
+.reflex-system .sheet-header {
+  margin-bottom: 0.75rem;
+}
+
+.reflex-system .sheet-body {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.reflex-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}

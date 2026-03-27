@@ -1,0 +1,19 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <h1><input name="name" type="text" value="{{item.name}}" /></h1>
+  </header>
+
+  <section class="sheet-body">
+    {{#if (eq item.type "weapon")}}
+      <label>Tick Cost</label>
+      <input type="number" name="system.tickCost" value="{{system.tickCost}}" />
+      <label>Damage</label>
+      <input type="text" name="system.damage" value="{{system.damage}}" />
+    {{/if}}
+
+    {{#if (eq item.type "gear")}}
+      <label>Weight</label>
+      <input type="number" name="system.weight" value="{{system.weight}}" />
+    {{/if}}
+  </section>
+</form>

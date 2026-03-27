@@ -1,5 +1,15 @@
 Initialized 23MAR2026
 
+# Todo
+
+- Full Reflex Engine dev
+- Scale measurements to fit large scale UI
+- AB13 extensions
+ - Random terrain?
+ - Detail subsystem
+ - draw.io implementation?
+ - svg/inkscape support?
+ - 
 # Heads up
 
 [settings.json](.vscode/settings.json) has hidden a bunch of basement level config files. If you're having issues, consider revealing these to check the basement.

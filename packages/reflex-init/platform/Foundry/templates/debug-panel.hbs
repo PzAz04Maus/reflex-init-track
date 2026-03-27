@@ -1,0 +1,17 @@
+
+<div class="reflex-debug-panel">
+	<h2>Reflex Init Debug Panel</h2>
+	<section>
+		<h3>Actors</h3>
+		<ul>
+			{{#each actors}}
+				<li>{{this.name}}</li>
+			{{/each}}
+		</ul>
+	</section>
+	<section>
+		<h3>Tracker State</h3>
+		<pre>{{json trackerState}}</pre>
+	</section>
+	<button class="advance-turn">Advance Turn</button>
+</div>
