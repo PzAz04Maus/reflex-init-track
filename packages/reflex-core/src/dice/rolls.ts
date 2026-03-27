@@ -1,3 +1,29 @@
+// Register a hook to read rolls from chat messages
+export function registerReadRollFromChatHook(): void {
+  Hooks.on("createChatMessage", (message: ChatMessage) => {
+    const m = message as any;
+    const rawRolls = (m._source?.rolls ?? []) as unknown[];
+
+    if (!rawRolls.length) return;
+
+    console.group("[Option 2] Read roll(s) from chat message");
+    console.log("Message ID:", m.id);
+    console.log("Alias:", m.alias);
+    console.log("Raw rolls:", rawRolls);
+    console.groupEnd();
+  });
+}
+
+// Register a hook to intercept system rolls
+export function registerInterceptSystemRollHook(): void {
+  Hooks.on("createChatMessage", (message: ChatMessage) => {
+    const m = message as any;
+    if (!m.isRoll) return;
+
+    const rawRolls = (m._source?.rolls ?? []) as unknown[];
+    // Add custom logic here if needed
+  });
+}
 
 // Simple synchronous d20 roller for logic-only use (not for chat/system rolls)
 export function rollD20(): number {
@@ -37,40 +63,3 @@ export async function createActorBasedRoll(actorId: string): Promise<void> {
   });
 }
 
-export function registerReadRollFromChatHook(): void {
-  Hooks.on("createChatMessage", (message: ChatMessage) => {
-    const m = message as any;
-    const rawRolls = (m._source?.rolls ?? []) as unknown[];
-
-    if (!rawRolls.length) return;
-
-    console.group("[Option 2] Read roll(s) from chat message");
-    console.log("Message ID:", m.id);
-    console.log("Alias:", m.alias);
-    console.log("Raw rolls:", rawRolls);
-    console.groupEnd();
-  });
-}
-
-export function registerInterceptSystemRollHook(): void {
-  Hooks.on("createChatMessage", (message: ChatMessage) => {
-    const m = message as any;
-    if (!m.isRoll) return;
-
-    const rawRolls = (m._source?.rolls ?? []) as unknown[];
-    const firstRoll = rawRolls[0];
-    if (!firstRoll) return;
-
-    console.group("[Option 3] Intercepted system roll");
-    console.log("Message ID:", m.id);
-    console.log("Speaker:", m.alias);
-    console.log("Raw first roll:", firstRoll);
-    console.log("Raw message:", m);
-    console.groupEnd();
-  });
-}
-
-export function registerAllRollExamples(): void {
-  registerReadRollFromChatHook();
-  registerInterceptSystemRollHook();
-}

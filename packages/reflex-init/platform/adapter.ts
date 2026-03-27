@@ -1,4 +1,4 @@
-import type { CombatState } from "../core/types";
+import type { CombatState } from "../../reflex-core/src/types/system-data";
 
 export interface VttActorInput {
   id: string;

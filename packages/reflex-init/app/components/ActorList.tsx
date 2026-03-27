@@ -1,5 +1,5 @@
 
-import type { CharacterRecord } from "../../core/types";
+import type { CharacterRecord } from "../../../reflex-core/src/types/system-data";
 import { useMemo } from "react";
 
 

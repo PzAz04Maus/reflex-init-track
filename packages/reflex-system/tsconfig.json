@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "outDir": "module",
+    "rootDir": "../src",
+    "strict": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+    "types": ["foundry-vtt-types"]
+  },
+  "include": ["../src/**/*.ts"]
+}
