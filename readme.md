@@ -110,6 +110,33 @@ Remember that a character who is broken (see p. 159) must hold.  His self-preser
 
 # Codebase
 
+## Dependencies
+
+### Root dependencies (package.json)
+
+- **react**: ^18.0.0
+- **react-dom**: ^18.0.0
+- **zod**: ^3.0.0
+
+### Dev dependencies
+
+- **@league-of-foundry-developers/foundry-vtt-types**: ^13.346.0-beta.20250812191140
+- **@testing-library/jest-dom**: ^6.9.1
+- **@testing-library/react**: ^16.3.2
+- **@types/node**: ^25.5.0
+- **@types/react**: ^19.2.14
+- **@types/react-dom**: ^19.2.3
+- **@types/testing-library__react**: ^10.2.0
+- **eslint**: ^8.0.0
+- **eslint-config-prettier**: ^9.0.0
+- **eslint-plugin-react**: ^7.0.0
+- **fvtt-types**: npm:@league-of-foundry-developers/foundry-vtt-types@^13.346.0-beta.20250812191140
+- **prettier**: ^3.0.0
+- **typescript**: ^5.4.0
+
+
+---
+
 ## Types
 
 See [types](types.md)

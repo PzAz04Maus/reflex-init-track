@@ -55,5 +55,8 @@ export interface CombatState {
     round: number;
 }
 export interface TurnAdvanceResult {
+    state: CombatState;
+    actingIds: string[];
+    previousLead: string | null;
 }
 //# sourceMappingURL=types.d.ts.map

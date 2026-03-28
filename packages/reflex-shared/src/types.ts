@@ -65,5 +65,7 @@ export interface CombatState {
 }
 
 export interface TurnAdvanceResult {
-  // Define the structure as needed
+  state: CombatState;
+  actingIds: string[];
+  previousLead: string | null;
 }
