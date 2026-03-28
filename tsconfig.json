@@ -7,8 +7,8 @@
     "lib": ["ES2022", "DOM"],
     "types": ["fvtt-types"],
     "rootDir": ".",
-    "outDir": "output",
-    "skipLibCheck": true
+    "outDir": "build",
+    "skipLibCheck": true,
   },
   "include": [
     "src/**/*.ts",

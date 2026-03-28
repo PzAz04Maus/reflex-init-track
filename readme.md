@@ -1,3 +1,20 @@
+# Reflex Init Track
+
+## Monorepo Import Guidance
+
+When importing from the reflex-shared package in other packages, **always import from the built output (the package root, e.g. `reflex-shared/index.js`) and never from `src/` files**. This ensures TypeScript and Node can resolve modules correctly across package boundaries.
+
+Example:
+
+```ts
+// Good:
+import { advanceTurn, getNextActors } from 'reflex-shared';
+import type { CharacterRecord } from 'reflex-shared';
+
+// Bad:
+import { advanceTurn } from 'reflex-shared/src/advanceTurn';
+import type { CharacterRecord } from 'reflex-shared/src/types';
+```
 Initialized 23MAR2026
 
 # Todo

@@ -1,14 +1,15 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "Bundler",
-    "outDir": "module",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "rootDir": "src",
-    "strict": true,
-    "noEmitOnError": true,
-    "skipLibCheck": true,
-    "types": ["fvtt-types"]
+    "outDir": "build"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../reflex-shared" },
+    { "path": "../reflex-core" }
+  ]
 }

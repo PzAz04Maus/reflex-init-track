@@ -21,7 +21,7 @@ export function computeOodaAdjustedInit(baseInit: number, roll: number, target: 
 // Used for late joiners
 export function joinMidFightInitialInit(actors: CharacterRecord[], baseInit: number): number {
   if (actors.length === 0) return baseInit;
-  const lowestVal = Math.min(...actors.map((actor: CharacterRecord) => actor.init.value));
+  const lowestVal = Math.min(...actors.map((actor: CharacterRecord) => actor.init.val ?? 0));
   return baseInit + lowestVal;
 }
 
@@ -41,7 +41,16 @@ export function addActor(state: CombatState, input: AddActorInput): CombatState 
 
 // Update an actor's action cost
 export function updateActorCost(state: CombatState, characterId: CharacterId, actionCost: number): CombatState {
-  return withActors(state, state.actors.map(actor =>
-    actor.id === characterId ? { ...actor, action: { ...actor.action, cost: actionCost } } : actor
-  ));
+  return withActors(state, state.actors.map(actor => {
+    if (actor.id !== characterId) return actor;
+    const prevAction = actor.action ?? { id: '', name: '', cost: 0 };
+    return {
+      ...actor,
+      action: {
+        id: prevAction.id,
+        name: prevAction.name,
+        cost: actionCost
+      }
+    };
+  }));
 }

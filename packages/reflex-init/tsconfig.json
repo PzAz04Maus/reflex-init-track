@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "src",
+    "outDir": "build",
+    "types": ["fvtt-types"]
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../reflex-shared" },
+    { "path": "../reflex-core" }
+  ]
+}

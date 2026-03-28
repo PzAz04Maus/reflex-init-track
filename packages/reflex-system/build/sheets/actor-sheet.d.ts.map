@@ -1,0 +1,1 @@
+{"version":3,"file":"actor-sheet.d.ts","sourceRoot":"","sources":["../../src/sheets/actor-sheet.ts"],"names":[],"mappings":"AAEA,qBAAa,gBAAiB,SAAQ,UAAU;IAC9C,WAAoB,cAAc,IAAI,UAAU,CAAC,OAAO,CAMvD;IAED,IAAa,QAAQ,IAAI,MAAM,CAE9B;IAEc,OAAO,CAAC,OAAO,CAAC,EAAE,GAAG,GAAG,OAAO,CAAC,MAAM,CAAC,MAAM,EAAE,OAAO,CAAC,CAAC;IAS9D,iBAAiB,CAAC,IAAI,EAAE,MAAM,GAAG,IAAI;CAM/C"}
