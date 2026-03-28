@@ -13,9 +13,12 @@ export class ReflexItemSheet extends ItemSheet {
 
   override async getData(options?: any): Promise<Record<string, unknown>> {
     const context = await super.getData(options);
+    const item = this.object as Item & { system: Record<string, unknown> };
+
     return {
       ...context,
-      system: this.item.system,
+      item,
+      system: item.system,
       editable: this.isEditable
     };
   }

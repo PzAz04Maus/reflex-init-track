@@ -1,21 +1,20 @@
 #!/usr/bin/env node
-// copy-foundry-module-assets.js
+// copy-foundry-assets.js
 // Copies build and required files for Foundry module packaging
 
 const fs = require('fs');
 const path = require('path');
 
-// Source locations (only copy what Foundry needs)
-const foundryDistDir = path.resolve(__dirname, '..', 'build', 'vtt', 'foundry');
-const coreDistDir = path.resolve(__dirname, '..', 'build', 'core');
-const foundryStyles = path.resolve(__dirname, '..', 'src', 'styles', 'foundry.css');
-const foundryTemplatesDir = path.resolve(__dirname, '..', 'src', 'templates', 'foundry');
-const moduleJson = path.resolve(__dirname, '..', 'src', 'vtt', 'foundry', 'module.json');
+// Source locations for the reflex-init package
+const foundryDistDir = path.resolve(__dirname, '..', 'build', 'packages', 'reflex-init', 'src', 'vtt', 'foundry');
+const coreDistDir = path.resolve(__dirname, '..', 'build', 'packages', 'reflex-shared');
+const foundryStyles = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'styles', 'foundry.css');
+const foundryTemplatesDir = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'templates', 'foundry');
+const moduleJson = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'vtt', 'foundry', 'module.json');
 
-// Target (output) directory (user can override with CLI arg)
+// Target directory
 const targetDir = process.argv[2] || path.resolve(__dirname, '..', 'build', 'reflex-module');
 
-// Validate that all required files exist before copying
 function assertExists(file, label) {
   if (!fs.existsSync(file)) {
     console.error(`ERROR: Required file not found: ${file} (${label})`);
@@ -23,11 +22,11 @@ function assertExists(file, label) {
   }
 }
 
-assertExists(foundryDistDir, 'build/vtt/foundry directory');
-assertExists(coreDistDir, 'build/core directory');
-assertExists(foundryStyles, 'foundry.css');
-assertExists(foundryTemplatesDir, 'src/templates/foundry directory');
-assertExists(moduleJson, 'module.json');
+assertExists(foundryDistDir, 'build/packages/reflex-init/src/vtt/foundry directory');
+assertExists(coreDistDir, 'build/packages/reflex-shared directory');
+assertExists(foundryStyles, 'packages/reflex-init/src/styles/foundry.css');
+assertExists(foundryTemplatesDir, 'packages/reflex-init/src/templates/foundry directory');
+assertExists(moduleJson, 'packages/reflex-init/src/vtt/foundry/module.json');
 
 function copyFile(src, dest) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });
@@ -49,23 +48,26 @@ function copyDir(srcDir, destDir) {
   }
 }
 
-
-// Copy build/vtt/foundry -> vtt/foundry in module (no build/ nesting)
+// Foundry runtime files
 copyDir(foundryDistDir, path.join(targetDir, 'vtt', 'foundry'));
-// Copy build/core -> core in module (no build/ nesting)
+
+// Shared/core logic used by the module
 copyDir(coreDistDir, path.join(targetDir, 'core'));
-// Copy foundry.css
+
+// Styles
 copyFile(foundryStyles, path.join(targetDir, 'styles', 'foundry.css'));
-// Copy all .hbs templates from src/templates/foundry to module's templates/foundry
-fs.readdirSync(foundryTemplatesDir).forEach(file => {
+
+// Templates
+for (const file of fs.readdirSync(foundryTemplatesDir)) {
   if (file.endsWith('.hbs')) {
     copyFile(
       path.join(foundryTemplatesDir, file),
       path.join(targetDir, 'templates', 'foundry', file)
     );
   }
-});
-// Copy module.json
+}
+
+// Manifest
 copyFile(moduleJson, path.join(targetDir, 'module.json'));
 
 console.log('Foundry module assets copied to:', targetDir);
