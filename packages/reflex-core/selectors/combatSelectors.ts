@@ -1,9 +1,9 @@
-import type { CombatState, CharacterRecord, CharacterId } from '../src/types/system-data';
+import type { CombatState, CharacterRecord, CharacterId } from '../src/types';
 
-// Get all actors, sorted by init.val then name
+// Get all actors, sorted by init.value then name
 export function selectActors(state: CombatState): CharacterRecord[] {
   return [...state.actors].sort((a, b) => {
-    if (a.init.val !== b.init.val) return a.init.val - b.init.val;
+    if (a.init.value !== b.init.value) return a.init.value - b.init.value;
     return a.name.localeCompare(b.name);
   });
 }
@@ -18,7 +18,7 @@ export function withActors(state: CombatState, actors: CharacterRecord[]): Comba
   return {
     ...state,
     actors: [...actors].sort((a, b) => {
-      if (a.init.val !== b.init.val) return a.init.val - b.init.val;
+      if (a.init.value !== b.init.value) return a.init.value - b.init.value;
       return a.name.localeCompare(b.name);
     })
   };

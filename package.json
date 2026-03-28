@@ -2,8 +2,11 @@
   "name": "reflex-init-track",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "build": "tsc --outDir output",
+    "build": "tsc --outDir build",
     "package:foundry": "node ./scripts/copy-foundry-assets.js"
   },
   "dependencies": {
@@ -12,6 +15,7 @@
     "zod": "^3.0.0"
   },
   "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^13.346.0-beta.20250812191140",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^25.5.0",

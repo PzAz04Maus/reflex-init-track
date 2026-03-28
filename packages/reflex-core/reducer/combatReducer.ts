@@ -1,3 +1,7 @@
+
+import type { CombatState, CharacterRecord, CharacterId } from '../src/types';
+import { selectActors, selectActorById, withActors } from '../selectors/combatSelectors';
+
 // Create an empty initial state
 export function createInitialState(): CombatState {
   return {
@@ -6,8 +10,6 @@ export function createInitialState(): CombatState {
     round: 1
   };
 }
-import type { CombatState, CharacterRecord, CharacterId } from '../src/types/system-data';
-import { selectActors, selectActorById, withActors } from '../selectors/combatSelectors';
 
 // Reducer for combat state, compatible with useReducer
 export function combatReducer(state: CombatState, action: any): CombatState {

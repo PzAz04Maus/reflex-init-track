@@ -1,4 +1,4 @@
-import { rollOoda } from "../dice/rolls";
+
 
 export class ReflexActorSheet extends ActorSheet {
   static override get defaultOptions(): ActorSheet.Options {
@@ -13,7 +13,7 @@ export class ReflexActorSheet extends ActorSheet {
     return `systems/reflex-system/templates/actor/actor-sheet.hbs`;
   }
 
-  override async getData(options?: Partial<DocumentSheet.GetDataOptions>) {
+  override async getData(options?: any) {
     const context = await super.getData(options);
     return {
       ...context,
@@ -24,8 +24,8 @@ export class ReflexActorSheet extends ActorSheet {
 
   override activateListeners(html: JQuery): void {
     super.activateListeners(html);
-    html.find("[data-action='roll-ooda']").on("click", async () => {
-      await rollOoda(this.actor);
-    });
+    // html.find("[data-action='roll-ooda']").on("click", async () => {
+    //   await rollOoda(this.actor);
+    // });
   }
 }

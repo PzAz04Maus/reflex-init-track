@@ -6,9 +6,12 @@
     "strict": true,
     "lib": ["ES2022", "DOM"],
     "types": ["fvtt-types"],
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "output",
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "packages/*/src/**/*.ts"
+  ]
 }

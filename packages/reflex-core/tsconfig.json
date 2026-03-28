@@ -8,7 +8,7 @@
     "strict": true,
     "noEmitOnError": true,
     "skipLibCheck": true,
-    "types": ["foundry-vtt-types"]
+    "types": ["fvtt-types"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["module"]

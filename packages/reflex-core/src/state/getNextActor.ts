@@ -1,4 +1,4 @@
-import type { CombatState, CharacterRecord } from '../src/types';
+import type { CombatState, CharacterRecord } from '../types';
 import { selectActors } from '../selectors/combatSelectors';
 
 // Returns all joined actors with the lowest initiative value

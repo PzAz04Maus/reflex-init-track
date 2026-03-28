@@ -11,7 +11,7 @@ export class ReflexItemSheet extends ItemSheet {
     return `systems/reflex-system/templates/item/item-sheet.hbs`;
   }
 
-  override async getData(options?: Partial<DocumentSheet.GetDataOptions>) {
+  override async getData(options?: any) {
     const context = await super.getData(options);
     return {
       ...context,
