@@ -22,4 +22,5 @@ __exportStar(require("./equipmentLayouts"), exports);
 __exportStar(require("./inventory"), exports);
 __exportStar(require("./nutrition"), exports);
 __exportStar(require("./signalCatalog"), exports);
+__exportStar(require("./vehicle-catalog"), exports);
 __exportStar(require("./types"), exports);

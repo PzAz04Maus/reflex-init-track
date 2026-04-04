@@ -19,5 +19,6 @@ __exportStar(require("./types/weapons"), exports);
 __exportStar(require("./types/armor"), exports);
 __exportStar(require("./types/items"), exports);
 __exportStar(require("./types/equipment"), exports);
+__exportStar(require("./types/vehicles"), exports);
 __exportStar(require("./types/containers"), exports);
 __exportStar(require("./types/inventory-state"), exports);

@@ -6,4 +6,5 @@ export * from "./equipmentLayouts";
 export * from "./inventory";
 export * from "./nutrition";
 export * from "./signalCatalog";
+export * from "./vehicle-catalog";
 export * from "./types";
