@@ -8,10 +8,12 @@ const node_test_1 = __importDefault(require("node:test"));
 const closeCombatCatalog_1 = require("../src/closeCombatCatalog");
 const ammunition_1 = require("../src/ammunition");
 const inventory_1 = require("../src/inventory");
+const nutrition_1 = require("../src/nutrition");
 const containerCatalog_1 = require("../src/containerCatalog");
 const weaponAttachmentsCatalog_1 = require("../src/weaponAttachmentsCatalog");
 const electronicsCatalog_1 = require("../src/electronicsCatalog");
 const signalCatalog_1 = require("../src/signalCatalog");
+const consumablesCatalog_1 = require("../src/consumablesCatalog");
 (0, node_test_1.default)("item definition instantiate clones nested item metadata", () => {
     const definition = (0, inventory_1.createItemDefinition)({
         id: "item:test-lamp",
@@ -306,4 +308,20 @@ const signalCatalog_1 = require("../src/signalCatalog");
     strict_1.default.equal(signalWhistle?.tags?.includes("non-electronic"), true);
     strict_1.default.equal(signalWhistle?.notes?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
     strict_1.default.equal(electronicLeak, undefined);
+});
+(0, node_test_1.default)("nutrition helpers parse calorie and unit traits from consumables", () => {
+    const militaryRation = consumablesCatalog_1.FOOD_ITEMS.find((item) => item.id === "consumable:food-military-ration");
+    const energyBar = consumablesCatalog_1.SUPPLEMENT_ITEMS.find((item) => item.id === "consumable:supplement-energy-bar");
+    const coffee = consumablesCatalog_1.SUPPLEMENT_ITEMS.find((item) => item.id === "consumable:supplement-coffee");
+    strict_1.default.ok(militaryRation);
+    strict_1.default.ok(energyBar);
+    strict_1.default.ok(coffee);
+    strict_1.default.equal((0, nutrition_1.getNutritionCalories)(militaryRation), 1250);
+    strict_1.default.equal((0, nutrition_1.getNutritionUnit)(militaryRation), "meal");
+    strict_1.default.deepEqual((0, nutrition_1.getNutrition)(militaryRation), { calories: 1250, unit: "meal" });
+    strict_1.default.equal((0, nutrition_1.getNutritionCaloriesForQuantity)(militaryRation, 2), 2500);
+    strict_1.default.equal((0, nutrition_1.getNutritionCalories)(energyBar), 300);
+    strict_1.default.equal((0, nutrition_1.getNutritionUnit)(energyBar), "item");
+    strict_1.default.equal((0, nutrition_1.getNutritionCalories)(coffee), undefined);
+    strict_1.default.equal((0, nutrition_1.getNutrition)(coffee), undefined);
 });

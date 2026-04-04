@@ -13,8 +13,13 @@ export { AMMUNITION_HANDLING_ITEMS } from "./weapon-attachments-catalog/ammuniti
 export { FIRE_CONTROL_MODIFICATIONS, MISCELLANEOUS_ACCESSORIES, RAIL_ACCESSORIES, SHOTGUN_MODIFICATIONS, } from "./weapon-attachments-catalog/accessories";
 export { OPTICS } from "./weapon-attachments-catalog/optics";
 export { HAND_TOOLS, ARMAMENT_TOOLS, SPECIALIST_TOOLS } from "./tools-catalog";
-export { PURIFICATION_ITEMS, FOOD_ACQUISITION_ITEMS, FIRE_AND_COOKING_ITEMS, SANITATION_ITEMS, NAVIGATION_ITEMS, TERRAIN_MOBILITY_ITEMS, CAMOUFLAGE_AND_LINES_ITEMS, } from "./survival-catalog";
-export declare const ELECTRONICS_CATALOG: ItemDefinition[];
+export { PURIFICATION_ITEMS, FOOD_ACQUISITION_ITEMS, FIRE_AND_COOKING_ITEMS, SANITATION_ITEMS, NAVIGATION_ITEMS, SHELTER_ITEMS, TERRAIN_MOBILITY_ITEMS, CAMOUFLAGE_AND_LINES_ITEMS, } from "./survival-catalog";
+export * from "./mediaCatalog";
+export * from "./personalCatalog";
+export * from "./storageCatalog";
+export * from "./consumablesCatalog";
+export * from "./medicalCatalog";
+export { ELECTRONICS_CATALOG } from "./electronicsCatalog";
 export declare const WEAPON_ATTACHMENTS: ItemDefinition[];
 export declare const TOOLS_CATALOG: ItemDefinition[];
 export declare const SURVIVAL_CATALOG: ItemDefinition[];

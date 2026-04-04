@@ -83,6 +83,7 @@ export const SIGNAL_CATALOG: ItemDefinition[] = [
     id: "signal:bugle",
     name: "Bugle",
     weight: 1,
+    //TODO: we don't need to specify non-electronic
     tags: ["signal", "non-electronic", "audible", "communication"],
     barterValue: "GG24",
     streetPrice: 120,

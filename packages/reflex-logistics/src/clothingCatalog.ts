@@ -155,6 +155,7 @@ export const MILITARY_CLOTHING: ItemDefinition[] = [
     barterValue: "GG9",
     streetPrice: 180,
     voucherCost: { "worn:torso": 1 },
+    //TODO: vouchers not correct; this is an ensemble. other entries have same problem
     description: "Military fatigue ensemble with additional cold-weather layers.",
   }),
   createItemDefinition({

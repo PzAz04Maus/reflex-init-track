@@ -14,17 +14,21 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GEAR_CATALOG = exports.SURVIVAL_CATALOG = exports.TOOLS_CATALOG = exports.WEAPON_ATTACHMENTS = exports.ELECTRONICS_CATALOG = exports.CAMOUFLAGE_AND_LINES_ITEMS = exports.TERRAIN_MOBILITY_ITEMS = exports.NAVIGATION_ITEMS = exports.SANITATION_ITEMS = exports.FIRE_AND_COOKING_ITEMS = exports.FOOD_ACQUISITION_ITEMS = exports.PURIFICATION_ITEMS = exports.SPECIALIST_TOOLS = exports.ARMAMENT_TOOLS = exports.HAND_TOOLS = exports.OPTICS = exports.SHOTGUN_MODIFICATIONS = exports.RAIL_ACCESSORIES = exports.MISCELLANEOUS_ACCESSORIES = exports.FIRE_CONTROL_MODIFICATIONS = exports.AMMUNITION_HANDLING_ITEMS = exports.STILLS = exports.GENERATORS = exports.POWERED_TOOLS = exports.THERMAL_IMAGING_ITEMS = exports.NIGHT_VISION_ITEMS = exports.MAGNIFICATION_ITEMS = exports.ILLUMINATION_ITEMS = void 0;
+exports.GEAR_CATALOG = exports.SURVIVAL_CATALOG = exports.TOOLS_CATALOG = exports.WEAPON_ATTACHMENTS = exports.ELECTRONICS_CATALOG = exports.CAMOUFLAGE_AND_LINES_ITEMS = exports.TERRAIN_MOBILITY_ITEMS = exports.SHELTER_ITEMS = exports.NAVIGATION_ITEMS = exports.SANITATION_ITEMS = exports.FIRE_AND_COOKING_ITEMS = exports.FOOD_ACQUISITION_ITEMS = exports.PURIFICATION_ITEMS = exports.SPECIALIST_TOOLS = exports.ARMAMENT_TOOLS = exports.HAND_TOOLS = exports.OPTICS = exports.SHOTGUN_MODIFICATIONS = exports.RAIL_ACCESSORIES = exports.MISCELLANEOUS_ACCESSORIES = exports.FIRE_CONTROL_MODIFICATIONS = exports.AMMUNITION_HANDLING_ITEMS = exports.STILLS = exports.GENERATORS = exports.POWERED_TOOLS = exports.THERMAL_IMAGING_ITEMS = exports.NIGHT_VISION_ITEMS = exports.MAGNIFICATION_ITEMS = exports.ILLUMINATION_ITEMS = void 0;
 const ammunition_1 = require("./ammunition");
 const armorCatalog_1 = require("./armorCatalog");
 const clothingCatalog_1 = require("./clothingCatalog");
 const closeCombatCatalog_1 = require("./closeCombatCatalog");
-const illumination_1 = require("./electronics-catalog/illumination");
-const vision_1 = require("./electronics-catalog/vision");
 const poweredTools_1 = require("./electronics-catalog/poweredTools");
 const genericCatalog_1 = require("./genericCatalog");
 const rangedCatalog_1 = require("./rangedCatalog");
 const signalCatalog_1 = require("./signalCatalog");
+const mediaCatalog_1 = require("./mediaCatalog");
+const personalCatalog_1 = require("./personalCatalog");
+const storageCatalog_1 = require("./storageCatalog");
+const consumablesCatalog_1 = require("./consumablesCatalog");
+const medicalCatalog_1 = require("./medicalCatalog");
+const electronicsCatalog_1 = require("./electronicsCatalog");
 const ammunitionHandling_1 = require("./weapon-attachments-catalog/ammunitionHandling");
 const accessories_1 = require("./weapon-attachments-catalog/accessories");
 const optics_1 = require("./weapon-attachments-catalog/optics");
@@ -34,12 +38,12 @@ __exportStar(require("./ammunition"), exports);
 __exportStar(require("./armorCatalog"), exports);
 __exportStar(require("./clothingCatalog"), exports);
 __exportStar(require("./closeCombatCatalog"), exports);
-var illumination_2 = require("./electronics-catalog/illumination");
-Object.defineProperty(exports, "ILLUMINATION_ITEMS", { enumerable: true, get: function () { return illumination_2.ILLUMINATION_ITEMS; } });
-var vision_2 = require("./electronics-catalog/vision");
-Object.defineProperty(exports, "MAGNIFICATION_ITEMS", { enumerable: true, get: function () { return vision_2.MAGNIFICATION_ITEMS; } });
-Object.defineProperty(exports, "NIGHT_VISION_ITEMS", { enumerable: true, get: function () { return vision_2.NIGHT_VISION_ITEMS; } });
-Object.defineProperty(exports, "THERMAL_IMAGING_ITEMS", { enumerable: true, get: function () { return vision_2.THERMAL_IMAGING_ITEMS; } });
+var illumination_1 = require("./electronics-catalog/illumination");
+Object.defineProperty(exports, "ILLUMINATION_ITEMS", { enumerable: true, get: function () { return illumination_1.ILLUMINATION_ITEMS; } });
+var vision_1 = require("./electronics-catalog/vision");
+Object.defineProperty(exports, "MAGNIFICATION_ITEMS", { enumerable: true, get: function () { return vision_1.MAGNIFICATION_ITEMS; } });
+Object.defineProperty(exports, "NIGHT_VISION_ITEMS", { enumerable: true, get: function () { return vision_1.NIGHT_VISION_ITEMS; } });
+Object.defineProperty(exports, "THERMAL_IMAGING_ITEMS", { enumerable: true, get: function () { return vision_1.THERMAL_IMAGING_ITEMS; } });
 var poweredTools_2 = require("./electronics-catalog/poweredTools");
 Object.defineProperty(exports, "POWERED_TOOLS", { enumerable: true, get: function () { return poweredTools_2.POWERED_TOOLS; } });
 Object.defineProperty(exports, "GENERATORS", { enumerable: true, get: function () { return poweredTools_2.GENERATORS; } });
@@ -66,15 +70,16 @@ Object.defineProperty(exports, "FOOD_ACQUISITION_ITEMS", { enumerable: true, get
 Object.defineProperty(exports, "FIRE_AND_COOKING_ITEMS", { enumerable: true, get: function () { return survival_catalog_2.FIRE_AND_COOKING_ITEMS; } });
 Object.defineProperty(exports, "SANITATION_ITEMS", { enumerable: true, get: function () { return survival_catalog_2.SANITATION_ITEMS; } });
 Object.defineProperty(exports, "NAVIGATION_ITEMS", { enumerable: true, get: function () { return survival_catalog_2.NAVIGATION_ITEMS; } });
+Object.defineProperty(exports, "SHELTER_ITEMS", { enumerable: true, get: function () { return survival_catalog_2.SHELTER_ITEMS; } });
 Object.defineProperty(exports, "TERRAIN_MOBILITY_ITEMS", { enumerable: true, get: function () { return survival_catalog_2.TERRAIN_MOBILITY_ITEMS; } });
 Object.defineProperty(exports, "CAMOUFLAGE_AND_LINES_ITEMS", { enumerable: true, get: function () { return survival_catalog_2.CAMOUFLAGE_AND_LINES_ITEMS; } });
-exports.ELECTRONICS_CATALOG = [
-    ...illumination_1.ILLUMINATION_ITEMS,
-    ...vision_1.MAGNIFICATION_ITEMS,
-    ...vision_1.NIGHT_VISION_ITEMS,
-    ...vision_1.THERMAL_IMAGING_ITEMS,
-    ...poweredTools_1.POWERED_TOOLS,
-];
+__exportStar(require("./mediaCatalog"), exports);
+__exportStar(require("./personalCatalog"), exports);
+__exportStar(require("./storageCatalog"), exports);
+__exportStar(require("./consumablesCatalog"), exports);
+__exportStar(require("./medicalCatalog"), exports);
+var electronicsCatalog_2 = require("./electronicsCatalog");
+Object.defineProperty(exports, "ELECTRONICS_CATALOG", { enumerable: true, get: function () { return electronicsCatalog_2.ELECTRONICS_CATALOG; } });
 exports.WEAPON_ATTACHMENTS = [
     ...ammunitionHandling_1.AMMUNITION_HANDLING_ITEMS,
     ...optics_1.OPTICS,
@@ -97,6 +102,7 @@ exports.SURVIVAL_CATALOG = [
     ...survival_catalog_1.FIRE_AND_COOKING_ITEMS,
     ...survival_catalog_1.SANITATION_ITEMS,
     ...survival_catalog_1.NAVIGATION_ITEMS,
+    ...survival_catalog_1.SHELTER_ITEMS,
     ...survival_catalog_1.TERRAIN_MOBILITY_ITEMS,
     ...survival_catalog_1.CAMOUFLAGE_AND_LINES_ITEMS,
 ];
@@ -105,11 +111,16 @@ exports.GEAR_CATALOG = [
     ...clothingCatalog_1.CLOTHING_CATALOG,
     ...ammunition_1.SMALL_ARMS_AMMUNITION_ITEMS,
     ...closeCombatCatalog_1.CLOSE_COMBAT_WEAPONS,
-    ...exports.ELECTRONICS_CATALOG,
+    ...electronicsCatalog_1.ELECTRONICS_CATALOG,
     ...signalCatalog_1.SIGNAL_CATALOG,
     ...rangedCatalog_1.RANGED_CATALOG,
     ...exports.WEAPON_ATTACHMENTS,
     ...armorCatalog_1.ARMOR_CATALOG,
     ...exports.TOOLS_CATALOG,
     ...exports.SURVIVAL_CATALOG,
+    ...mediaCatalog_1.MEDIA_CATALOG,
+    ...personalCatalog_1.PERSONAL_CATALOG,
+    ...storageCatalog_1.STORAGE_CATALOG,
+    ...consumablesCatalog_1.CONSUMABLES_CATALOG,
+    ...medicalCatalog_1.MEDICAL_CATALOG,
 ];

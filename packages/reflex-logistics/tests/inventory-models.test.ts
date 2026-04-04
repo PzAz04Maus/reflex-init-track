@@ -25,6 +25,12 @@ import {
   SUBMACHINE_GUNS,
 } from "../src/inventory";
 import {
+  getNutrition,
+  getNutritionCalories,
+  getNutritionCaloriesForQuantity,
+  getNutritionUnit,
+} from "../src/nutrition";
+import {
   FIXED_LOAD_BEARING_CONTAINERS,
   FIXED_LBE_COMPONENT_CONTAINERS,
   MODULAR_LOAD_BEARING_CONTAINERS,
@@ -38,6 +44,7 @@ import {
 } from "../src/weaponAttachmentsCatalog";
 import { ELECTRONICS_CATALOG } from "../src/electronicsCatalog";
 import { SIGNAL_CATALOG } from "../src/signalCatalog";
+import { FOOD_ITEMS, SUPPLEMENT_ITEMS } from "../src/consumablesCatalog";
 
 test("item definition instantiate clones nested item metadata", () => {
   const definition = createItemDefinition({
@@ -404,4 +411,25 @@ test("non-electronic signal items are isolated in signal catalog", () => {
   assert.equal(signalWhistle?.tags?.includes("non-electronic"), true);
   assert.equal(signalWhistle?.notes?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
   assert.equal(electronicLeak, undefined);
+});
+
+test("nutrition helpers parse calorie and unit traits from consumables", () => {
+  const militaryRation = FOOD_ITEMS.find((item) => item.id === "consumable:food-military-ration");
+  const energyBar = SUPPLEMENT_ITEMS.find((item) => item.id === "consumable:supplement-energy-bar");
+  const coffee = SUPPLEMENT_ITEMS.find((item) => item.id === "consumable:supplement-coffee");
+
+  assert.ok(militaryRation);
+  assert.ok(energyBar);
+  assert.ok(coffee);
+
+  assert.equal(getNutritionCalories(militaryRation), 1250);
+  assert.equal(getNutritionUnit(militaryRation), "meal");
+  assert.deepEqual(getNutrition(militaryRation), { calories: 1250, unit: "meal" });
+  assert.equal(getNutritionCaloriesForQuantity(militaryRation, 2), 2500);
+
+  assert.equal(getNutritionCalories(energyBar), 300);
+  assert.equal(getNutritionUnit(energyBar), "item");
+
+  assert.equal(getNutritionCalories(coffee), undefined);
+  assert.equal(getNutrition(coffee), undefined);
 });

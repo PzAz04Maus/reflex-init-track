@@ -13,6 +13,12 @@ import { GENERIC_CATALOG } from "./genericCatalog";
 import { RANGED_CATALOG } from "./rangedCatalog";
 import { SIGNAL_CATALOG } from "./signalCatalog";
 import type { ItemDefinition } from "./types";
+import { MEDIA_CATALOG } from "./mediaCatalog";
+import { PERSONAL_CATALOG } from "./personalCatalog";
+import { STORAGE_CATALOG } from "./storageCatalog";
+import { CONSUMABLES_CATALOG } from "./consumablesCatalog";
+import { MEDICAL_CATALOG } from "./medicalCatalog";
+import { ELECTRONICS_CATALOG } from "./electronicsCatalog";
 import { AMMUNITION_HANDLING_ITEMS } from "./weapon-attachments-catalog/ammunitionHandling";
 import {
   FIRE_CONTROL_MODIFICATIONS,
@@ -28,6 +34,7 @@ import {
   FIRE_AND_COOKING_ITEMS,
   SANITATION_ITEMS,
   NAVIGATION_ITEMS,
+  SHELTER_ITEMS,
   TERRAIN_MOBILITY_ITEMS,
   CAMOUFLAGE_AND_LINES_ITEMS,
 } from "./survival-catalog";
@@ -61,17 +68,17 @@ export {
   FIRE_AND_COOKING_ITEMS,
   SANITATION_ITEMS,
   NAVIGATION_ITEMS,
+  SHELTER_ITEMS,
   TERRAIN_MOBILITY_ITEMS,
   CAMOUFLAGE_AND_LINES_ITEMS,
 } from "./survival-catalog";
 
-export const ELECTRONICS_CATALOG: ItemDefinition[] = [
-  ...ILLUMINATION_ITEMS,
-  ...MAGNIFICATION_ITEMS,
-  ...NIGHT_VISION_ITEMS,
-  ...THERMAL_IMAGING_ITEMS,
-  ...POWERED_TOOLS,
-];
+export * from "./mediaCatalog";
+export * from "./personalCatalog";
+export * from "./storageCatalog";
+export * from "./consumablesCatalog";
+export * from "./medicalCatalog";
+export { ELECTRONICS_CATALOG } from "./electronicsCatalog";
 
 export const WEAPON_ATTACHMENTS: ItemDefinition[] = [
   ...AMMUNITION_HANDLING_ITEMS,
@@ -97,6 +104,7 @@ export const SURVIVAL_CATALOG: ItemDefinition[] = [
   ...FIRE_AND_COOKING_ITEMS,
   ...SANITATION_ITEMS,
   ...NAVIGATION_ITEMS,
+  ...SHELTER_ITEMS,
   ...TERRAIN_MOBILITY_ITEMS,
   ...CAMOUFLAGE_AND_LINES_ITEMS,
 ];
@@ -113,4 +121,9 @@ export const GEAR_CATALOG: ItemDefinition[] = [
   ...ARMOR_CATALOG,
   ...TOOLS_CATALOG,
   ...SURVIVAL_CATALOG,
+  ...MEDIA_CATALOG,
+  ...PERSONAL_CATALOG,
+  ...STORAGE_CATALOG,
+  ...CONSUMABLES_CATALOG,
+  ...MEDICAL_CATALOG,
 ];

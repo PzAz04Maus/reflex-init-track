@@ -15,3 +15,4 @@ export {
 	CAMOUFLAGE_ITEMS,
 	LINE_ITEMS,
 } from "./camouflageAndLines";
+export { SHELTER_ITEMS } from "./shelter";

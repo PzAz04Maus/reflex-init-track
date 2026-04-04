@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LINE_ITEMS = exports.CAMOUFLAGE_ITEMS = exports.CAMOUFLAGE_AND_LINES_ITEMS = exports.SNOW_AND_ICE_GEAR = exports.FREEFALL_GEAR = exports.CLIMBING_GEAR = exports.AQUATIC_GEAR = exports.TERRAIN_MOBILITY_ITEMS = exports.NAVIGATION_ITEMS = exports.SANITATION_ITEMS = exports.FIRE_AND_COOKING_ITEMS = exports.FOOD_ACQUISITION_ITEMS = exports.PURIFICATION_ITEMS = void 0;
+exports.SHELTER_ITEMS = exports.LINE_ITEMS = exports.CAMOUFLAGE_ITEMS = exports.CAMOUFLAGE_AND_LINES_ITEMS = exports.SNOW_AND_ICE_GEAR = exports.FREEFALL_GEAR = exports.CLIMBING_GEAR = exports.AQUATIC_GEAR = exports.TERRAIN_MOBILITY_ITEMS = exports.NAVIGATION_ITEMS = exports.SANITATION_ITEMS = exports.FIRE_AND_COOKING_ITEMS = exports.FOOD_ACQUISITION_ITEMS = exports.PURIFICATION_ITEMS = void 0;
 var purification_1 = require("./purification");
 Object.defineProperty(exports, "PURIFICATION_ITEMS", { enumerable: true, get: function () { return purification_1.PURIFICATION_ITEMS; } });
 var foodAcquisition_1 = require("./foodAcquisition");
@@ -21,3 +21,5 @@ var camouflageAndLines_1 = require("./camouflageAndLines");
 Object.defineProperty(exports, "CAMOUFLAGE_AND_LINES_ITEMS", { enumerable: true, get: function () { return camouflageAndLines_1.CAMOUFLAGE_AND_LINES_ITEMS; } });
 Object.defineProperty(exports, "CAMOUFLAGE_ITEMS", { enumerable: true, get: function () { return camouflageAndLines_1.CAMOUFLAGE_ITEMS; } });
 Object.defineProperty(exports, "LINE_ITEMS", { enumerable: true, get: function () { return camouflageAndLines_1.LINE_ITEMS; } });
+var shelter_1 = require("./shelter");
+Object.defineProperty(exports, "SHELTER_ITEMS", { enumerable: true, get: function () { return shelter_1.SHELTER_ITEMS; } });

@@ -20,5 +20,6 @@ __exportStar(require("./containerCatalog"), exports);
 __exportStar(require("./gearCatalog"), exports);
 __exportStar(require("./equipmentLayouts"), exports);
 __exportStar(require("./inventory"), exports);
+__exportStar(require("./nutrition"), exports);
 __exportStar(require("./signalCatalog"), exports);
 __exportStar(require("./types"), exports);
