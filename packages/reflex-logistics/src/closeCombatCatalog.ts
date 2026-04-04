@@ -21,8 +21,8 @@ type CloseCombatRow = {
   streetPrice?: number;
   voucherCost?: Record<string, number>;
   tags?: string[];
+  traits?: string[];
   description?: string;
-  notes?: string[];
 };
 
 export const CLOSE_COMBAT_WEAPON_RULES = {
@@ -44,21 +44,17 @@ export const CLOSE_COMBAT_WEAPON_RULES = {
   },
 } as const;
 
-function createCombatProfileNote(row: CloseCombatRow): string {
-  return `Combat profile: Damage ${row.damage}, Penetration ${row.penetration}, Speed ${row.speed}, Bulk ${row.bulk}.`;
-}
-
 function createCloseCombatWeapon(row: CloseCombatRow): ItemDefinition {
   return createItemDefinition({
     id: row.id,
     name: row.name,
     weight: row.weight,
     tags: ["weapon", "close-combat-weapon", row.category, ...(row.tags ?? [])],
+    traits: row.traits,
     barterValue: row.barterValue,
     streetPrice: row.streetPrice,
     voucherCost: row.voucherCost,
     description: row.description,
-    source: [createCombatProfileNote(row), ...(row.notes ?? [])],
   });
 }
 
@@ -76,8 +72,8 @@ export const BLUNT_IMPLEMENTS: ItemDefinition[] = [
     streetPrice: 25,
     voucherCost: { "worn:hands": 1 },
     tags: ["one-handed"],
+    traits: ["melee:replaces-bare-hand-traits"],
     description: "Weighted striking implement worn over the hand.",
-    notes: ["Use the knuckles' traits rather than bare-hand traits when making hand-to-hand attacks."],
   }),
   createCloseCombatWeapon({
     id: "weapon:close-combat:sap-blackjack",
@@ -120,7 +116,8 @@ export const BLUNT_IMPLEMENTS: ItemDefinition[] = [
     streetPrice: 50,
     voucherCost: { "held:hands": 1 },
     tags: ["one-handed", "collapsible"],
-    notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.batonTelescoping],
+    traits: ["melee:collapsed-as-sap", "melee:ready-action-extend"],
+    description: "Collapsible baton that performs like a sap while collapsed.",
   }),
   createCloseCombatWeapon({
     id: "weapon:close-combat:hammer",
@@ -194,7 +191,7 @@ export const SHARP_THINGS: ItemDefinition[] = [
     streetPrice: 60,
     voucherCost: { "held:hands": 1 },
     tags: ["one-handed", "knife", "tool"],
-    notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.knifeWorking],
+    description: "General working knife covering common 12-24 cm blades, including kitchen, survival, and fighting knives.",
   }),
   createCloseCombatWeapon({
     id: "weapon:close-combat:machete",
@@ -279,8 +276,8 @@ export const SHARP_THINGS: ItemDefinition[] = [
     weight: 0.5,
     voucherCost: { "held:hands": 1 },
     tags: ["one-handed", "knife", "bayonet"],
+    traits: ["melee:bayonet-attachable-rifle"],
     description: "Bayonet profile when mounted on a Bulk 3 rifle or used as a crude spear.",
-    notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.bayonet],
   }),
   createCloseCombatWeapon({
     id: "weapon:close-combat:bayonet-bulk-4-rifle",
@@ -293,8 +290,8 @@ export const SHARP_THINGS: ItemDefinition[] = [
     weight: 0.5,
     voucherCost: { "held:hands": 1 },
     tags: ["one-handed", "knife", "bayonet"],
+    traits: ["melee:bayonet-attachable-rifle"],
     description: "Bayonet profile when mounted on a Bulk 4 rifle or longer arm.",
-    notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.bayonet],
   }),
   createCloseCombatWeapon({
     id: "weapon:close-combat:short-spear",
@@ -326,7 +323,13 @@ export const PEPPER_SPRAY_CANISTERS: ItemDefinition[] = [
     streetPrice: 15,
     voucherCost: { "held:hands": 1 },
     tags: ["one-handed", "chemical-irritant"],
-    notes: [...CLOSE_COMBAT_WEAPON_RULES.specialCases.pepperSpray, "Holds 10 doses."],
+    traits: [
+      "chemical:pepper-spray-dose-on-hit",
+      "chemical:pepper-spray-head-hit-resolve-penalty",
+      "chemical:pepper-spray-gunfighting-range-penalty",
+      "chemical:pepper-spray-capacity-10",
+    ],
+    description: "Compact pepper spray canister sized for keychain carry.",
   }),
   createCloseCombatWeapon({
     id: "weapon:close-combat:pepper-spray-police",
@@ -341,7 +344,13 @@ export const PEPPER_SPRAY_CANISTERS: ItemDefinition[] = [
     streetPrice: 25,
     voucherCost: { "held:hands": 1 },
     tags: ["one-handed", "chemical-irritant"],
-    notes: [...CLOSE_COMBAT_WEAPON_RULES.specialCases.pepperSpray, "Holds 10 doses."],
+    traits: [
+      "chemical:pepper-spray-dose-on-hit",
+      "chemical:pepper-spray-head-hit-resolve-penalty",
+      "chemical:pepper-spray-gunfighting-range-penalty",
+      "chemical:pepper-spray-capacity-10",
+    ],
+    description: "Standard police-style pepper spray canister.",
   }),
   createCloseCombatWeapon({
     id: "weapon:close-combat:pepper-spray-institutional",
@@ -356,19 +365,25 @@ export const PEPPER_SPRAY_CANISTERS: ItemDefinition[] = [
     streetPrice: 50,
     voucherCost: { "held:hands": 1 },
     tags: ["one-handed", "chemical-irritant"],
-    notes: [...CLOSE_COMBAT_WEAPON_RULES.specialCases.pepperSpray, "Holds 30 doses."],
+    traits: [
+      "chemical:pepper-spray-dose-on-hit",
+      "chemical:pepper-spray-head-hit-resolve-penalty",
+      "chemical:pepper-spray-gunfighting-range-penalty",
+      "chemical:pepper-spray-capacity-30",
+    ],
+    description: "Large institutional pepper spray canister.",
   }),
 ];
 
 export const IMPROVISED_WEAPONS: ItemDefinition[] = [
-  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:blunt-tiny", name: "Blunt, Tiny", category: "improvised-weapon", damage: 2, penetration: "x4", speed: "2/3/5", bulk: 1, weight: 0.5, voucherCost: { "held:hands": 1 }, tags: ["one-handed", "improvised"], notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.improvisedWeapons] }),
-  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:blunt-small", name: "Blunt, Small", category: "improvised-weapon", damage: 3, penetration: "x4", speed: "3/5/7", bulk: 2, weight: 1.5, voucherCost: { "held:hands": 1 }, tags: ["one-handed", "improvised"], notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.improvisedWeapons] }),
-  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:blunt-medium", name: "Blunt, Medium", category: "improvised-weapon", damage: 5, penetration: "x4", speed: "4/6/9", bulk: 3, weight: 3, voucherCost: { "held:hands": 2 }, tags: ["two-handed", "improvised"], notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.improvisedWeapons] }),
-  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:blunt-large", name: "Blunt, Large", category: "improvised-weapon", damage: 7, penetration: "x4", speed: "5/8/11", bulk: 4, weight: 5, voucherCost: { "held:hands": 2 }, tags: ["two-handed", "improvised"], notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.improvisedWeapons] }),
-  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:sharp-tiny", name: "Sharp, Tiny", category: "improvised-weapon", damage: 2, penetration: "x2", speed: "2/3/5", bulk: 1, weight: 0.2, voucherCost: { "held:hands": 1 }, tags: ["one-handed", "improvised"], notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.improvisedWeapons] }),
-  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:sharp-small", name: "Sharp, Small", category: "improvised-weapon", damage: 3, penetration: "x2", speed: "3/5/7", bulk: 2, weight: 0.5, voucherCost: { "held:hands": 1 }, tags: ["one-handed", "improvised"], notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.improvisedWeapons] }),
-  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:sharp-medium", name: "Sharp, Medium", category: "improvised-weapon", damage: 4, penetration: "x3", speed: "4/6/9", bulk: 3, weight: 2, voucherCost: { "held:hands": 2 }, tags: ["two-handed", "improvised"], notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.improvisedWeapons] }),
-  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:sharp-large", name: "Sharp, Large", category: "improvised-weapon", damage: 5, penetration: "x3", speed: "5/8/11", bulk: 4, weight: 3, voucherCost: { "held:hands": 2 }, tags: ["two-handed", "improvised"], notes: [CLOSE_COMBAT_WEAPON_RULES.specialCases.improvisedWeapons] }),
+  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:blunt-tiny", name: "Blunt, Tiny", category: "improvised-weapon", damage: 2, penetration: "x4", speed: "2/3/5", bulk: 1, weight: 0.5, voucherCost: { "held:hands": 1 }, tags: ["one-handed", "improvised"], traits: ["improvised:free-by-default"] }),
+  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:blunt-small", name: "Blunt, Small", category: "improvised-weapon", damage: 3, penetration: "x4", speed: "3/5/7", bulk: 2, weight: 1.5, voucherCost: { "held:hands": 1 }, tags: ["one-handed", "improvised"], traits: ["improvised:free-by-default"] }),
+  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:blunt-medium", name: "Blunt, Medium", category: "improvised-weapon", damage: 5, penetration: "x4", speed: "4/6/9", bulk: 3, weight: 3, voucherCost: { "held:hands": 2 }, tags: ["two-handed", "improvised"], traits: ["improvised:free-by-default"] }),
+  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:blunt-large", name: "Blunt, Large", category: "improvised-weapon", damage: 7, penetration: "x4", speed: "5/8/11", bulk: 4, weight: 5, voucherCost: { "held:hands": 2 }, tags: ["two-handed", "improvised"], traits: ["improvised:free-by-default"] }),
+  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:sharp-tiny", name: "Sharp, Tiny", category: "improvised-weapon", damage: 2, penetration: "x2", speed: "2/3/5", bulk: 1, weight: 0.2, voucherCost: { "held:hands": 1 }, tags: ["one-handed", "improvised"], traits: ["improvised:free-by-default"] }),
+  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:sharp-small", name: "Sharp, Small", category: "improvised-weapon", damage: 3, penetration: "x2", speed: "3/5/7", bulk: 2, weight: 0.5, voucherCost: { "held:hands": 1 }, tags: ["one-handed", "improvised"], traits: ["improvised:free-by-default"] }),
+  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:sharp-medium", name: "Sharp, Medium", category: "improvised-weapon", damage: 4, penetration: "x3", speed: "4/6/9", bulk: 3, weight: 2, voucherCost: { "held:hands": 2 }, tags: ["two-handed", "improvised"], traits: ["improvised:free-by-default"] }),
+  createCloseCombatWeapon({ id: "weapon:close-combat:improvised:sharp-large", name: "Sharp, Large", category: "improvised-weapon", damage: 5, penetration: "x3", speed: "5/8/11", bulk: 4, weight: 3, voucherCost: { "held:hands": 2 }, tags: ["two-handed", "improvised"], traits: ["improvised:free-by-default"] }),
 ];
 
 export const THROWN_WEAPONS: ItemDefinition[] = [
@@ -399,7 +414,7 @@ export const THROWN_WEAPONS: ItemDefinition[] = [
     streetPrice: 80,
     voucherCost: { "held:hands": 1 },
     tags: ["one-handed", "thrown", "knife"],
-    notes: ["Balanced throwing variant of the working knife entry."],
+    description: "Balanced throwing variant of the working knife entry.",
   }),
   createCloseCombatWeapon({
     id: "weapon:close-combat:thrown-short-spear",

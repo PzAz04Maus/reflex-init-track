@@ -78,21 +78,25 @@ function createMagazineWeightNotes(magazineWeightNotes) {
         ? [`Loaded magazine weights: ${magazineWeightNotes.join(", ")}.`]
         : [];
 }
+function joinDescriptionParts(parts) {
+    const filtered = parts.filter((part) => Boolean(part));
+    return filtered.length > 0 ? filtered.join(" ") : undefined;
+}
 function createBaseAmmunitionItem(row) {
     const familyId = `${row.category}:${slugify(row.caliber)}`;
     const isShotgun = row.category === "shotgun-shell";
     const availableTypeLabel = getAvailableTypeLabel(row.availableSpecialTypes);
-    const notes = [
+    const description = joinDescriptionParts([
+        isShotgun
+            ? `Per-100-shell lot of ${row.caliber} slug shotshells.`
+            : `Per-100-round lot of ${row.caliber} ball/FMJ ammunition.`,
         ...createMagazineWeightNotes(row.magazineWeightNotes ?? []),
         isShotgun
-            ? "Default shotgun values assume slug ammunition."
-            : "Default weapon values assume ball/FMJ ammunition.",
-        ...(isShotgun
-            ? ["Also available as buckshot at the same listed cost and weight."]
+            ? "Also available as buckshot at the same listed cost and weight."
             : availableTypeLabel
-                ? [`Available special loadings: ${availableTypeLabel}.`]
-                : []),
-    ];
+                ? `Available special loadings: ${availableTypeLabel}.`
+                : undefined,
+    ]);
     return (0, inventory_1.createItemDefinition)({
         id: `ammo:${familyId}:${isShotgun ? "slug" : "ball"}:100`,
         name: `${row.caliber} ${isShotgun ? "shotshells" : "ammunition"} (${isShotgun ? "Slug" : "Ball / FMJ"}, ${getLotLabel(row.category)})`,
@@ -104,30 +108,22 @@ function createBaseAmmunitionItem(row) {
         ],
         barterValue: row.barterValue,
         streetPrice: row.streetPrice,
-        description: isShotgun
-            ? `Per-100-shell lot of ${row.caliber} slug shotshells.`
-            : `Per-100-round lot of ${row.caliber} ball/FMJ ammunition.`,
-        source: notes,
+        traits: [isShotgun ? "ammo:default-shotgun-load" : "ammo:default-ball-load"],
+        description,
     });
 }
 function createSpecialAmmunitionItem(row, type) {
     const familyId = `${row.category}:${slugify(row.caliber)}`;
     const multiplier = SPECIAL_AMMO_MULTIPLIERS[type];
-    const notesByType = {
-        AP: [
-            "Damage is 1 lower than normal for this caliber.",
-            "Penetration is one step better than normal for this caliber.",
-        ],
-        HP: [
-            "Damage is 2 higher than normal for this caliber.",
-            "Penetration is one step worse than normal for this caliber.",
-        ],
-        T: [
-            "Damage and penetration match the default ball/FMJ load for this caliber.",
-            "Provides an additional +1 bonus to burst attacks when mixed or belted in tracer-heavy ratios.",
-            "May start fires at the GM's discretion.",
-        ],
+    const traitsByType = {
+        AP: ["ammo:ap-damage-minus-1", "ammo:ap-penetration-plus-1-step"],
+        HP: ["ammo:hp-damage-plus-2", "ammo:hp-penetration-minus-1-step"],
+        T: ["ammo:tracer-matches-ballistics", "ammo:tracer-burst-bonus-1", "ammo:tracer-fire-risk"],
     };
+    const description = joinDescriptionParts([
+        `Per-100-round lot of ${row.caliber} ${SPECIAL_AMMO_LABELS[type].toLowerCase()} ammunition.`,
+        ...createMagazineWeightNotes(row.magazineWeightNotes ?? []),
+    ]);
     return (0, inventory_1.createItemDefinition)({
         id: `ammo:${familyId}:${slugify(SPECIAL_AMMO_LABELS[type])}:100`,
         name: `${row.caliber} ammunition (${SPECIAL_AMMO_LABELS[type]}, ${getLotLabel(row.category)})`,
@@ -139,11 +135,8 @@ function createSpecialAmmunitionItem(row, type) {
         ],
         barterValue: formatBarterValue(parseBarterValue(row.barterValue) * multiplier),
         streetPrice: row.streetPrice * multiplier,
-        description: `Per-100-round lot of ${row.caliber} ${SPECIAL_AMMO_LABELS[type].toLowerCase()} ammunition.`,
-        source: [
-            ...createMagazineWeightNotes(row.magazineWeightNotes ?? []),
-            ...notesByType[type],
-        ],
+        traits: traitsByType[type],
+        description,
     });
 }
 function createBuckshotItem(row) {
@@ -159,11 +152,16 @@ function createBuckshotItem(row) {
         ],
         barterValue: row.barterValue,
         streetPrice: row.streetPrice,
-        description: `Per-100-shell lot of ${row.caliber} buckshot shotshells.`,
-        source: [
-            ...createMagazineWeightNotes(row.magazineWeightNotes ?? []),
-            ...exports.SMALL_ARMS_AMMUNITION_RULES.buckshot,
+        traits: [
+            "ammo:buckshot-half-damage",
+            "ammo:buckshot-penetration-nil",
+            "ammo:buckshot-attack-bonus-2",
+            "ammo:buckshot-margin-double",
         ],
+        description: joinDescriptionParts([
+            `Per-100-shell lot of ${row.caliber} buckshot shotshells.`,
+            ...createMagazineWeightNotes(row.magazineWeightNotes ?? []),
+        ]),
     });
 }
 function defineSmallArmsAmmunition(row) {

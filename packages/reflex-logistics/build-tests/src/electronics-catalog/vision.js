@@ -59,7 +59,7 @@ exports.MAGNIFICATION_ITEMS = [
         id: "vision:laser-designator",
         name: "Laser Designator",
         weight: 16,
-        tags: ["vision-enhancement", "magnification", "laser-designator", "targeting"],
+        tags: ["vision-enhancement", "magnification", "laser-designator", "targeting", "gps"],
         barterValue: "GG7,500",
         streetPrice: 30000,
         powerRequirement: "1 lg spec/5 hrs",

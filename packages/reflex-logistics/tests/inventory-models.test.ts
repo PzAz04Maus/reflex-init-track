@@ -131,7 +131,7 @@ test("shotgun ammunition includes slug and buckshot variants at the same listed 
   assert.equal(twelveGauge?.slug?.streetPrice, 200);
   assert.equal(twelveGauge?.buckshot?.streetPrice, 200);
   assert.equal(twelveGauge?.buckshot?.weight, 6);
-  assert.equal(twelveGauge?.buckshot?.notes?.includes("The attacker's margin of success is doubled for purposes of determining final Damage when firing buckshot."), true);
+  assert.equal(twelveGauge?.buckshot?.traits?.includes("ammo:buckshot-margin-double"), true);
 });
 
 test("close-combat catalog includes special-case melee and spray entries", () => {
@@ -140,8 +140,9 @@ test("close-combat catalog includes special-case melee and spray entries", () =>
   const policeSpray = PEPPER_SPRAY_CANISTERS.find((item) => item.id === "weapon:close-combat:pepper-spray-police");
 
   assert.equal(brassKnuckles?.voucherCost?.["worn:hands"], 1);
-  assert.equal(telescopingBaton?.notes?.includes("When collapsed, a telescoping baton performs like a sap. Ready it as a Novice Hand Weapons action to extend it."), true);
-  assert.equal(policeSpray?.notes?.includes("A direct hit to the head inflicts an additional -2 penalty on the victim's Resolve check."), true);
+  assert.equal(telescopingBaton?.traits?.includes("melee:collapsed-as-sap"), true);
+  assert.equal(telescopingBaton?.traits?.includes("melee:ready-action-extend"), true);
+  assert.equal(policeSpray?.traits?.includes("chemical:pepper-spray-head-hit-resolve-penalty"), true);
 });
 
 test("portable containers consume voucher slots when worn or carried", () => {

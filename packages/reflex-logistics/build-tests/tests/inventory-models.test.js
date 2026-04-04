@@ -91,15 +91,16 @@ const signalCatalog_1 = require("../src/signalCatalog");
     strict_1.default.equal(twelveGauge?.slug?.streetPrice, 200);
     strict_1.default.equal(twelveGauge?.buckshot?.streetPrice, 200);
     strict_1.default.equal(twelveGauge?.buckshot?.weight, 6);
-    strict_1.default.equal(twelveGauge?.buckshot?.notes?.includes("The attacker's margin of success is doubled for purposes of determining final Damage when firing buckshot."), true);
+    strict_1.default.equal(twelveGauge?.buckshot?.traits?.includes("ammo:buckshot-margin-double"), true);
 });
 (0, node_test_1.default)("close-combat catalog includes special-case melee and spray entries", () => {
     const brassKnuckles = closeCombatCatalog_1.CLOSE_COMBAT_WEAPONS.find((item) => item.id === "weapon:close-combat:brass-knuckles");
     const telescopingBaton = closeCombatCatalog_1.CLOSE_COMBAT_WEAPONS.find((item) => item.id === "weapon:close-combat:baton-telescoping");
     const policeSpray = closeCombatCatalog_1.PEPPER_SPRAY_CANISTERS.find((item) => item.id === "weapon:close-combat:pepper-spray-police");
     strict_1.default.equal(brassKnuckles?.voucherCost?.["worn:hands"], 1);
-    strict_1.default.equal(telescopingBaton?.notes?.includes("When collapsed, a telescoping baton performs like a sap. Ready it as a Novice Hand Weapons action to extend it."), true);
-    strict_1.default.equal(policeSpray?.notes?.includes("A direct hit to the head inflicts an additional -2 penalty on the victim's Resolve check."), true);
+    strict_1.default.equal(telescopingBaton?.traits?.includes("melee:collapsed-as-sap"), true);
+    strict_1.default.equal(telescopingBaton?.traits?.includes("melee:ready-action-extend"), true);
+    strict_1.default.equal(policeSpray?.traits?.includes("chemical:pepper-spray-head-hit-resolve-penalty"), true);
 });
 (0, node_test_1.default)("portable containers consume voucher slots when worn or carried", () => {
     const equipment = (0, inventory_1.createHumanoidEquipmentContainer)({ idPrefix: "carrier" }).equipment;
