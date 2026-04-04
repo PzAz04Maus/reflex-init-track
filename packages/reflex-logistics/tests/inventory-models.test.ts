@@ -36,6 +36,8 @@ import {
   AMMUNITION_HANDLING_ITEMS,
   FIRE_CONTROL_MODIFICATIONS,
 } from "../src/weaponAttachmentsCatalog";
+import { ELECTRONICS_CATALOG } from "../src/electronicsCatalog";
+import { SIGNAL_CATALOG } from "../src/signalCatalog";
 
 test("item definition instantiate clones nested item metadata", () => {
   const definition = createItemDefinition({
@@ -382,4 +384,23 @@ test("modular pouches consume and enforce container attachment-point budgets", (
     () => addContainer(stateWithCarrier, hydrationCarrier),
     /Container does not fit in container Thigh Carrier/,
   );
+});
+
+test("communication electronics are present and tagged for radio pouches", () => {
+  const tacticalRadio = ELECTRONICS_CATALOG.find((item) => item.id === "communication:radio-tactical");
+
+  assert.ok(tacticalRadio);
+  assert.equal(tacticalRadio?.tags?.includes("radio"), true);
+  assert.equal(tacticalRadio?.tags?.includes("communication"), true);
+  assert.equal(tacticalRadio?.notes?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
+});
+
+test("non-electronic signal items are isolated in signal catalog", () => {
+  const signalWhistle = SIGNAL_CATALOG.find((item) => item.id === "signal:whistle");
+  const electronicLeak = ELECTRONICS_CATALOG.find((item) => item.id === "signal:whistle");
+
+  assert.ok(signalWhistle);
+  assert.equal(signalWhistle?.tags?.includes("non-electronic"), true);
+  assert.equal(signalWhistle?.notes?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
+  assert.equal(electronicLeak, undefined);
 });
