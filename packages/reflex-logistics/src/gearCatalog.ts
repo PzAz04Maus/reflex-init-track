@@ -8,7 +8,7 @@ import {
   NIGHT_VISION_ITEMS,
   THERMAL_IMAGING_ITEMS,
 } from "./electronics-catalog/vision";
-import { POWERED_TOOLS } from "./electronics-catalog/poweredTools";
+import { POWERED_TOOLS, GENERATORS, STILLS } from "./electronics-catalog/poweredTools";
 import { GENERIC_CATALOG } from "./genericCatalog";
 import { RANGED_CATALOG } from "./rangedCatalog";
 import { SIGNAL_CATALOG } from "./signalCatalog";
@@ -21,6 +21,16 @@ import {
   SHOTGUN_MODIFICATIONS,
 } from "./weapon-attachments-catalog/accessories";
 import { OPTICS } from "./weapon-attachments-catalog/optics";
+import { HAND_TOOLS, ARMAMENT_TOOLS, SPECIALIST_TOOLS } from "./tools-catalog";
+import {
+  PURIFICATION_ITEMS,
+  FOOD_ACQUISITION_ITEMS,
+  FIRE_AND_COOKING_ITEMS,
+  SANITATION_ITEMS,
+  NAVIGATION_ITEMS,
+  TERRAIN_MOBILITY_ITEMS,
+  CAMOUFLAGE_AND_LINES_ITEMS,
+} from "./survival-catalog";
 
 export * from "./ammunition";
 export * from "./armorCatalog";
@@ -32,7 +42,7 @@ export {
   NIGHT_VISION_ITEMS,
   THERMAL_IMAGING_ITEMS,
 } from "./electronics-catalog/vision";
-export { POWERED_TOOLS } from "./electronics-catalog/poweredTools";
+export { POWERED_TOOLS, GENERATORS, STILLS } from "./electronics-catalog/poweredTools";
 export * from "./genericCatalog";
 export * from "./rangedCatalog";
 export * from "./signalCatalog";
@@ -44,6 +54,16 @@ export {
   SHOTGUN_MODIFICATIONS,
 } from "./weapon-attachments-catalog/accessories";
 export { OPTICS } from "./weapon-attachments-catalog/optics";
+export { HAND_TOOLS, ARMAMENT_TOOLS, SPECIALIST_TOOLS } from "./tools-catalog";
+export {
+  PURIFICATION_ITEMS,
+  FOOD_ACQUISITION_ITEMS,
+  FIRE_AND_COOKING_ITEMS,
+  SANITATION_ITEMS,
+  NAVIGATION_ITEMS,
+  TERRAIN_MOBILITY_ITEMS,
+  CAMOUFLAGE_AND_LINES_ITEMS,
+} from "./survival-catalog";
 
 export const ELECTRONICS_CATALOG: ItemDefinition[] = [
   ...ILLUMINATION_ITEMS,
@@ -62,6 +82,25 @@ export const WEAPON_ATTACHMENTS: ItemDefinition[] = [
   ...SHOTGUN_MODIFICATIONS,
 ];
 
+export const TOOLS_CATALOG: ItemDefinition[] = [
+  ...HAND_TOOLS,
+  ...ARMAMENT_TOOLS,
+  ...SPECIALIST_TOOLS,
+  ...POWERED_TOOLS,
+  ...GENERATORS,
+  ...STILLS,
+];
+
+export const SURVIVAL_CATALOG: ItemDefinition[] = [
+  ...PURIFICATION_ITEMS,
+  ...FOOD_ACQUISITION_ITEMS,
+  ...FIRE_AND_COOKING_ITEMS,
+  ...SANITATION_ITEMS,
+  ...NAVIGATION_ITEMS,
+  ...TERRAIN_MOBILITY_ITEMS,
+  ...CAMOUFLAGE_AND_LINES_ITEMS,
+];
+
 export const GEAR_CATALOG: ItemDefinition[] = [
   ...GENERIC_CATALOG,
   ...CLOTHING_CATALOG,
@@ -72,4 +111,6 @@ export const GEAR_CATALOG: ItemDefinition[] = [
   ...RANGED_CATALOG,
   ...WEAPON_ATTACHMENTS,
   ...ARMOR_CATALOG,
+  ...TOOLS_CATALOG,
+  ...SURVIVAL_CATALOG,
 ];

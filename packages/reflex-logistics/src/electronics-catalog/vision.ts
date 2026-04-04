@@ -62,7 +62,7 @@ export const MAGNIFICATION_ITEMS: ItemDefinition[] = [
 		id: "vision:laser-designator",
 		name: "Laser Designator",
 		weight: 16,
-		tags: ["vision-enhancement", "magnification", "laser-designator", "targeting"],
+		tags: ["vision-enhancement", "magnification", "laser-designator", "targeting", "gps"],
 		barterValue: "GG7,500",
 		streetPrice: 30000,
 		powerRequirement: "1 lg spec/5 hrs",
@@ -70,8 +70,7 @@ export const MAGNIFICATION_ITEMS: ItemDefinition[] = [
 		batterySize: "lg spec",
 		runtimeHours: 5,
 		traits: ["Mag-3"],
-		description: "Multi-function targeting device for guiding laser-homing munitions.",
-		source: ["Combines a Mag-3 spotting scope with additional ranging, laser, and GPS functions."],
+		description: "Multi-function targeting device for guiding laser-homing munitions, combining a Mag-3 spotting scope with additional ranging, laser, and GPS functions.",
 	}),
 	defineElectronicItem({
 		id: "vision:spotting-scope-mag-5",
@@ -156,7 +155,7 @@ export const NIGHT_VISION_ITEMS: ItemDefinition[] = [
 		batterySize: "sm",
 		runtimeHours: 40,
 		description: "Helmet-mounted binocular night-vision goggles.",
-		source: ["Restrict field of vision but give the wearer full advantage of night-vision optics except reflex sights."],
+		traits: ["night-vision-binocular-fov-limited", "night-vision-full-optics-no-reflex"],
 	}),
 	defineBatteryDevice({
 		id: "vision:nvgs-monocular",
@@ -197,7 +196,7 @@ export const THERMAL_IMAGING_ITEMS: ItemDefinition[] = [
 		powerRequirement: "charge/6 hrs",
 		runtimeHours: 6,
 		description: "Portable thermal imager usable for observation and search.",
-		source: ["Detects human-sized heat sources out to Sniping range.", "Treats all lighting conditions as adequate light."],
+		traits: ["thermal-human-detection-sniping", "thermal-adequate-light"],
 	}),
 	defineRechargeableDevice({
 		id: "vision:thermal-imager-mag-1",

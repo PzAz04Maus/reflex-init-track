@@ -85,6 +85,17 @@ Avoid:
 - Foundry v13 APIs use `ApplicationV2.DEFAULT_OPTIONS`, not `defaultOptions`.
 - Keep Foundry-specific reads/writes isolated from pure engine logic.
 
+## Logistics Catalog Ingestion
+- When adding or normalizing `packages/reflex-logistics/` catalog items, treat `source` as provenance only. Do not put mechanics, exceptions, rule summaries, or descriptive notes into `source`.
+- Book-derived catalog items should include human-readable citations in `source` with both the book identity and page number, for example: `Source: Twilight 2013 Core OEF PDF p.224`.
+- Prefer single-book files when practical. If a whole file or table comes from one page in one book, define a shared `SRC` constant and reuse it. Only use per-item mixed `source` arrays when the actual source material is mixed across books or pages.
+- Mechanics, special rules, exceptions, and lookup-driven behavior belong in `traits`. Use stable trait keys that roll/test logic can interpret later; do not rely on prose in `source` for rule execution.
+- If a note is explanatory but not mechanical, keep it in `description` rather than `source`.
+- For tool or equipment interactions that may modify tests later, use `traits` as lookup keys and keep the behavior in the rule or roll layer. Do not encode executable numeric effects as ad hoc prose in `traits`.
+- Use structured `power` data only when the source provides concrete battery, rechargeable, or AC details that match existing helpers. Keep literal source text in `powerRequirement` when that wording matters.
+- Unpowered items may still include runtime or duration data when the stat block supports a plausible value. If the source does not support a plausible runtime, leave runtime-related fields empty for later refactoring rather than inventing data.
+- For new catalog ingestion work, default checklist: verify exact book and page, add citation-first `source`, move mechanics into `traits`, keep non-mechanical prose in `description`, and avoid adding compatibility wrappers or duplicate catalogs.
+
 ## Validation Commands
 Use these commands as the standard validation path:
 

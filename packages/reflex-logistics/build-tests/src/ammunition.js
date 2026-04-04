@@ -107,7 +107,7 @@ function createBaseAmmunitionItem(row) {
         description: isShotgun
             ? `Per-100-shell lot of ${row.caliber} slug shotshells.`
             : `Per-100-round lot of ${row.caliber} ball/FMJ ammunition.`,
-        notes,
+        source: notes,
     });
 }
 function createSpecialAmmunitionItem(row, type) {
@@ -140,7 +140,7 @@ function createSpecialAmmunitionItem(row, type) {
         barterValue: formatBarterValue(parseBarterValue(row.barterValue) * multiplier),
         streetPrice: row.streetPrice * multiplier,
         description: `Per-100-round lot of ${row.caliber} ${SPECIAL_AMMO_LABELS[type].toLowerCase()} ammunition.`,
-        notes: [
+        source: [
             ...createMagazineWeightNotes(row.magazineWeightNotes ?? []),
             ...notesByType[type],
         ],
@@ -160,7 +160,7 @@ function createBuckshotItem(row) {
         barterValue: row.barterValue,
         streetPrice: row.streetPrice,
         description: `Per-100-shell lot of ${row.caliber} buckshot shotshells.`,
-        notes: [
+        source: [
             ...createMagazineWeightNotes(row.magazineWeightNotes ?? []),
             ...exports.SMALL_ARMS_AMMUNITION_RULES.buckshot,
         ],

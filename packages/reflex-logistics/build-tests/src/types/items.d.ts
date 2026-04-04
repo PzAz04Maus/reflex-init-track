@@ -6,7 +6,7 @@ export interface ItemDefinitionInit {
     weight: number;
     tags?: string[];
     traits?: string[];
-    notes?: string[];
+    source?: string[];
     barterValue?: string;
     streetPrice?: number | string;
     duration?: string;

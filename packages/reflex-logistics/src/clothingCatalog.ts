@@ -10,8 +10,7 @@ export const CIVILIAN_CLOTHING: ItemDefinition[] = [
     barterValue: "GG5",
     streetPrice: 100,
     voucherCost: { "worn:torso": 1 },
-    description: "Light civilian outfit suitable for extreme heat.",
-    source: ["Assume the outfit includes basic undergarments and climate-appropriate garments."],
+    description: "Light civilian outfit suitable for extreme heat, including basic undergarments and climate-appropriate garments.",
   }),
   createItemDefinition({
     id: "clothing:civilian:outfit-hot",
@@ -92,7 +91,7 @@ export const CIVILIAN_CLOTHING: ItemDefinition[] = [
     streetPrice: 80,
     voucherCost: { "worn:feet": 2 },
     description: "Light running shoes.",
-    source: ["Adds 1 meter per action to sprinting speed."],
+    traits: ["sprint-bonus-1m"],
   }),
   createItemDefinition({
     id: "clothing:civilian:boots-hiking",
@@ -123,7 +122,7 @@ export const CIVILIAN_CLOTHING: ItemDefinition[] = [
     streetPrice: 120,
     voucherCost: { "worn:feet": 2 },
     description: "Heavy work boots.",
-    source: ["Has a 25% chance of providing Armor 1 against foot hits."],
+    traits: ["foot-hit-armor-1-25pct"],
   }),
 ];
 

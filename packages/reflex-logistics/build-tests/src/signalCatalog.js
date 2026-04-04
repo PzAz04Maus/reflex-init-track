@@ -10,7 +10,7 @@ exports.SIGNAL_CATALOG = [
         tags: ["signal", "non-electronic", "audible", "communication"],
         barterValue: "GG0.05",
         streetPrice: 2,
-        notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.221"],
     }),
     (0, inventory_1.createItemDefinition)({
         id: "signal:mirror",
@@ -19,7 +19,7 @@ exports.SIGNAL_CATALOG = [
         tags: ["signal", "non-electronic", "visual"],
         barterValue: "GG0.04",
         streetPrice: 2,
-        notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.220"],
         description: "Aiming mirror used to flash long-range daylight recognition signals.",
     }),
     (0, inventory_1.createItemDefinition)({
@@ -29,7 +29,7 @@ exports.SIGNAL_CATALOG = [
         tags: ["signal", "non-electronic", "visual", "marker"],
         barterValue: "GG0.18",
         streetPrice: 9,
-        notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.220"],
         description: "High-contrast foldable panel for ground-to-air recognition and position marking.",
     }),
     (0, inventory_1.createItemDefinition)({
@@ -40,7 +40,7 @@ exports.SIGNAL_CATALOG = [
         barterValue: "GG0.12",
         streetPrice: 3,
         duration: "3d6+10 seconds",
-        notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.220"],
     }),
     (0, inventory_1.createItemDefinition)({
         id: "signal:flare-gun",
@@ -49,7 +49,7 @@ exports.SIGNAL_CATALOG = [
         tags: ["signal", "non-electronic", "visual", "pyrotechnic", "launcher"],
         barterValue: "GG35",
         streetPrice: 70,
-        notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.220"],
     }),
     (0, inventory_1.createItemDefinition)({
         id: "signal:flare-ground",
@@ -59,7 +59,7 @@ exports.SIGNAL_CATALOG = [
         barterValue: "GG0.3",
         streetPrice: 3,
         duration: "20+1d20 minutes",
-        notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.220"],
     }),
     (0, inventory_1.createItemDefinition)({
         id: "signal:flare-ground-ir",
@@ -69,7 +69,7 @@ exports.SIGNAL_CATALOG = [
         barterValue: "GG3",
         streetPrice: 60,
         duration: "20+1d20 minutes",
-        notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.220"],
     }),
     (0, inventory_1.createItemDefinition)({
         id: "signal:flare-launcher-hand-held",
@@ -78,7 +78,7 @@ exports.SIGNAL_CATALOG = [
         tags: ["signal", "non-electronic", "visual", "pyrotechnic", "launcher"],
         barterValue: "GG0.9",
         streetPrice: 15,
-        notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.220"],
     }),
     (0, inventory_1.createItemDefinition)({
         id: "signal:bugle",
@@ -87,6 +87,6 @@ exports.SIGNAL_CATALOG = [
         tags: ["signal", "non-electronic", "audible", "communication"],
         barterValue: "GG24",
         streetPrice: 120,
-        notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+        source: ["Source: Twilight 2013 Core OEF PDF p.221"],
     }),
 ];
