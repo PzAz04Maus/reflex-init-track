@@ -1,4 +1,4 @@
-import type { CombatState } from 'reflex-shared';
+import type { CombatState } from 'reflex-core';
 // import { createInitialState, setState } from '../../core/selectors/combatSelectors';
 import { COMBAT_FLAG, MODULE_ID } from './constants';
 

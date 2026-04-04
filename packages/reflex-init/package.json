@@ -4,6 +4,6 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "dependencies": {
-    "reflex-shared": "*"
+    "reflex-core": "workspace:*"
   }
 }

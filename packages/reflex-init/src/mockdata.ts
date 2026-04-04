@@ -1,4 +1,28 @@
-import type { CombatState } from "../../reflex-core/src/types";
+
+import type { CombatState, CharacterRecord, InitiativeState, CharacterData, CharacterBio, EquipmentRecord, ActionState } from "../../reflex-core/src/types";
+
+const makeInit = (val: number, joined: boolean): InitiativeState => ({
+  base: val,
+  initial: val,
+  val,
+  joined,
+});
+
+const makeData = (ood: number): CharacterData => ({
+  awareness: 5,
+  coordination: 5,
+  fitness: 5,
+  muscle: 5,
+  cognition: 5,
+  education: 5,
+  personality: 5,
+  resolve: 5,
+  ooda: ood,
+  cuf: 0,
+});
+
+const emptyBio: CharacterBio = {};
+const emptyEquipment: EquipmentRecord = { byId: {}, order: [] };
 
 export const mockCombatState: CombatState = {
   round: 1,
@@ -7,38 +31,38 @@ export const mockCombatState: CombatState = {
     {
       id: "a1",
       name: "Alpha",
-      init: { value: 20, joined: true },
+      init: makeInit(20, true),
       action: { id: 'a1-action', name: 'Attack', cost: 5 },
-      data: { ooda: 10 },
-      bio: {},
-      equipment: {}
+      data: makeData(10),
+      bio: emptyBio,
+      equipment: emptyEquipment,
     },
     {
       id: "a2",
       name: "Bravo",
-      init: { value: 18, joined: true },
+      init: makeInit(18, true),
       action: { id: 'a2-action', name: 'Defend', cost: 4 },
-      data: { ooda: 8 },
-      bio: {},
-      equipment: {}
+      data: makeData(8),
+      bio: emptyBio,
+      equipment: emptyEquipment,
     },
     {
       id: "a3",
       name: "Charlie",
-      init: { value: 15, joined: true },
+      init: makeInit(15, true),
       action: { id: 'a3-action', name: 'Move', cost: 3 },
-      data: { ooda: 7 },
-      bio: {},
-      equipment: {}
+      data: makeData(7),
+      bio: emptyBio,
+      equipment: emptyEquipment,
     },
     {
       id: "a4",
       name: "Delta",
-      init: { value: 10, joined: false },
+      init: makeInit(10, false),
       action: { id: 'a4-action', name: 'Wait', cost: 2 },
-      data: { ooda: 5 },
-      bio: {},
-      equipment: {}
+      data: makeData(5),
+      bio: emptyBio,
+      equipment: emptyEquipment,
     },
   ],
 };

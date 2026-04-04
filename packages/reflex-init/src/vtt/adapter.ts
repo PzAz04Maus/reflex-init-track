@@ -1,4 +1,4 @@
-import type { CombatState } from 'reflex-shared';
+import type { CombatState } from 'reflex-core';
 
 export interface VttAdapter {
   getState(): Promise<CombatState>;

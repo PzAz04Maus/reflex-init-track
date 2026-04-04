@@ -7,7 +7,6 @@ const path = require('path');
 
 // Source locations for the reflex-init package
 const foundryDistDir = path.resolve(__dirname, '..', 'build', 'packages', 'reflex-init', 'src', 'vtt', 'foundry');
-const coreDistDir = path.resolve(__dirname, '..', 'build', 'packages', 'reflex-shared');
 const foundryStyles = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'styles', 'foundry.css');
 const foundryTemplatesDir = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'templates', 'foundry');
 const moduleJson = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'vtt', 'foundry', 'module.json');
@@ -23,7 +22,6 @@ function assertExists(file, label) {
 }
 
 assertExists(foundryDistDir, 'build/packages/reflex-init/src/vtt/foundry directory');
-assertExists(coreDistDir, 'build/packages/reflex-shared directory');
 assertExists(foundryStyles, 'packages/reflex-init/src/styles/foundry.css');
 assertExists(foundryTemplatesDir, 'packages/reflex-init/src/templates/foundry directory');
 assertExists(moduleJson, 'packages/reflex-init/src/vtt/foundry/module.json');
@@ -51,8 +49,6 @@ function copyDir(srcDir, destDir) {
 // Foundry runtime files
 copyDir(foundryDistDir, path.join(targetDir, 'vtt', 'foundry'));
 
-// Shared/core logic used by the module
-copyDir(coreDistDir, path.join(targetDir, 'core'));
 
 // Styles
 copyFile(foundryStyles, path.join(targetDir, 'styles', 'foundry.css'));

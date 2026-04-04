@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "build-tests",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["fvtt-types", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "reflex-combat": ["../reflex-combat/src/index.ts"],
+      "reflex-combat/*": ["../reflex-combat/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "references": [
+    { "path": "../reflex-combat" }
+  ]
+}

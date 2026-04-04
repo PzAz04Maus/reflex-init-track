@@ -1,11 +1,12 @@
-import type { CombatState, TurnAdvanceResult, CharacterRecord, CharacterId, InitiativeState } from 'reflex-shared';
+import type { CombatState, TurnAdvanceResult, CharacterRecord, CharacterId, InitiativeState } from '../../../reflex-core/src/types';
 
 // AddActorInput now requires character to be a CharacterRecord
 export interface AddActorInput {
   character: CharacterRecord;
   state?: Partial<InitiativeState>;
 }
-import { getNextActor, getNextActors, selectActors, withActors } from 'reflex-shared';
+import { getNextActor, getNextActors } from '../../../reflex-core/src/state/getNextActor';
+import { selectActors, withActors } from '../../../reflex-core/src/selectors/combatSelectors';
 
 // Calculate margin for roll
 export function computeMargin(roll: number, target: number): number {

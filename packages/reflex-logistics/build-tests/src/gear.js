@@ -1,0 +1,406 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ARMOR_CATALOG = exports.TRAUMA_PLATES = exports.BODY_ARMORS = exports.HELMETS = exports.RIFLE_SLING = exports.GENERIC_LONGRIFLE = exports.BACKPACK = exports.GENERIC_ARMOR = void 0;
+const inventory_1 = require("./inventory");
+const FRONT_TORSO_COVERAGE = [
+    { location: "chest", coveragePercent: 25 },
+    { location: "upper abdomen", coveragePercent: 25 },
+];
+const SIDE_TORSO_COVERAGE = [
+    { location: "chest", coveragePercent: 20 },
+    { location: "upper abdomen", coveragePercent: 20 },
+];
+const TRAUMA_PLATE_SLOTS = [
+    { key: "plate:front", label: "Front Plate", maxInserts: 1, coverage: FRONT_TORSO_COVERAGE },
+    { key: "plate:rear", label: "Rear Plate", maxInserts: 1, coverage: FRONT_TORSO_COVERAGE },
+    { key: "plate:left-side", label: "Left Side Plate", maxInserts: 1, coverage: SIDE_TORSO_COVERAGE },
+    { key: "plate:right-side", label: "Right Side Plate", maxInserts: 1, coverage: SIDE_TORSO_COVERAGE },
+];
+// Sample reusable gear definitions for voucher-based humanoid equipment.
+exports.GENERIC_ARMOR = (0, inventory_1.createArmorDefinition)({
+    id: "gear:generic-armor",
+    name: "Generic Armor",
+    weight: 12,
+    voucherCost: { "worn:torso": 1 },
+    voucherBonus: { "worn:torso": 1 },
+    armor: {
+        kind: "body-armor",
+        rating: 1,
+        coverage: [{ location: "torso" }],
+    },
+});
+exports.BACKPACK = (0, inventory_1.createItemDefinition)({
+    id: "gear:backpack",
+    name: "Backpack",
+    weight: 3,
+    voucherCost: { "worn:torso": 1 },
+});
+exports.GENERIC_LONGRIFLE = (0, inventory_1.createRangedWeaponDefinition)({
+    id: "gear:generic-longrifle",
+    name: "Generic Long Rifle",
+    weight: 8,
+    tags: ["rifle", "longarm"],
+    defaultCarryMode: "ready",
+    rangedWeapon: {
+        caliber: "7.62mm",
+        capacity: 20,
+        damage: 4,
+        penetration: {
+            optimum: "x3",
+            maximum: "x4",
+        },
+        range: {
+            optimum: "Open",
+            maximum: "Sniping",
+        },
+        rateOfFire: "S",
+        speed: {
+            hip: 1,
+            snap: 2,
+            aimed: 4,
+        },
+        recoil: 8,
+        bulk: 2,
+        traits: ["firearm", "rifle", "magazine-fed"],
+    },
+    carryProfiles: {
+        ready: {
+            voucherCost: { "held:hands": 2 },
+            description: "Rifle is in the hands and ready to fire.",
+        },
+        carried: {
+            voucherCost: { "held:hands": 1 },
+            description: "Rifle is being carried in one hand, not ready to fire.",
+        },
+    },
+    voucherCost: { "held:hands": 2 },
+});
+exports.RIFLE_SLING = (0, inventory_1.createItemDefinition)({
+    id: "gear:generic-sling",
+    name: "Generic Sling",
+    weight: 1,
+    tags: ["sling"],
+    grantsCarryProfiles: {
+        slung: {
+            voucherCost: { "worn:shoulder": 1 },
+            description: "Attached host item may be carried slung without using the hands.",
+        },
+    },
+    voucherBonus: { "worn:shoulder": 1 },
+});
+exports.HELMETS = [
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:helmet:aircrew",
+        name: "Aircrew Helmet",
+        weight: 1.2,
+        tags: ["armor", "helmet"],
+        voucherCost: { "worn:head": 1 },
+        armor: {
+            kind: "helmet",
+            rating: 1,
+            coverage: [{ location: "head", coveragePercent: 50 }],
+            barterValue: "GG300",
+            streetPrice: 600,
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:helmet:armor-crew",
+        name: "Armor Crew Helmet",
+        weight: 1.5,
+        tags: ["armor", "helmet"],
+        voucherCost: { "worn:head": 1 },
+        armor: {
+            kind: "helmet",
+            rating: 1,
+            coverage: [{ location: "head", coveragePercent: 50 }],
+            barterValue: "GG250",
+            streetPrice: 500,
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:helmet:combat-steel",
+        name: "Combat Helmet, Steel",
+        weight: 1.4,
+        tags: ["armor", "helmet"],
+        voucherCost: { "worn:head": 1 },
+        armor: {
+            kind: "helmet",
+            rating: 1,
+            coverage: [{ location: "head", coveragePercent: 50 }],
+            barterValue: "GG50",
+            streetPrice: 100,
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:helmet:combat-ballistic",
+        name: "Combat Helmet, Ballistic",
+        weight: 1.5,
+        tags: ["armor", "helmet", "ballistic"],
+        voucherCost: { "worn:head": 1 },
+        armor: {
+            kind: "helmet",
+            rating: 2,
+            coverage: [{ location: "head", coveragePercent: 50 }],
+            barterValue: "GG125",
+            streetPrice: 250,
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:helmet:motorcycle",
+        name: "Motorcycle Helmet",
+        weight: 1.3,
+        tags: ["armor", "helmet"],
+        voucherCost: { "worn:head": 1 },
+        armor: {
+            kind: "helmet",
+            rating: 1,
+            coverage: [{ location: "head", coveragePercent: 50 }],
+            barterValue: "GG30",
+            streetPrice: 90,
+        },
+    }),
+];
+exports.BODY_ARMORS = [
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:eod-suit",
+        name: "EOD Suit",
+        weight: 18,
+        tags: ["armor", "body-armor", "eod"],
+        voucherCost: { "worn:torso": 1, "worn:head": 1, "worn:hands": 2, "worn:feet": 2 },
+        armor: {
+            kind: "body-armor",
+            rating: 3,
+            coverage: [
+                { location: "all except hands" },
+                { location: "head" },
+                { location: "feet" },
+            ],
+            barterValue: "GG1400",
+            streetPrice: 7000,
+            traits: ["blast-protection"],
+            notes: ["Bulky bomb-disposal suit that severely limits normal activity."],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:entry-jacket",
+        name: "Entry Jacket",
+        weight: 6.8,
+        tags: ["armor", "body-armor", "ballistic"],
+        voucherCost: { "worn:torso": 1 },
+        armor: {
+            kind: "body-armor",
+            rating: 2,
+            coverage: [
+                { location: "chest" },
+                { location: "abdomen" },
+                { location: "upper arms" },
+            ],
+            insertSlots: TRAUMA_PLATE_SLOTS,
+            barterValue: "GG750",
+            streetPrice: 1500,
+            traits: ["trauma-plate-compatible"],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:flak-jacket",
+        name: "Flak Jacket",
+        weight: 4.1,
+        tags: ["armor", "body-armor", "ballistic"],
+        voucherCost: { "worn:torso": 1 },
+        armor: {
+            kind: "body-armor",
+            rating: 1,
+            coverage: [
+                { location: "chest" },
+                { location: "abdomen" },
+                { location: "upper arms" },
+            ],
+            barterValue: "GG50",
+            streetPrice: 100,
+            traits: ["shrapnel-focused"],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:makeshift",
+        name: "Makeshift Armor",
+        weight: 8,
+        tags: ["armor", "body-armor", "improvised"],
+        voucherCost: { "worn:torso": 1 },
+        armor: {
+            kind: "body-armor",
+            rating: 1,
+            coverage: [
+                { location: "chest", coveragePercent: 50 },
+                { location: "arms", coveragePercent: 25 },
+            ],
+            barterValue: "GG5",
+            streetPrice: 50,
+            traits: ["improvised"],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:plate-carrier",
+        name: "Plate Carrier Vest",
+        weight: 1,
+        tags: ["armor", "body-armor", "carrier"],
+        voucherCost: { "worn:torso": 1 },
+        armor: {
+            kind: "body-armor",
+            coverage: [],
+            insertSlots: TRAUMA_PLATE_SLOTS,
+            barterValue: "GG120",
+            streetPrice: 240,
+            traits: ["trauma-plate-compatible", "load-bearing"],
+            notes: ["Provides no armor by itself and exists to mount trauma plates."],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:stab-vest",
+        name: "Stab Vest",
+        weight: 2,
+        tags: ["armor", "body-armor", "stab"],
+        voucherCost: { "worn:torso": 1 },
+        armor: {
+            kind: "body-armor",
+            rating: 2,
+            coverage: [
+                { location: "chest" },
+                { location: "upper abdomen" },
+            ],
+            barterValue: "GG175",
+            streetPrice: 700,
+            traits: ["stab-only"],
+            notes: ["Protects against close combat weapons but not against energetic ballistic threats."],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:tactical-vest",
+        name: "Tactical Vest",
+        weight: 3.8,
+        tags: ["armor", "body-armor", "ballistic"],
+        voucherCost: { "worn:torso": 1 },
+        armor: {
+            kind: "body-armor",
+            rating: 2,
+            coverage: [
+                { location: "chest" },
+                { location: "abdomen" },
+            ],
+            insertSlots: TRAUMA_PLATE_SLOTS,
+            barterValue: "GG750",
+            streetPrice: 1500,
+            traits: ["trauma-plate-compatible"],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:tactical-vest-extensions",
+        name: "Tactical Vest Extensions",
+        weight: 0.7,
+        tags: ["armor", "body-armor", "extension"],
+        voucherCost: { "worn:neck": 1 },
+        armor: {
+            kind: "body-armor",
+            rating: 2,
+            coverage: [
+                { location: "upper arms" },
+                { location: "neck" },
+            ],
+            layering: "overlay",
+            barterValue: "GG100",
+            streetPrice: 200,
+            notes: ["Optional add-on panels for a tactical vest rather than a standalone vest."],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:body:undercover-vest",
+        name: "Undercover Vest",
+        weight: 2.3,
+        tags: ["armor", "body-armor", "concealable"],
+        voucherCost: { "worn:torso": 1 },
+        armor: {
+            kind: "body-armor",
+            rating: 2,
+            coverage: [
+                { location: "chest" },
+                { location: "upper abdomen" },
+            ],
+            insertSlots: TRAUMA_PLATE_SLOTS,
+            barterValue: "GG450",
+            streetPrice: 900,
+            traits: ["trauma-plate-compatible", "concealable"],
+        },
+    }),
+];
+exports.TRAUMA_PLATES = [
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:plate:level-iii-front-rear",
+        name: "Trauma Plate, Level III Front/Rear",
+        weight: 1.7,
+        tags: ["armor", "trauma-plate"],
+        armor: {
+            kind: "trauma-plate",
+            rating: 4,
+            coverage: FRONT_TORSO_COVERAGE,
+            layering: "insert",
+            compatibleInsertSlots: ["plate:front", "plate:rear"],
+            barterValue: "GG105",
+            streetPrice: 210,
+            traits: ["ceramic-composite"],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:plate:level-iii-side",
+        name: "Trauma Plate, Level III Side",
+        weight: 0.9,
+        tags: ["armor", "trauma-plate"],
+        armor: {
+            kind: "trauma-plate",
+            rating: 4,
+            coverage: SIDE_TORSO_COVERAGE,
+            layering: "insert",
+            compatibleInsertSlots: ["plate:left-side", "plate:right-side"],
+            barterValue: "GG70",
+            streetPrice: 140,
+            traits: ["ceramic-composite"],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:plate:level-iv-front-rear",
+        name: "Trauma Plate, Level IV Front/Rear",
+        weight: 2.7,
+        tags: ["armor", "trauma-plate"],
+        armor: {
+            kind: "trauma-plate",
+            rating: 7,
+            coverage: FRONT_TORSO_COVERAGE,
+            layering: "insert",
+            compatibleInsertSlots: ["plate:front", "plate:rear"],
+            barterValue: "GG120",
+            streetPrice: 240,
+            traits: ["ceramic-composite"],
+        },
+    }),
+    (0, inventory_1.createArmorDefinition)({
+        id: "armor:plate:level-iv-side",
+        name: "Trauma Plate, Level IV Side",
+        weight: 1,
+        tags: ["armor", "trauma-plate"],
+        armor: {
+            kind: "trauma-plate",
+            rating: 7,
+            coverage: SIDE_TORSO_COVERAGE,
+            layering: "insert",
+            compatibleInsertSlots: ["plate:left-side", "plate:right-side"],
+            barterValue: "GG100",
+            streetPrice: 200,
+            traits: ["ceramic-composite"],
+            notes: ["Front and rear plate coverage stacks up to about 90%; side coverage stacks up to about 40%."],
+        },
+    }),
+];
+exports.ARMOR_CATALOG = [
+    exports.GENERIC_ARMOR,
+    ...exports.HELMETS,
+    ...exports.BODY_ARMORS,
+    ...exports.TRAUMA_PLATES,
+];

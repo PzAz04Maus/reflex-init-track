@@ -1,4 +1,4 @@
-import type { CombatState, CharacterRecord } from 'reflex-shared';
+import type { CombatState, CharacterRecord } from '../types';
 
 // Returns all joined actors with the lowest initiative value
 export function getNextActors(state: CombatState): CharacterRecord[] {

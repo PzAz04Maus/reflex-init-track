@@ -1,7 +1,7 @@
 // @ts-ignore: Foundry VTT global
 declare function loadTemplates(paths: string[]): Promise<void>;
-import { addActor, createInitialState } from 'reflex-shared';
-import type { CombatState } from 'reflex-shared';
+import { addActor, createInitialState } from 'reflex-core';
+import type { CombatState, CharacterData, EquipmentRecord } from 'reflex-core';
 import { ReflexSchedulerPanel } from './panel.js';
 import { ReflexDebugPanel } from './debug-panel.js';
 // Register the debug panel template using the new namespaced loadTemplates and module-relative path
@@ -23,6 +23,24 @@ async function seedFromCombat(combat: any): Promise<CombatState> {
   let state = createInitialState();
   const combatants = Array.from(combat.combatants ?? []) as any[];//placeholder
 
+
+const emptyEquipment: EquipmentRecord = { byId: {}, order: [] };
+function makeDefaultCharacterData(overrides: Partial<CharacterData> = {}): CharacterData {
+  return {
+    awareness: 5,
+    coordination: 5,
+    fitness: 5,
+    muscle: 5,
+    cognition: 5,
+    education: 5,
+    personality: 5,
+    resolve: 5,
+    ooda: 10,
+    cuf: 0,
+    ...overrides
+  };
+}
+
   for (const combatant of combatants) {
     const actor = combatant.actor;
     const ownerUser = game.users?.find((user: any) => actor?.testUserPermission?.(user, foundry?.CONST?.DOCUMENT_OWNERSHIP_LEVELS?.OWNER ?? 3));
@@ -34,11 +52,9 @@ async function seedFromCombat(combat: any): Promise<CombatState> {
         ownerUserId: ownerUser?.id ?? null,
         actorUuid: actor?.uuid ?? null,
         combatantId: combatant.id,
-        data: {
-          ooda: 10 // Placeholder, adjust as needed
-        },
+        data: makeDefaultCharacterData({ ooda: 10 }),
         bio: {}, // Fill with actual bio data if available
-        equipment: {}, // Fill with actual equipment if available
+        equipment: emptyEquipment,
         init: {
           base: 4, // Placeholder base initiative
           initial: randomD20(),

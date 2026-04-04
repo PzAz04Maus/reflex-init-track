@@ -1,7 +1,7 @@
 // @ts-ignore: Foundry VTT global
 declare function loadTemplates(paths: string[]): Promise<void>;
-import { addActor, createInitialState } from 'reflex-shared';
-import type { CombatState } from 'reflex-shared';
+import { addActor, createInitialState } from 'reflex-core';
+import type { CombatState } from 'reflex-core';
 import { ReflexSchedulerPanel } from '../../../packages/reflex-init/src/vtt/foundry/panel';
 import { ReflexDebugPanel } from '../../../packages/reflex-init/src/vtt/foundry/debug-panel';
 // Register the debug panel template using the new namespaced loadTemplates and module-relative path
@@ -14,8 +14,27 @@ import { getScheduleState, setScheduleState } from '../../../packages/reflex-ini
 
 let panel: ReflexSchedulerPanel | null = null;
 
+
 function randomD20(): number {
   return Math.floor(Math.random() * 20) + 1;
+}
+
+import type { CharacterData } from 'reflex-core';
+
+function makeDefaultCharacterData(overrides: Partial<CharacterData> = {}): CharacterData {
+  return {
+    awareness: 5,
+    coordination: 5,
+    fitness: 5,
+    muscle: 5,
+    cognition: 5,
+    education: 5,
+    personality: 5,
+    resolve: 5,
+    ooda: 5,
+    cuf: 0,
+    ...overrides
+  };
 }
 
 // NOTE: This function will need to be updated to use the new AddActorInput structure if the core changes
@@ -34,11 +53,9 @@ async function seedFromCombat(combat: any): Promise<CombatState> {
         ownerUserId: ownerUser?.id ?? null,
         actorUuid: actor?.uuid ?? null,
         combatantId: combatant.id,
-        data: {
-          ooda: 10 // Placeholder, adjust as needed
-        },
+        data: makeDefaultCharacterData(),
         bio: {}, // Fill with actual bio data if available
-        equipment: {}, // Fill with actual equipment if available
+        equipment: { byId: {}, order: [] }, // Fill with actual equipment if available
         init: {
           base: 4, // Placeholder base initiative
           initial: randomD20(),

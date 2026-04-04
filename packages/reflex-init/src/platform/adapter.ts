@@ -1,4 +1,22 @@
-import type { CombatState } from "reflex-shared";
+
+import type { CombatState, CharacterData, EquipmentRecord } from "reflex-core";
+
+const emptyEquipment: EquipmentRecord = { byId: {}, order: [] };
+function makeDefaultCharacterData(overrides: Partial<CharacterData> = {}): CharacterData {
+  return {
+    awareness: 5,
+    coordination: 5,
+    fitness: 5,
+    muscle: 5,
+    cognition: 5,
+    education: 5,
+    personality: 5,
+    resolve: 5,
+    ooda: 10,
+    cuf: 0,
+    ...overrides
+  };
+}
 
 export interface VttActorInput {
   id: string;
@@ -16,10 +34,10 @@ export function fromVttActors(actors: VttActorInput[]): CombatState {
       ownerUserId: null,
       actorUuid: null,
       combatantId: null,
-      data: { ooda: 10 },
+      data: makeDefaultCharacterData({ ooda: 10 }),
       bio: {},
-      equipment: {},
-      init: { base: actor.initiative ?? 0, initial: actor.initiative ?? 0, val: actor.initiative ?? 0, joined: true, actionCost: 4 },
+      equipment: emptyEquipment,
+      init: { base: actor.initiative ?? 0, initial: actor.initiative ?? 0, val: actor.initiative ?? 0, joined: true },
       action: null
     })),
   };

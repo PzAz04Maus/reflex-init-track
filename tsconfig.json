@@ -9,9 +9,17 @@
     "rootDir": ".",
     "outDir": "build",
     "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "reflex-combat": ["packages/reflex-combat"],
+      "reflex-combat/*": ["packages/reflex-combat/*"],
+      "reflex-core": ["packages/reflex-core/src"],
+      "reflex-core/*": ["packages/reflex-core/src/*"]
+    },
   },
   "include": [
     "src/**/*.ts",
     "packages/*/src/**/*.ts"
-  ]
+, "packages/reflex-core/src/calc.tsx"  ]
 }

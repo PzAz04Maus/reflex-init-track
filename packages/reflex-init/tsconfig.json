@@ -10,7 +10,7 @@
   },
   "include": ["src/**/*.ts"],
   "references": [
-    { "path": "../reflex-shared" },
+    
     { "path": "../reflex-core" }
   ]
 }

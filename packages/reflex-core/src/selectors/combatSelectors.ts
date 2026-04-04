@@ -1,4 +1,4 @@
-import type { CombatState, CharacterRecord, CharacterId } from 'reflex-shared';
+import type { CombatState, CharacterRecord, CharacterId } from '../types';
 
 // Get all actors, sorted by init.value then name
 export function selectActors(state: CombatState): CharacterRecord[] {

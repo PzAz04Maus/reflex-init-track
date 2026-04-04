@@ -1,1 +1,0 @@
-{"version":3,"file":"getNextActor.d.ts","sourceRoot":"","sources":["../../src/state/getNextActor.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,WAAW,EAAE,eAAe,EAAE,MAAM,UAAU,CAAC;AAE7D,wBAAgB,aAAa,CAAC,KAAK,EAAE,WAAW,GAAG,eAAe,EAAE,CAKnE;AAED,wBAAgB,YAAY,CAAC,KAAK,EAAE,WAAW,GAAG,eAAe,GAAG,IAAI,CAEvE"}

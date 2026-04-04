@@ -1,5 +1,7 @@
-import { advanceTurn, getNextActors, selectActors } from 'reflex-shared';
-import type { CharacterRecord } from 'reflex-shared';
+import { advanceTurn } from '../../../../reflex-core/src/advanceTurn';
+import { getNextActors } from '../../../../reflex-core/src/state/getNextActor';
+import { selectActors } from '../../../../reflex-core/src/selectors/combatSelectors';
+import type { CharacterRecord } from '../../../../reflex-core/src/types';
 // TODO: Move rollD20 to shared if needed
 import { MODULE_ID } from './constants.js';
 import { getScheduleState, setScheduleState } from './store.js';
@@ -19,7 +21,7 @@ export class ReflexSchedulerPanel extends foundry.applications.api.ApplicationV2
     });
   }
   // getData is the V2 context method
-  async getData(_options = {}) {
+  async getData(_options = {}): Promise<any> {
     const combat = game.combats?.active;
     const state = combat ? await getScheduleState(combat) : null;
     const actors: CharacterRecord[] = state ? selectActors(state) : [];

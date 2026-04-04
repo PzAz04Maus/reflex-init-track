@@ -33,43 +33,45 @@ Initialized 23MAR2026
 
 # Installation
 
-
-## Local UI Sandbox
+## Quick Start
 
 1. **Clone or download** this repository.
 2. **Install dependencies:**
    ```sh
    npm install
    ```
-3. **Start the local UI sandbox:**
+3. **Build and package everything:**
    ```sh
-   npm run dev
+   npm run make
    ```
-   This will launch the Vite development server. Open the browser at the provided local address to use the standalone initiative tracker and test mechanics.
+   This will:
+   - Build all TypeScript packages (including the UI sandbox and Foundry module code)
+   - Run the Foundry packaging script to assemble a ready-to-install module in `build/reflex-module/`
 
-## Foundry VTT Integration (Manual/Dev)
+---
 
-1. **Build the project for Foundry:**
-   ```sh
-   npm run build
-   ```
-   This compiles the TypeScript source into the `output/` directory with the necessary JS files.
-2. **Package the Foundry module:**
-   ```sh
-   npm run package:foundry
-   ```
-   - By default, this creates a `foundry-module/` folder in the project root. You can specify a different target directory as an argument.
-   - The script copies your build output (`output/`), `module.json` (from `src/vtt/foundry/`), `foundry.css` (from `src/styles/`), and `schedule-panel.hbs` (from `src/templates/foundry/`) into the target directory, creating the correct structure for manual installation in Foundry.
-   - The script will fail with a clear error if any required file is missing.
-   - You must have Node.js installed to run this script.
-3. **Install the module in Foundry:**
-   - Copy the packaged folder to your Foundry `Data/modules/` directory.
-   - By default, the directory is in `%localappdata%/FoundryVTT/`
-   - In Foundry, go to **Configuration > Manage Modules** and enable the Reflex Scheduler module.
-   - Open a combat encounter. The Reflex Scheduler panel should be available from the UI or via the module's controls.
+## Local UI Sandbox
 
-**Note:**
-- The current Foundry adapter is a prototype. File locations and `module.json` may need to be updated as the project matures.
+To run the standalone UI for rapid prototyping:
+
+```sh
+npm run dev
+```
+This launches the Vite dev server. Open the browser at the provided local address to use the initiative tracker and test mechanics.
+
+---
+
+## Foundry VTT Module (Manual Install)
+
+After running `npm run make`, the packaged Foundry module will be in `build/reflex-module/`.
+
+1. **Copy the folder** `build/reflex-module/` to your Foundry `Data/modules/` directory.
+   - By default, this is at `%localappdata%/FoundryVTT/Data/modules/` on Windows.
+2. In Foundry, go to **Configuration > Manage Modules** and enable the Reflex Scheduler module.
+3. Open a combat encounter. The Reflex Scheduler panel should be available from the UI or via the module's controls.
+
+**Notes:**
+- The current Foundry adapter is a prototype. File locations and `module.json` may change as the project matures.
 - This project is not yet published on the Foundry package manager; manual installation is required.
 
 # Big Picture
