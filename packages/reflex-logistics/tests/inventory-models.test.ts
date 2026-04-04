@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  CLOSE_COMBAT_WEAPONS,
+  PEPPER_SPRAY_CANISTERS,
+} from "../src/closeCombatCatalog";
+import {
   PISTOL_CARTRIDGES,
   SHOTGUN_SHELLS,
   SMALL_ARMS_AMMUNITION_ITEMS,
@@ -9,12 +13,29 @@ import {
 import {
   ASSAULT_RIFLES,
   AUTOLOADERS,
+  addContainer,
+  addItem,
+  createItem,
   createHumanoidEquipmentContainer,
+  createInventoryState,
   createItemDefinition,
   createRangedWeaponDefinition,
+  getContainerVoucherUsage,
+  instantiateContainer,
   SUBMACHINE_GUNS,
 } from "../src/inventory";
-import { FIRE_CONTROL_MODIFICATIONS } from "../src/weaponAttachmentsCatalog";
+import {
+  FIXED_LOAD_BEARING_CONTAINERS,
+  FIXED_LBE_COMPONENT_CONTAINERS,
+  MODULAR_LOAD_BEARING_CONTAINERS,
+  MODULAR_LOAD_BEARING_POUCHES,
+  PACK_CONTAINERS,
+  SURVIVAL_CONTAINERS,
+} from "../src/containerCatalog";
+import {
+  AMMUNITION_HANDLING_ITEMS,
+  FIRE_CONTROL_MODIFICATIONS,
+} from "../src/weaponAttachmentsCatalog";
 
 test("item definition instantiate clones nested item metadata", () => {
   const definition = createItemDefinition({
@@ -109,4 +130,256 @@ test("shotgun ammunition includes slug and buckshot variants at the same listed 
   assert.equal(twelveGauge?.buckshot?.streetPrice, 200);
   assert.equal(twelveGauge?.buckshot?.weight, 6);
   assert.equal(twelveGauge?.buckshot?.notes?.includes("The attacker's margin of success is doubled for purposes of determining final Damage when firing buckshot."), true);
+});
+
+test("close-combat catalog includes special-case melee and spray entries", () => {
+  const brassKnuckles = CLOSE_COMBAT_WEAPONS.find((item) => item.id === "weapon:close-combat:brass-knuckles");
+  const telescopingBaton = CLOSE_COMBAT_WEAPONS.find((item) => item.id === "weapon:close-combat:baton-telescoping");
+  const policeSpray = PEPPER_SPRAY_CANISTERS.find((item) => item.id === "weapon:close-combat:pepper-spray-police");
+
+  assert.equal(brassKnuckles?.voucherCost?.["worn:hands"], 1);
+  assert.equal(telescopingBaton?.notes?.includes("When collapsed, a telescoping baton performs like a sap. Ready it as a Novice Hand Weapons action to extend it."), true);
+  assert.equal(policeSpray?.notes?.includes("A direct hit to the head inflicts an additional -2 penalty on the victim's Resolve check."), true);
+});
+
+test("portable containers consume voucher slots when worn or carried", () => {
+  const equipment = createHumanoidEquipmentContainer({ idPrefix: "carrier" }).equipment;
+  const framePackDefinition = PACK_CONTAINERS.find((container) => container.id === "container:pack:frame-civilian");
+
+  assert.ok(framePackDefinition);
+
+  const framePack = instantiateContainer(framePackDefinition, {
+    location: { kind: "container", containerId: equipment.id },
+  });
+
+  const state = addContainer(createInventoryState([], [equipment]), framePack);
+  const usage = getContainerVoucherUsage(state, equipment.id);
+
+  assert.equal(usage.used["worn:back"], 1);
+  assert.equal(usage.remaining["worn:back"], 0);
+});
+
+test("holsters consume stowed-handgun voucher capacity", () => {
+  const equipment = createHumanoidEquipmentContainer({ idPrefix: "holster-test" }).equipment;
+  const beltDefinition = FIXED_LOAD_BEARING_CONTAINERS.find((container) => container.id === "container:lbe:basic-belt-and-yoke");
+  const holsterDefinition = FIXED_LBE_COMPONENT_CONTAINERS.find((container) => container.id === "container:lbe:holster");
+  const handgunDefinition = createItemDefinition({
+    id: "item:test-handgun-definition",
+    name: "Test Handgun",
+    weight: 0.9,
+    tags: ["weapon", "firearm", "handgun", "sidearm"],
+    voucherCost: { "held:hands": 1 },
+  });
+
+  assert.ok(beltDefinition);
+  assert.ok(holsterDefinition);
+  assert.ok(handgunDefinition);
+
+  const belt = instantiateContainer(beltDefinition, {
+    location: { kind: "container", containerId: equipment.id },
+  });
+  const holster = instantiateContainer(holsterDefinition, {
+    location: { kind: "container", containerId: belt.id },
+  });
+  const handgun = createItem({
+    id: "item:test-handgun-1",
+    name: handgunDefinition.name,
+    weight: handgunDefinition.weight,
+    tags: handgunDefinition.tags,
+    voucherCost: handgunDefinition.voucherCost,
+    quantity: 1,
+    location: { kind: "container", containerId: holster.id },
+  });
+  const secondHandgun = createItem({
+    id: "item:test-handgun-2",
+    name: handgunDefinition.name,
+    weight: handgunDefinition.weight,
+    tags: handgunDefinition.tags,
+    voucherCost: handgunDefinition.voucherCost,
+    quantity: 1,
+    location: { kind: "container", containerId: holster.id },
+  });
+
+  let state = createInventoryState([], [equipment]);
+  state = addContainer(state, belt);
+  state = addContainer(state, holster);
+  state = addItem(state, handgun);
+
+  const usage = getContainerVoucherUsage(state, holster.id);
+
+  assert.equal(usage.used["stowed:handgun"], 1);
+  assert.equal(usage.remaining["stowed:handgun"], 0);
+  assert.throws(
+    () => addItem(state, secondHandgun),
+    /Item does not fit in container Holster/,
+  );
+});
+
+test("magazine pouches use stowed-magazine voucher slots", () => {
+  const equipment = createHumanoidEquipmentContainer({ idPrefix: "mag-test" }).equipment;
+  const beltDefinition = FIXED_LOAD_BEARING_CONTAINERS.find((container) => container.id === "container:lbe:basic-belt-and-yoke");
+  const pouchDefinition = FIXED_LBE_COMPONENT_CONTAINERS.find((container) => container.id === "container:lbe:mag-carrier-pistol-triple");
+  const spareMagazineDefinition = AMMUNITION_HANDLING_ITEMS.find((item) => item.id === "accessory:spare-magazine");
+
+  assert.ok(beltDefinition);
+  assert.ok(pouchDefinition);
+  assert.ok(spareMagazineDefinition);
+
+  const belt = instantiateContainer(beltDefinition, {
+    location: { kind: "container", containerId: equipment.id },
+  });
+  const pouch = instantiateContainer(pouchDefinition, {
+    location: { kind: "container", containerId: belt.id },
+  });
+
+  let state = createInventoryState([], [equipment]);
+  state = addContainer(state, belt);
+  state = addContainer(state, pouch);
+
+  for (let index = 0; index < 3; index += 1) {
+    state = addItem(state, createItem({
+      id: `item:test-magazine-${index + 1}`,
+      name: spareMagazineDefinition.name,
+      weight: spareMagazineDefinition.weight,
+      tags: spareMagazineDefinition.tags,
+      quantity: 1,
+      location: { kind: "container", containerId: pouch.id },
+    }));
+  }
+
+  const usage = getContainerVoucherUsage(state, pouch.id);
+
+  assert.equal(usage.used["stowed:magazine"], 3);
+  assert.equal(usage.remaining["stowed:magazine"], 0);
+  assert.throws(
+    () => addItem(state, createItem({
+      id: "item:test-magazine-4",
+      name: spareMagazineDefinition.name,
+      weight: spareMagazineDefinition.weight,
+      tags: spareMagazineDefinition.tags,
+      quantity: 1,
+      location: { kind: "container", containerId: pouch.id },
+    })),
+    /Item does not fit in container Mag Carrier, Pistol, Triple/,
+  );
+});
+
+test("sheaths accept knife-tagged items and reject other items", () => {
+  const equipment = createHumanoidEquipmentContainer({ idPrefix: "sheath-test" }).equipment;
+  const beltDefinition = FIXED_LOAD_BEARING_CONTAINERS.find((container) => container.id === "container:lbe:basic-belt-and-yoke");
+  const sheathDefinition = FIXED_LBE_COMPONENT_CONTAINERS.find((container) => container.id === "container:lbe:sheath");
+  const knifeDefinition = CLOSE_COMBAT_WEAPONS.find((item) => item.id === "weapon:close-combat:knife-working");
+  const handgunDefinition = AUTOLOADERS[0];
+
+  assert.ok(beltDefinition);
+  assert.ok(sheathDefinition);
+  assert.ok(knifeDefinition);
+  assert.ok(handgunDefinition);
+
+  const belt = instantiateContainer(beltDefinition, {
+    location: { kind: "container", containerId: equipment.id },
+  });
+  const sheath = instantiateContainer(sheathDefinition, {
+    location: { kind: "container", containerId: belt.id },
+  });
+
+  let state = createInventoryState([], [equipment]);
+  state = addContainer(state, belt);
+  state = addContainer(state, sheath);
+  state = addItem(state, createItem({
+    id: "item:test-knife-1",
+    name: knifeDefinition.name,
+    weight: knifeDefinition.weight,
+    tags: knifeDefinition.tags,
+    voucherCost: knifeDefinition.voucherCost,
+    quantity: 1,
+    location: { kind: "container", containerId: sheath.id },
+  }));
+
+  const usage = getContainerVoucherUsage(state, sheath.id);
+
+  assert.equal(usage.used["stowed:knife"], 1);
+  assert.equal(usage.remaining["stowed:knife"], 0);
+  assert.throws(
+    () => addItem(state, createItem({
+      id: "item:test-sheath-handgun",
+      name: handgunDefinition.name,
+      weight: handgunDefinition.weight,
+      tags: handgunDefinition.tags,
+      voucherCost: handgunDefinition.voucherCost,
+      quantity: 1,
+      location: { kind: "container", containerId: sheath.id },
+    })),
+    /not compatible with container Sheath/,
+  );
+});
+
+test("canteen carriers accept tagged child containers", () => {
+  const equipment = createHumanoidEquipmentContainer({ idPrefix: "canteen-test" }).equipment;
+  const beltDefinition = FIXED_LOAD_BEARING_CONTAINERS.find((container) => container.id === "container:lbe:basic-belt-and-yoke");
+  const canteenCarrierDefinition = FIXED_LBE_COMPONENT_CONTAINERS.find((container) => container.id === "container:lbe:canteen-carrier");
+  const canteenDefinition = SURVIVAL_CONTAINERS.find((container) => container.id === "container:survival:canteen-1l");
+  const hydrationDefinition = SURVIVAL_CONTAINERS.find((container) => container.id === "container:survival:hydration-bladder-1-5l");
+
+  assert.ok(beltDefinition);
+  assert.ok(canteenCarrierDefinition);
+  assert.ok(canteenDefinition);
+  assert.ok(hydrationDefinition);
+
+  const belt = instantiateContainer(beltDefinition, {
+    location: { kind: "container", containerId: equipment.id },
+  });
+  const canteenCarrier = instantiateContainer(canteenCarrierDefinition, {
+    location: { kind: "container", containerId: belt.id },
+  });
+
+  let state = createInventoryState([], [equipment]);
+  state = addContainer(state, belt);
+  state = addContainer(state, canteenCarrier);
+  state = addContainer(state, instantiateContainer(canteenDefinition, {
+    location: { kind: "container", containerId: canteenCarrier.id },
+  }));
+
+  const usage = getContainerVoucherUsage(state, canteenCarrier.id);
+
+  assert.equal(usage.used["stowed:canteen"], 1);
+  assert.equal(usage.remaining["stowed:canteen"], 0);
+  assert.throws(
+    () => addContainer(state, instantiateContainer(hydrationDefinition, {
+      location: { kind: "container", containerId: canteenCarrier.id },
+    })),
+    /not compatible with container Canteen Carrier/,
+  );
+});
+
+test("modular pouches consume and enforce container attachment-point budgets", () => {
+  const thighCarrierDefinition = MODULAR_LOAD_BEARING_CONTAINERS.find((container) => container.id === "container:mlbe:thigh-carrier");
+  const utilityPouchDefinition = MODULAR_LOAD_BEARING_POUCHES.find((container) => container.id === "container:mlbe:utility-pouch");
+  const hydrationCarrierDefinition = MODULAR_LOAD_BEARING_POUCHES.find((container) => container.id === "container:mlbe:hydration-bladder-carrier");
+
+  assert.ok(thighCarrierDefinition);
+  assert.ok(utilityPouchDefinition);
+  assert.ok(hydrationCarrierDefinition);
+
+  const thighCarrier = instantiateContainer(thighCarrierDefinition);
+  const utilityPouch = instantiateContainer(utilityPouchDefinition, {
+    location: { kind: "container", containerId: thighCarrier.id },
+  });
+
+  const stateWithCarrier = createInventoryState([], [thighCarrier]);
+  const stateWithPouch = addContainer(stateWithCarrier, utilityPouch);
+  const usage = getContainerVoucherUsage(stateWithPouch, thighCarrier.id);
+
+  assert.equal(usage.used["mlbe:ap"], 4);
+  assert.equal(usage.remaining["mlbe:ap"], 0);
+  assert.equal(usage.used["lbe:component"], undefined);
+
+  const hydrationCarrier = instantiateContainer(hydrationCarrierDefinition, {
+    location: { kind: "container", containerId: thighCarrier.id },
+  });
+
+  assert.throws(
+    () => addContainer(stateWithCarrier, hydrationCarrier),
+    /Container does not fit in container Thigh Carrier/,
+  );
 });

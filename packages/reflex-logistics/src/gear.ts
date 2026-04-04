@@ -1,3 +1,5 @@
+//TODO: Incorporate plate system into voucher-based
+
 import {
   createArmorDefinition,
   createItemDefinition,
@@ -357,7 +359,7 @@ export const TRAUMA_PLATES: ArmorDefinition[] = [
       compatibleInsertSlots: ["plate:front", "plate:rear"],
       barterValue: "GG105",
       streetPrice: 210,
-      traits: ["ceramic-composite"],
+      traits: ["ceramic","composite"],
     },
   }),
   createArmorDefinition({
@@ -373,7 +375,7 @@ export const TRAUMA_PLATES: ArmorDefinition[] = [
       compatibleInsertSlots: ["plate:left-side", "plate:right-side"],
       barterValue: "GG70",
       streetPrice: 140,
-      traits: ["ceramic-composite"],
+      traits: ["ceramic","composite"],
     },
   }),
   createArmorDefinition({
@@ -389,7 +391,7 @@ export const TRAUMA_PLATES: ArmorDefinition[] = [
       compatibleInsertSlots: ["plate:front", "plate:rear"],
       barterValue: "GG120",
       streetPrice: 240,
-      traits: ["ceramic-composite"],
+      traits: ["ceramic","composite"],
     },
   }),
   createArmorDefinition({
@@ -405,7 +407,7 @@ export const TRAUMA_PLATES: ArmorDefinition[] = [
       compatibleInsertSlots: ["plate:left-side", "plate:right-side"],
       barterValue: "GG100",
       streetPrice: 200,
-      traits: ["ceramic-composite"],
+      traits: ["ceramic","composite"],
       notes: ["Front and rear plate coverage stacks up to about 90%; side coverage stacks up to about 40%."],
     },
   }),

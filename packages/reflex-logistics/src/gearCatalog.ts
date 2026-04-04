@@ -1,5 +1,6 @@
 import { SMALL_ARMS_AMMUNITION_ITEMS } from "./ammunition";
 import { ARMOR_CATALOG } from "./armorCatalog";
+import { CLOSE_COMBAT_WEAPONS } from "./closeCombatCatalog";
 import { ELECTRONICS_CATALOG } from "./electronicsCatalog";
 import { GENERIC_CATALOG } from "./genericCatalog";
 import { RANGED_CATALOG } from "./rangedCatalog";
@@ -8,6 +9,7 @@ import { WEAPON_ATTACHMENTS } from "./weaponAttachmentsCatalog";
 
 export * from "./ammunition";
 export * from "./armorCatalog";
+export * from "./closeCombatCatalog";
 export * from "./electronicsCatalog";
 export * from "./genericCatalog";
 export * from "./rangedCatalog";
@@ -16,6 +18,7 @@ export * from "./weaponAttachmentsCatalog";
 export const GEAR_CATALOG: ItemDefinition[] = [
   ...GENERIC_CATALOG,
   ...SMALL_ARMS_AMMUNITION_ITEMS,
+  ...CLOSE_COMBAT_WEAPONS,
   ...ELECTRONICS_CATALOG,
   ...RANGED_CATALOG,
   ...WEAPON_ATTACHMENTS,

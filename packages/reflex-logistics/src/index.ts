@@ -1,4 +1,6 @@
 export * from "./ammunition";
+export * from "./closeCombatCatalog";
+export * from "./containerCatalog";
 export * from "./gearCatalog";
 export * from "./equipmentLayouts";
 export * from "./inventory";
