@@ -1,4 +1,4 @@
-import type { RangeBandName } from "reflex-combat";
+import type { RangeBandName } from "reflex-core";
 
 export interface WeaponStatModifier {
   hip: number;

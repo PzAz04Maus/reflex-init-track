@@ -42,6 +42,7 @@ class ItemDefinition {
     weight;
     tags;
     traits;
+    notes;
     barterValue;
     streetPrice;
     duration;
@@ -61,6 +62,7 @@ class ItemDefinition {
         this.weight = input.weight;
         this.tags = input.tags;
         this.traits = input.traits ? [...input.traits] : undefined;
+        this.notes = input.notes ? [...input.notes] : undefined;
         this.barterValue = input.barterValue;
         this.streetPrice = input.streetPrice;
         this.duration = input.duration;
@@ -82,6 +84,7 @@ class ItemDefinition {
             weight: this.weight,
             tags: this.tags,
             traits: this.traits ? [...this.traits] : undefined,
+            notes: this.notes ? [...this.notes] : undefined,
             barterValue: this.barterValue,
             streetPrice: this.streetPrice,
             duration: this.duration,

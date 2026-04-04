@@ -1,9 +1,0 @@
-{
-  "name": "reflex-init",
-  "version": "0.1.0",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "dependencies": {
-    "reflex-core": "workspace:*"
-  }
-}

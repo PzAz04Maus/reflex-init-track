@@ -1,1 +1,0 @@
-//# sourceMappingURL=Adapter.d.ts.map

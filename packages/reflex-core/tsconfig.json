@@ -4,13 +4,13 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "build",
     "types": ["fvtt-types"],
     "jsx": "react-jsx"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "mathlive-jsx.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "main.tsx", "setupTests.ts"],
   "references": [
-
+    { "path": "../reflex-framework" }
   ]
 }

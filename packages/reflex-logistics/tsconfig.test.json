@@ -8,12 +8,12 @@
     "types": ["fvtt-types", "node"],
     "baseUrl": ".",
     "paths": {
-      "reflex-combat": ["../reflex-combat/src/index.ts"],
-      "reflex-combat/*": ["../reflex-combat/src/*"]
+      "reflex-core": ["../reflex-core/src/index.ts"],
+      "reflex-core/*": ["../reflex-core/src/*"]
     }
   },
   "include": ["src/**/*.ts", "tests/**/*.ts"],
   "references": [
-    { "path": "../reflex-combat" }
+    { "path": "../reflex-core" }
   ]
 }

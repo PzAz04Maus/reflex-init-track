@@ -5,11 +5,11 @@
 const fs = require('fs');
 const path = require('path');
 
-// Source locations for the reflex-init package
-const foundryDistDir = path.resolve(__dirname, '..', 'build', 'packages', 'reflex-init', 'src', 'vtt', 'foundry');
-const foundryStyles = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'styles', 'foundry.css');
-const foundryTemplatesDir = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'templates', 'foundry');
-const moduleJson = path.resolve(__dirname, '..', 'packages', 'reflex-init', 'src', 'vtt', 'foundry', 'module.json');
+// Source locations for the active reflex-core package
+const foundryDistDir = path.resolve(__dirname, '..', 'build', 'packages', 'reflex-core', 'src', 'vtt', 'foundry');
+const foundryStyles = path.resolve(__dirname, '..', 'packages', 'reflex-core', 'src', 'styles', 'foundry.css');
+const foundryTemplatesDir = path.resolve(__dirname, '..', 'packages', 'reflex-core', 'src', 'templates', 'foundry');
+const moduleJson = path.resolve(__dirname, '..', 'packages', 'reflex-core', 'src', 'vtt', 'foundry', 'module.json');
 
 // Target directory
 const targetDir = process.argv[2] || path.resolve(__dirname, '..', 'build', 'reflex-module');
@@ -21,10 +21,10 @@ function assertExists(file, label) {
   }
 }
 
-assertExists(foundryDistDir, 'build/packages/reflex-init/src/vtt/foundry directory');
-assertExists(foundryStyles, 'packages/reflex-init/src/styles/foundry.css');
-assertExists(foundryTemplatesDir, 'packages/reflex-init/src/templates/foundry directory');
-assertExists(moduleJson, 'packages/reflex-init/src/vtt/foundry/module.json');
+assertExists(foundryDistDir, 'build/packages/reflex-core/src/vtt/foundry directory');
+assertExists(foundryStyles, 'packages/reflex-core/src/styles/foundry.css');
+assertExists(foundryTemplatesDir, 'packages/reflex-core/src/templates/foundry directory');
+assertExists(moduleJson, 'packages/reflex-core/src/vtt/foundry/module.json');
 
 function copyFile(src, dest) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });

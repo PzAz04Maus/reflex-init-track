@@ -1,12 +1,11 @@
-import type { CombatState, TurnAdvanceResult, CharacterRecord, CharacterId, InitiativeState } from './../types';
+import type { CombatState, CharacterRecord, CharacterId, InitiativeState } from 'reflex-core';
 
 // AddActorInput now requires character to be a CharacterRecord
 export interface AddActorInput {
   character: CharacterRecord;
   state?: Partial<InitiativeState>;
 }
-import { getNextActor, getNextActors } from '../state/getNextActor';
-import { selectActors, withActors } from '../selectors/combatSelectors';
+import { selectActors, withActors } from 'reflex-core';
 
 // Calculate margin for roll
 export function computeMargin(roll: number, target: number): number {
@@ -18,6 +17,7 @@ export function computeOodaAdjustedInit(baseInit: number, roll: number, target: 
   return baseInit + computeMargin(roll, target);
 }
 
+
 // Used for late joiners
 export function joinMidFightInitialInit(actors: CharacterRecord[], baseInit: number): number {
   if (actors.length === 0) return baseInit;
@@ -25,7 +25,15 @@ export function joinMidFightInitialInit(actors: CharacterRecord[], baseInit: num
   return baseInit + lowestVal;
 }
 
-// ...existing code...
+
+export function sortActors(list: CharacterRecord[]): CharacterRecord[] {
+  return [...list].sort((a: CharacterRecord, b: CharacterRecord) => {
+    const aVal = a.init.val ?? 0;
+    const bVal = b.init.val ?? 0;
+    if (aVal !== bVal) return aVal - bVal;
+    return a.name.localeCompare(b.name);
+  });
+}
 
 // Add a new actor to combat
 /**
@@ -39,18 +47,17 @@ export function addActor(state: CombatState, input: AddActorInput): CombatState 
   return withActors(state, [...existing, character]);
 }
 
+
 // Update an actor's action cost
 export function updateActorCost(state: CombatState, characterId: CharacterId, actionCost: number): CombatState {
-  return withActors(state, state.actors.map(actor => {
-    if (actor.id !== characterId) return actor;
-    const prevAction = actor.action ?? { id: '', name: '', cost: 0 };
-    return {
-      ...actor,
-      action: {
-        id: prevAction.id,
-        name: prevAction.name,
-        cost: actionCost
-      }
-    };
-  }));
+  return withActors(state, state.actors.map((actor: CharacterRecord) =>
+    actor.id === characterId
+      ? {
+          ...actor,
+          action: actor.action
+            ? { ...actor.action, cost: actionCost }
+            : { id: characterId, name: actor.name, cost: actionCost }
+        }
+      : actor
+  ));
 }

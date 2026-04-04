@@ -11,3 +11,6 @@ export * from "./inventory/factories";
 export * from "./inventory/mutations";
 export * from "./inventory/queries";
 export * from "./inventory/validation";
+
+// Backward-compatible exports used by existing tests and callers.
+export { ASSAULT_RIFLES, AUTOLOADERS, SUBMACHINE_GUNS } from "./rangedCatalog";

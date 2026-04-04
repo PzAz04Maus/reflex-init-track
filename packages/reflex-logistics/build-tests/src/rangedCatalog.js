@@ -64,6 +64,9 @@ function getDefaultSupportedAttachmentKinds(tags, crewServed) {
     if (tags.some((tag) => ["handgun", "smg", "shotgun", "assault-rifle"].includes(tag))) {
         kinds.add("iron-sight-replacement");
     }
+    if (tags.some((tag) => ["smg", "assault-rifle"].includes(tag))) {
+        kinds.add("fire-control-modification");
+    }
     if (isLongarm) {
         kinds.add("magnified-optic");
         kinds.add("support-accessory");

@@ -1,4 +1,3 @@
-
 import type { CombatState, CharacterData, EquipmentRecord } from "reflex-core";
 
 const emptyEquipment: EquipmentRecord = { byId: {}, order: [] };

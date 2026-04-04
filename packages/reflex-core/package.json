@@ -1,18 +1,9 @@
 {
-  "name": "foundry-reflex-system-skeleton",
-  "version": "1.0.0",
+  "name": "reflex-core",
+  "version": "0.1.0",
   "main": "build/index.js",
-    "types": "build/index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "types": "build/index.d.ts",
   "dependencies": {
-  },
-  "devDependencies": {
-    "typescript": "^5.4.0"
+    "reflex-framework": "workspace:*"
   }
 }

@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "src",
+    "outDir": "build",
+    "types": ["fvtt-types"],
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "mathlive-jsx.d.ts"],
+  "references": [
+
+  ]
+}

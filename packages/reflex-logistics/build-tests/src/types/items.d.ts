@@ -6,6 +6,7 @@ export interface ItemDefinitionInit {
     weight: number;
     tags?: string[];
     traits?: string[];
+    notes?: string[];
     barterValue?: string;
     streetPrice?: number | string;
     duration?: string;
@@ -33,6 +34,7 @@ export declare class ItemDefinition {
     weight: number;
     tags?: string[];
     traits?: string[];
+    notes?: string[];
     barterValue?: string;
     streetPrice?: number | string;
     duration?: string;

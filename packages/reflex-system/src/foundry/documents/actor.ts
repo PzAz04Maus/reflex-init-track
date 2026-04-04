@@ -1,6 +1,6 @@
 // @ts-ignore: Foundry VTT global types
 declare const Actor: any;
-import { clamp } from "../../../../reflex-core/src/utils/clamp";
+import { clamp } from "../../../../reflex-framework/src/utils/clamp";
 
 export class ReflexActor extends (Actor as { new (...args: any[]): any }) {
   prepareDerivedData(): void {

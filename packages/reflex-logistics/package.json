@@ -2,8 +2,11 @@
   "name": "reflex-logistics",
   "version": "0.1.0",
   "scripts": {
-    "test": "powershell -NoProfile -Command \"Set-Location (Split-Path $env:npm_package_json); tsc -p tsconfig.test.json; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; node --test build-tests/tests\""
+    "test": "powershell -NoProfile -Command \"Set-Location (Split-Path $env:npm_package_json); tsc -b tsconfig.test.json; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; node --test build-tests/tests\""
   },
   "main": "build/index.js",
-  "types": "build/index.d.ts"
+  "types": "build/index.d.ts",
+  "dependencies": {
+    "reflex-core": "workspace:*"
+  }
 }

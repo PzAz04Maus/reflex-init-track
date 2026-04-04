@@ -58,7 +58,7 @@ function createCloseCombatWeapon(row: CloseCombatRow): ItemDefinition {
     streetPrice: row.streetPrice,
     voucherCost: row.voucherCost,
     description: row.description,
-    notes: [createCombatProfileNote(row), ...(row.notes ?? [])],
+    source: [createCombatProfileNote(row), ...(row.notes ?? [])],
   });
 }
 

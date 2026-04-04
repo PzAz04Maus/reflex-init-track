@@ -12,14 +12,18 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "reflex-combat": ["packages/reflex-combat"],
-      "reflex-combat/*": ["packages/reflex-combat/*"],
       "reflex-core": ["packages/reflex-core/src"],
-      "reflex-core/*": ["packages/reflex-core/src/*"]
+      "reflex-core/*": ["packages/reflex-core/src/*"],
+      "reflex-framework": ["packages/reflex-framework/src/index.ts"],
+      "reflex-framework/*": ["packages/reflex-framework/src/*"],
+      "reflex-mods": ["packages/reflex-mods/src/index.ts"],
+      "reflex-mods/*": ["packages/reflex-mods/src/*"]
     },
   },
   "include": [
     "src/**/*.ts",
-    "packages/*/src/**/*.ts"
-, "packages/reflex-core/src/calc.tsx"  ]
+    "src/**/*.tsx",
+    "packages/*/src/**/*.ts",
+    "packages/*/src/**/*.tsx"
+  ]
 }

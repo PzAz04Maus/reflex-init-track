@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "archive:copilot-log": "node ./scripts/archive-copilot-log.js",
     "build": "tsc --outDir build",
     "package:foundry": "node ./scripts/copy-foundry-assets.js",
     "make": "node ./scripts/make.js"

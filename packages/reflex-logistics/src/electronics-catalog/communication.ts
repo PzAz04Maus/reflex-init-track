@@ -18,7 +18,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		batteryCount: 4,
 		batterySize: "med",
 		runtimeHours: 6,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 		description: "Hand-held civilian CB set with short tactical range.",
 	}),
 	defineElectronicItem({
@@ -29,7 +29,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		barterValue: "GG75",
 		streetPrice: 150,
 		powerRequirement: "0.5 kW",
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineElectronicItem({
 		id: "communication:receiver-emergency",
@@ -39,7 +39,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		barterValue: "GG50",
 		streetPrice: 50,
 		powerRequirement: "see text",
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineBatteryDevice({
 		id: "communication:radio-personal",
@@ -52,7 +52,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		batteryCount: 4,
 		batterySize: "sm",
 		runtimeHours: 8,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineBatteryDevice({
 		id: "communication:radio-personal-licensed",
@@ -65,7 +65,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		batteryCount: 4,
 		batterySize: "sm",
 		runtimeHours: 6,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineElectronicItem({
 		id: "communication:radio-scanner",
@@ -75,7 +75,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		barterValue: "GG12.5",
 		streetPrice: 50,
 		powerRequirement: "0.2 kW",
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineAcPoweredDevice({
 		id: "communication:radio-shortwave-vehicular",
@@ -86,7 +86,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		streetPrice: 2000,
 		powerRequirement: "1.2 kW",
 		kilowatts: 1.2,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineAcPoweredDevice({
 		id: "communication:radio-shortwave-stationary",
@@ -97,7 +97,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		streetPrice: 3000,
 		powerRequirement: "1.5 kW",
 		kilowatts: 1.5,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineRechargeableDevice({
 		id: "communication:radio-manpack",
@@ -108,7 +108,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		streetPrice: 6500,
 		powerRequirement: "charge/33 hrs",
 		runtimeHours: 33,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineRechargeableDevice({
 		id: "communication:radio-survival",
@@ -119,7 +119,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		streetPrice: 3000,
 		powerRequirement: "charge/24 hrs",
 		runtimeHours: 24,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineRechargeableDevice({
 		id: "communication:radio-tactical",
@@ -130,7 +130,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		streetPrice: 1500,
 		powerRequirement: "charge/20 hrs",
 		runtimeHours: 20,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineAcPoweredDevice({
 		id: "communication:radio-vehicular-military",
@@ -141,7 +141,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		streetPrice: 6500,
 		powerRequirement: "2 kW",
 		kilowatts: 2,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineElectronicItem({
 		id: "communication:radio-modem-shortwave",
@@ -150,7 +150,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		tags: ["communication", "radio", "signal", "modem", "accessory"],
 		barterValue: "GG75",
 		streetPrice: 150,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineElectronicItem({
 		id: "communication:field-telephone",
@@ -159,7 +159,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		tags: ["communication", "signal", "wired", "telephone"],
 		barterValue: "GG50",
 		streetPrice: 500,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineElectronicItem({
 		id: "communication:field-telephone-wire-100m",
@@ -168,7 +168,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		tags: ["communication", "signal", "wired", "telephone", "cable"],
 		barterValue: "GG5",
 		streetPrice: 50,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineElectronicItem({
 		id: "communication:field-telephone-switchboard",
@@ -177,7 +177,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		tags: ["communication", "signal", "wired", "telephone", "switchboard"],
 		barterValue: "GG120",
 		streetPrice: 1200,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.221"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.221"],
 	}),
 	defineElectronicItem({
 		id: "communication:signal-strobe-light",
@@ -186,7 +186,7 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		tags: ["communication", "signal", "visual", "strobe", "electronic"],
 		barterValue: "GG25",
 		streetPrice: 50,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.220"],
 	}),
 	defineElectronicItem({
 		id: "communication:signal-strobe-light-ir",
@@ -195,6 +195,6 @@ export const COMMUNICATION_ITEMS: ItemDefinition[] = [
 		tags: ["communication", "signal", "visual", "strobe", "infrared", "electronic"],
 		barterValue: "GG100",
 		streetPrice: 250,
-		notes: ["Source: Twilight 2013 Core OEF PDF p.220"],
+		source: ["Source: Twilight 2013 Core OEF PDF p.220"],
 	}),
 ];
