@@ -7,9 +7,9 @@ Initialized 23MAR2026
 
 # Big Picture
 
-This is a module for foundry which implements the Reflex system ruleset as presented in the book.
+This is a module for Foundry VTT which implements the Reflex system ruleset as presented in the book. This project is now called Reflex-fvtt.
 
-This project started as an attempt to implement the reflex systems initiative system. Twilight 2013 uses a scheduled-turn initiative system, where every actor's actions are placed on a track, and turns are resolved as a queue.
+This project started as an attempt to implement the Reflex systems initiative system. Twilight 2013 uses a scheduled-turn initiative system, where every actor's actions are placed on a track, and turns are resolved as a queue. The project was previously called reflex-init-track.
 
 Once complete with the canonical ruleset, this module will come packaged with updates and fixes to improve gameplay.
 
@@ -20,7 +20,7 @@ Once complete with the canonical ruleset, this module will come packaged with up
 
 # Todo
 
-- [ ] Full Reflex Engine dev
+- [ ] Full Reflex Engine dev for Foundry VTT
 - [ ] Scale measurements to fit large scale UI
 - [ ] AB13 extensions
 - [ ] Random terrain?
