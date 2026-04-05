@@ -5,11 +5,14 @@
     "declaration": true,
     "declarationMap": true,
     "rootDir": "src",
-    "outDir": "build"
+    "outDir": "build",
+    "types": ["fvtt-types"],
+    "jsx": "react-jsx"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
   "references": [
+    { "path": "../reflex-framework" },
     { "path": "../reflex-core" },
-    { "path": "../reflex-framework" }
+    { "path": "../reflex-system" }
   ]
 }

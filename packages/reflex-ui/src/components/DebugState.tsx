@@ -1,4 +1,4 @@
-import type { CombatState } from "../types";
+import type { CombatState } from 'reflex-core';
 
 export function DebugState({ state }: { state: CombatState }) {
   return (

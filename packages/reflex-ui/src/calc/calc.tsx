@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import "../mathlive-jsx";
-import { create, all } from "mathjs";
-import "mathlive";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { create, all } from 'mathjs';
+import 'mathlive';
+import '../mathlive-jsx';
 
 const math = create(all, {});
-
 
 type HistoryItem = {
   id: number;
@@ -15,47 +14,44 @@ type HistoryItem = {
 export default function App() {
   const mathFieldRef = useRef<HTMLElement | null>(null);
   const parserRef = useRef(math.parser());
-  const [expression, setExpression] = useState("2/3 + sqrt(5)");
-  const [result, setResult] = useState("");
-  const [error, setError] = useState("");
+  const [expression, setExpression] = useState('2/3 + sqrt(5)');
+  const [result, setResult] = useState('');
+  const [error, setError] = useState('');
   const [history, setHistory] = useState<HistoryItem[]>([]);
 
   const examples = useMemo(
-    () => [
-      "2/3 + sqrt(5)",
-      "sin(pi / 4)^2",
-      "5 cm to inch",
-      "det([[1, 2], [3, 4]])",
-      "a = 12",
-      "a * 3",
-    ],
+    () => ['2/3 + sqrt(5)', 'sin(pi / 4)^2', '5 cm to inch', 'det([[1, 2], [3, 4]])', 'a = 12', 'a * 3'],
     []
   );
 
   useEffect(() => {
     const mf = mathFieldRef.current as any;
-    if (!mf) return;
+    if (!mf) {
+      return;
+    }
 
     mf.setOptions?.({
-      virtualKeyboardMode: "onfocus",
+      virtualKeyboardMode: 'onfocus',
       smartMode: false,
     });
 
     mf.value = expression;
 
     const onInput = () => {
-      const next = String(mf.value ?? "");
+      const next = String(mf.value ?? '');
       setExpression(next);
     };
 
-    mf.addEventListener("input", onInput);
-    return () => mf.removeEventListener("input", onInput);
+    mf.addEventListener('input', onInput);
+    return () => mf.removeEventListener('input', onInput);
   }, []);
 
   useEffect(() => {
     const mf = mathFieldRef.current as any;
-    if (!mf) return;
-    if (String(mf.value ?? "") !== expression) {
+    if (!mf) {
+      return;
+    }
+    if (String(mf.value ?? '') !== expression) {
       mf.value = expression;
     }
   }, [expression]);
@@ -63,16 +59,16 @@ export default function App() {
   const evaluateExpression = () => {
     const trimmed = expression.trim();
     if (!trimmed) {
-      setError("Enter an expression.");
-      setResult("");
+      setError('Enter an expression.');
+      setResult('');
       return;
     }
 
     try {
       const value = parserRef.current.evaluate(trimmed);
-      const formatted = typeof value === "string" ? value : math.format(value, { precision: 14 });
+      const formatted = typeof value === 'string' ? value : math.format(value, { precision: 14 });
       setResult(formatted);
-      setError("");
+      setError('');
       setHistory((prev) => [
         {
           id: Date.now(),
@@ -82,27 +78,27 @@ export default function App() {
         ...prev,
       ].slice(0, 12));
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Evaluation error";
+      const message = err instanceof Error ? err.message : 'Evaluation error';
       setError(message);
-      setResult("");
+      setResult('');
     }
   };
 
   const clearAll = () => {
-    setExpression("");
-    setResult("");
-    setError("");
+    setExpression('');
+    setResult('');
+    setError('');
   };
 
   const resetParser = () => {
     parserRef.current.clear();
-    setResult("");
-    setError("");
+    setResult('');
+    setError('');
     setHistory([]);
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter" && !event.shiftKey) {
+    if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       evaluateExpression();
     }
@@ -126,10 +122,7 @@ export default function App() {
 
           <div className="space-y-4">
             <label className="block text-sm font-medium text-slate-300">Expression</label>
-            <div
-              className="rounded-2xl border border-slate-700 bg-slate-950 p-4 shadow-inner"
-              onKeyDown={onKeyDown}
-            >
+            <div className="rounded-2xl border border-slate-700 bg-slate-950 p-4 shadow-inner" onKeyDown={onKeyDown}>
               <math-field
                 ref={(node: HTMLElement | null) => {
                   mathFieldRef.current = node;
@@ -140,22 +133,13 @@ export default function App() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <button
-                onClick={evaluateExpression}
-                className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-slate-900 shadow hover:bg-slate-200"
-              >
+              <button onClick={evaluateExpression} className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-slate-900 shadow hover:bg-slate-200">
                 Evaluate
               </button>
-              <button
-                onClick={clearAll}
-                className="rounded-2xl border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-800"
-              >
+              <button onClick={clearAll} className="rounded-2xl border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-800">
                 Clear field
               </button>
-              <button
-                onClick={resetParser}
-                className="rounded-2xl border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-800"
-              >
+              <button onClick={resetParser} className="rounded-2xl border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-800">
                 Reset variables
               </button>
             </div>

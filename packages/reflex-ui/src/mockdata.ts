@@ -1,4 +1,4 @@
-import type { CombatState, InitiativeState, CharacterData, CharacterBio, EquipmentRecord } from "./types";
+import type { CharacterBio, CharacterData, CombatState, EquipmentRecord, InitiativeState } from 'reflex-core';
 
 const makeInit = (val: number, joined: boolean): InitiativeState => ({
   base: val,
@@ -7,7 +7,7 @@ const makeInit = (val: number, joined: boolean): InitiativeState => ({
   joined,
 });
 
-const makeData = (ood: number): CharacterData => ({
+const makeData = (ooda: number): CharacterData => ({
   awareness: 5,
   coordination: 5,
   fitness: 5,
@@ -16,7 +16,7 @@ const makeData = (ood: number): CharacterData => ({
   education: 5,
   personality: 5,
   resolve: 5,
-  ooda: ood,
+  ooda,
   cuf: 0,
 });
 
@@ -28,8 +28,8 @@ export const mockCombatState: CombatState = {
   lastActingIds: [],
   actors: [
     {
-      id: "a1",
-      name: "Alpha",
+      id: 'a1',
+      name: 'Alpha',
       init: makeInit(20, true),
       action: { id: 'a1-action', name: 'Attack', cost: 5 },
       data: makeData(10),
@@ -37,8 +37,8 @@ export const mockCombatState: CombatState = {
       equipment: emptyEquipment,
     },
     {
-      id: "a2",
-      name: "Bravo",
+      id: 'a2',
+      name: 'Bravo',
       init: makeInit(18, true),
       action: { id: 'a2-action', name: 'Defend', cost: 4 },
       data: makeData(8),
@@ -46,8 +46,8 @@ export const mockCombatState: CombatState = {
       equipment: emptyEquipment,
     },
     {
-      id: "a3",
-      name: "Charlie",
+      id: 'a3',
+      name: 'Charlie',
       init: makeInit(15, true),
       action: { id: 'a3-action', name: 'Move', cost: 3 },
       data: makeData(7),
@@ -55,8 +55,8 @@ export const mockCombatState: CombatState = {
       equipment: emptyEquipment,
     },
     {
-      id: "a4",
-      name: "Delta",
+      id: 'a4',
+      name: 'Delta',
       init: makeInit(10, false),
       action: { id: 'a4-action', name: 'Wait', cost: 2 },
       data: makeData(5),

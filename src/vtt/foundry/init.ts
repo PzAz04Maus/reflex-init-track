@@ -1,5 +1,4 @@
-import { registerReflexDebugPanel } from 'reflex-core/ui/foundry/debug-panel';
-import { ReflexSchedulerPanel } from 'reflex-core/ui/foundry/panel';
+import { registerReflexDebugPanel, ReflexSchedulerPanel } from 'reflex-ui/foundry';
 
 Hooks.once('init', () => {
   foundry.applications.handlebars.loadTemplates([

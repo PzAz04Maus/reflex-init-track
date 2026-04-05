@@ -15,15 +15,12 @@
   "esmodules": [
     "vtt/foundry/init.js"
   ],
-  "scripts": [
-  ],
+  "scripts": [],
   "styles": [
     "styles/foundry.css"
   ],
-  "packs": [
-  ],
-  "languages": [
-  ],
+  "packs": [],
+  "languages": [],
   "readme": "README.md",
   "license": "LICENSE",
   "bugs": "https://github.com/your-repo/issues",

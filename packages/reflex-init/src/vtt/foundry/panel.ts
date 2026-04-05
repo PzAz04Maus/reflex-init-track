@@ -1,1 +1,1 @@
-export { ReflexSchedulerPanel } from 'reflex-core/ui/foundry/panel';
+export { ReflexSchedulerPanel } from 'reflex-ui/foundry/panel';

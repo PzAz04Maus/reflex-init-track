@@ -1,3 +1,5 @@
+import { MODULE_ID } from 'reflex-system/foundry';
+
 const MixedApplication = HandlebarsApplicationMixin.mixed(ApplicationV2);
 
 let hasRegisteredDebugPanel = false;
@@ -19,7 +21,7 @@ export class ReflexDebugPanel extends MixedApplication {
   async _prepareContext(): Promise<Record<string, unknown>> {
     return {
       actors: game.actors?.contents || [],
-      trackerState: game.modules.get('reflex-scheduler')?.api?.getState?.() || {},
+      trackerState: game.modules.get(MODULE_ID)?.api?.getState?.() || {},
     };
   }
 
@@ -29,10 +31,12 @@ export class ReflexDebugPanel extends MixedApplication {
 
   async _onRender(_context: Record<string, unknown>, _options: Record<string, unknown>): Promise<void> {
     const root = document.querySelector('#reflex-debug-panel');
-    if (!root) return;
+    if (!root) {
+      return;
+    }
 
     root.querySelector('.advance-turn')?.addEventListener('click', () => {
-      game.modules.get('reflex-scheduler')?.api?.advanceTurn?.();
+      game.modules.get(MODULE_ID)?.api?.advanceTurn?.();
       this.render(true);
     });
   }
