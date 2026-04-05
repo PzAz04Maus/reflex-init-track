@@ -1,5 +1,23 @@
 Initialized 23MAR2026
 
+
+**Notes:**
+- The current Foundry adapter is a prototype. File locations and `module.json` may change as the project matures.
+- This project is not yet published on the Foundry package manager; manual installation is required.
+
+# Big Picture
+
+This is a module for foundry which implements the Reflex system ruleset as presented in the book.
+
+This project started as an attempt to implement the reflex systems initiative system. Twilight 2013 uses a scheduled-turn initiative system, where every actor's actions are placed on a track, and turns are resolved as a queue.
+
+Once complete with the canonical ruleset, this module will come packaged with updates and fixes to improve gameplay.
+
+## UI prototype
+
+![](drawing.png)
+
+
 # Todo
 
 - [ ] Full Reflex Engine dev
@@ -68,19 +86,6 @@ After running `npm run make`, the packaged Foundry module will be in `build/refl
    - By default, this is at `%localappdata%/FoundryVTT/Data/modules/` on Windows.
 2. In Foundry, go to **Configuration > Manage Modules** and enable the Reflex Scheduler module.
 3. Open a combat encounter. The Reflex Scheduler panel should be available from the UI or via the module's controls.
-
-**Notes:**
-- The current Foundry adapter is a prototype. File locations and `module.json` may change as the project matures.
-- This project is not yet published on the Foundry package manager; manual installation is required.
-
-# Big Picture
-
-Twilight 2013 uses a scheduled-turn initiative system, where every actor's actions are placed on a track, and turns are resolved as a queue.
-
-## UI prototype
-
-![](drawing.png)
-
 
 # Book Mechanics
 
