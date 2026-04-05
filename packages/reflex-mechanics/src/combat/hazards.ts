@@ -1,4 +1,6 @@
 import type { EncumbranceLevel, HitLocation, InjurySeverity } from '../types';
+import { getVehicleOrStructureFirePenetration } from '../strategic/buildings';
+import type { StructuralProtectionClass } from '../strategic/types';
 import { worsenInjurySeverity } from './damage';
 
 export const HAZARD_RULES_SOURCE = 'Twilight 2013 Core OEF PDF pp.154-157';
@@ -28,7 +30,7 @@ export type FireSize =
   | 'structure'
   | 'completeEnvelopment';
 
-export type FireProtectionClass = 'bodyArmor' | 'protectiveGear' | 'vehicleOrStructure';
+export type FireProtectionClass = StructuralProtectionClass;
 
 export type ImpactProtectionClass = 'softArmor' | 'helmet' | 'rigidArmor';
 
@@ -274,7 +276,7 @@ export function getFireAvoidanceModifier(size: FireSize): number {
 }
 
 export function getFirePenetration(targetClass: FireProtectionClass): 'x1/2' | 'x2' {
-  return targetClass === 'vehicleOrStructure' ? 'x2' : 'x1/2';
+  return targetClass === 'vehicleOrStructure' ? getVehicleOrStructureFirePenetration() : 'x1/2';
 }
 
 export function resolveFireExposure(source: FireSource, size: FireSize) {

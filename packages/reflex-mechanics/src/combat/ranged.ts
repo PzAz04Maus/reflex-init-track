@@ -6,19 +6,23 @@ import {
   HumanSizeRangeShift,
   type RangeBandName,
 } from '../rangeBands';
+import {
+  BUILDING_MATERIAL_ARMOR,
+  computeBuildingMaterialArmor,
+  getStructureScaleAttackPenalty,
+  resolveVehicleOrStructureCoverArmor,
+} from '../strategic/buildings';
+import type {
+  BuildingMaterial,
+  BuildingMaterialArmorProfile,
+  StructuralTargetClass,
+  VehicleOrStructureCoverOptions,
+} from '../strategic/types';
 import type { Stance } from '../types';
 
 export const RANGED_COMBAT_RULES_SOURCE = 'Twilight 2013 Core OEF PDF pp.145-147';
 
-export type CoverMaterial =
-  | 'advancedCeramicCompositeArmor'
-  | 'steelArmorPlate'
-  | 'sheetSteel'
-  | 'reinforcedConcrete'
-  | 'concreteBrick'
-  | 'stonePackedDirtWoodLiquid'
-  | 'fiberglass'
-  | 'looseDirt';
+export type CoverMaterial = BuildingMaterial;
 
 export type BurstHitOutcome = 'same-location' | 'random-location' | 'miss';
 
@@ -34,16 +38,9 @@ export interface RangedWeaponProfileLike {
   rateOfFire?: string;
 }
 
-export interface VehicleCoverOptions {
-  armor: number;
-  attackPassesThroughVehicle?: boolean;
-  usingEngineBlock?: boolean;
-}
+export type VehicleCoverOptions = VehicleOrStructureCoverOptions;
 
-export interface MaterialArmorProfile {
-  mmPerArmor: number;
-  multiplier: number;
-}
+export type MaterialArmorProfile = BuildingMaterialArmorProfile;
 
 export interface RangeResolution {
   targetRangeBand: RangeBandName;
@@ -86,7 +83,7 @@ export type HeavyWeaponCategory =
   | 'cannon'
   | 'structureScale';
 
-export type HeavyWeaponTargetClass = 'character' | 'passengerVehicle' | 'vehicleOrStructure';
+export type HeavyWeaponTargetClass = StructuralTargetClass;
 
 export interface BurstHitResolution {
   additionalHits: number;
@@ -110,16 +107,7 @@ export interface RecoilResolution {
   followUpPenalty: number;
 }
 
-export const COVER_MATERIAL_ARMOR: Record<CoverMaterial, MaterialArmorProfile> = {
-  advancedCeramicCompositeArmor: { mmPerArmor: 2.5, multiplier: 0.4 },
-  steelArmorPlate: { mmPerArmor: 5, multiplier: 0.2 },
-  sheetSteel: { mmPerArmor: 6, multiplier: 0.16 },
-  reinforcedConcrete: { mmPerArmor: 25, multiplier: 0.04 },
-  concreteBrick: { mmPerArmor: 35, multiplier: 0.03 },
-  stonePackedDirtWoodLiquid: { mmPerArmor: 50, multiplier: 0.02 },
-  fiberglass: { mmPerArmor: 150, multiplier: 0.007 },
-  looseDirt: { mmPerArmor: 250, multiplier: 0.004 },
-};
+export const COVER_MATERIAL_ARMOR: Record<CoverMaterial, MaterialArmorProfile> = BUILDING_MATERIAL_ARMOR;
 
 const THROWING_RANGE_BY_MUSCLE: ReadonlyArray<{
   minMuscle: number;
@@ -390,7 +378,7 @@ export function getHeavyWeaponAttackPenalty(
   targetClass: HeavyWeaponTargetClass,
 ): number | null {
   if (weaponCategory === 'structureScale') {
-    return targetClass === 'vehicleOrStructure' ? 0 : null;
+    return getStructureScaleAttackPenalty(targetClass);
   }
 
   if (weaponCategory === 'machineGun' || weaponCategory === 'flamethrower') {
@@ -417,12 +405,9 @@ export function getHeavyWeaponAttackPenalty(
 }
 
 export function computeMaterialCoverArmor(material: CoverMaterial, thicknessMm: number): number {
-  return thicknessMm * COVER_MATERIAL_ARMOR[material].multiplier;
+  return computeBuildingMaterialArmor(material, thicknessMm);
 }
 
 export function resolveVehicleCoverArmor(options: VehicleCoverOptions): number {
-  const throughVehicleMultiplier = options.attackPassesThroughVehicle ? 2 : 1;
-  const engineBonus = options.usingEngineBlock ? 12 : 0;
-
-  return options.armor * throughVehicleMultiplier + engineBonus;
+  return resolveVehicleOrStructureCoverArmor(options);
 }

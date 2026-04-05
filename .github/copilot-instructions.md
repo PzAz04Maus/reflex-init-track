@@ -15,6 +15,7 @@ The current source of truth is package-based.
 
 - `packages/reflex-mechanics/`
   - Primary rules package
+  - Includes `src/strategic/` for Chapter 6 survival, maintenance, fatigue, healing, disease, and other strategic-layer campaign rules
 
 - `packages/reflex-ui`
   - UI for debug, sandbox and players/gm, mock state, Foundry-facing UI glue, compatibility re-exports from `reflex-framework`

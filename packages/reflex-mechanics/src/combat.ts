@@ -1,4 +1,6 @@
 export * from './combat/catalog';
+export * from './combat/tactical/catalog';
+export * from './combat/operational/catalog';
 export * from './combat/advanced';
 export * from './combat/closeCombat';
 export * from './combat/damage';

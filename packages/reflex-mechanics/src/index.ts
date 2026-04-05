@@ -15,3 +15,4 @@ export {
 	joinMidFightInitialInit,
 	updateActorCost,
 } from './rules/advanceTurn';
+export * from './strategic';

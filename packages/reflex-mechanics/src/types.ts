@@ -1,3 +1,5 @@
+import type { DiseaseId, FatigueLevel, ShelterGrade } from './strategic/types';
+
 // --- Core combat state types (restored from legacy) ---
 // Transient, per-combat initiative state
 export interface InitiativeState {
@@ -54,6 +56,17 @@ export interface CharacterHealthState {
 	unconscious: boolean;
 	dead: boolean;
 }
+//why not turn this into a potential key-list of states and have a lookup function 
+// that handles the logic of that state?
+export interface CharacterStrategicState {
+	fatigue: FatigueLevel;
+	shelter: ShelterGrade;
+	sleeping: boolean;
+	starving: boolean;
+	dehydrated: boolean;
+	chronicallyFatigued: boolean;
+	activeDiseaseIds: DiseaseId[];
+}
 
 export type ActionCadence = "tactical" | "operational" | "free";
 
@@ -89,8 +102,13 @@ export interface CombatantState {
 	tacticalMovementRate: TacticalMovementRate;
 	dominantHand?: DominantHand;
 	movementCapFromHealth?: TacticalMovementRate | null;
+	movementCapFromStrategic?: TacticalMovementRate | null;
 	woundPenalty?: number;
 	physicalWoundPenalty?: number;
+	strategicPenalty?: number;
+	physicalStrategicPenalty?: number;
+	actionPenalty?: number;
+	physicalActionPenalty?: number;
 	healthInjuryThreat?: number;
 	baseThreatLevel?: number;
 	pressChoice: PressHoldChoice | null;
@@ -124,9 +142,35 @@ export interface TurnAdvanceResult {
 }
 // --- Types merged from reflex-shared ---
 export type CharacterId = string;
+export type BuildingId = string;
 
 export interface CharacterState {
 	characters: Record<CharacterId, CharacterRecord>;
+}
+
+export interface BuildingState {
+	buildings: Record<BuildingId, BuildingRecord>;
+}
+
+export interface BuildingRecord {
+	id: BuildingId;
+	name: string;
+	description?: string;
+	size?: string;
+	armor: number;
+	damageThreshold: number;
+	structuralIntegrity: number;
+	currentStructuralIntegrity?: number;
+	shelter: ShelterGrade;
+	baselineShelter?: ShelterGrade;
+	floorSpaceSquareMeters?: number;
+	//what if this just got turned into a list of spaces with their own tags/properties? could be used for things like cover, or to model things like multi-level buildings
+	livingSpace?: number;
+	dominantMaterialClass?: 'light' | 'heavy' | 'industrial';
+	isClimateControlled?: boolean;
+	tags?: string[];
+	traits?: string[];
+	source?: string;
 }
 
 type EquipmentId = string;
@@ -183,6 +227,7 @@ export interface CharacterRecord {
 	combatantId?: string | null;
 	data: CharacterData;
 	health?: CharacterHealthState;
+	strategic?: CharacterStrategicState;
 	bio: CharacterBio;
 	equipment: EquipmentRecord;
 	init: InitiativeState;
