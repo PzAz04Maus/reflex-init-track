@@ -7,6 +7,7 @@ export const SURVIVAL_POISON_SOURCE = 'Twilight 2013 Core OEF PDF pp.179-182';
 export const SURVIVAL_MAINTENANCE_SOURCE = 'Twilight 2013 Core OEF PDF pp.186-187';
 export const STRUCTURAL_RULES_SOURCE = 'Twilight 2013 Core OEF PDF pp.192-195';
 export const RESUPPLY_RULES_SOURCE = 'Twilight 2013 Core OEF PDF pp.188-191';
+export const NATURAL_WORLD_RULES_SOURCE = 'Twilight 2013 Core OEF PDF pp.196-200';
 
 export type StrategicAttributeKey = 'cognition' | 'coordination' | 'fitness' | 'muscle';
 
@@ -141,6 +142,16 @@ export type ScroungingEnvironment = 'urban' | 'rural' | 'wilderness';
 export type AmmoReplacementComponent = 'powder' | 'blackPowder' | 'primer' | 'bullet' | 'casing';
 
 export type FuelContainerSealing = 'open' | 'closed';
+
+export type WeatherComplicationType = 'water' | 'particulates' | 'salt';
+
+export type AnimalStockType = 'cow' | 'donkey' | 'goat' | 'horse' | 'pig' | 'sheep';
+
+export type MeatPreservationMethod = 'salting' | 'smoking';
+
+export type TrainingSkillTier = 'unskilled' | 'novice' | 'competent' | 'professional' | 'expert';
+
+export type LearningExperienceSource = 'extraordinarySuccess' | 'catastrophicFailure' | 'assistance' | 'roleplaying';
 
 export type StructuralLoadClass = 'light' | 'significant' | 'designLimit';
 
@@ -484,6 +495,95 @@ export interface BiodieselProductionPlan {
 	alcoholLitersRequired: number;
 	productionChemicalUnitsRequired: number;
 	lightWorkHoursRequired: number;
+	notes: string[];
+}
+
+export interface WeatherForecastResolution {
+	forecastDays: number;
+	method: 'fieldcraft' | 'education';
+	notes: string[];
+}
+
+export interface WeatherComplicationResolution {
+	type: WeatherComplicationType;
+	penalty: number;
+	maintenanceUseLevelIncrease: boolean;
+	notes: string[];
+}
+
+export interface AnimalDressingResolution {
+	usableMeatKg: number;
+	usableHidePercent: number;
+	percentageRecovered: number;
+	notes: string[];
+}
+
+export interface MeatPreservationResolution {
+	hoursRequired: number;
+	durationDays: number;
+	preservedMonths: number;
+	saltKgRequired: number;
+	requiresFirewood: boolean;
+	notes: string[];
+}
+
+export interface PastureRequirementResolution {
+	animal: AnimalStockType;
+	headCount: number;
+	hectaresRequired: number;
+	notes: string[];
+}
+
+export interface LearningExperienceResolution {
+	source: LearningExperienceSource;
+	qualifies: boolean;
+	notes: string[];
+}
+
+export interface DowntimeLearningResolution {
+	rollsMade: number;
+	skillPointsGained: number;
+	notes: string[];
+}
+
+export interface SkillTrainingPlan {
+	instructionHours: number;
+	maxStudents: number;
+	instructorPenalty: number;
+	notes: string[];
+}
+
+export interface SkillTrainingResolution {
+	instructorSucceeded: boolean;
+	studentSucceeded: boolean;
+	skillPointGained: boolean;
+	notes: string[];
+}
+
+export interface BookLearningResolution {
+	studyHoursRequired: number;
+	canLearn: boolean;
+	countsAsLearningExperience: boolean;
+	notes: string[];
+}
+
+export interface QualificationTrainingPlan {
+	targetTotal: number;
+	periodHours: number;
+	maxStudents: number;
+	instructorPenalty: number;
+	notes: string[];
+}
+
+export interface QualificationTrainingResolution {
+	qualificationLearned: boolean;
+	notes: string[];
+}
+
+export interface CombatAttributeImprovementResolution {
+	improvementPointsGained: number;
+	canIncreaseAttribute: boolean;
+	remainingImprovementPoints: number;
 	notes: string[];
 }
 
