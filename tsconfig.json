@@ -28,5 +28,8 @@
     "src/**/*.tsx",
     "packages/*/src/**/*.ts",
     "packages/*/src/**/*.tsx"
+  ],
+  "exclude": [
+    "packages/reflex-core/**"
   ]
 }
