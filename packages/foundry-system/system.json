@@ -1,5 +1,5 @@
 {
-  "id": "reflex-system",
+  "id": "foundry-system",
   "title": "Reflex System",
   "description": "A custom Foundry VTT system for Reflex initiative and time-track play.",
   "version": "0.1.0",
@@ -10,7 +10,7 @@
   "authors": [
     { "name": "Your Name" }
   ],
-  "esmodules": ["module/reflex-system.mjs"],
+  "esmodules": ["module/foundry-system.mjs"],
   "styles": ["styles/system.css"],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" }

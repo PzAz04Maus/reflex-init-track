@@ -11,4 +11,4 @@ Starter scaffold for a custom Foundry VTT system based on Reflex-style initiativ
 
 ## Next steps
 - Add Foundry type definitions to your TS setup.
-- Replace the placeholder `module/reflex-system.mjs` with compiled output.
+- Replace the placeholder `module/foundry-system.mjs` with compiled output.

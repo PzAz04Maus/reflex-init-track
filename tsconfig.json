@@ -10,18 +10,17 @@
     "outDir": "build",
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
     "paths": {
-      "reflex-core": ["packages/reflex-core/src"],
-      "reflex-core/*": ["packages/reflex-core/src/*"],
-      "reflex-framework": ["packages/reflex-framework/src/index.ts"],
-      "reflex-framework/*": ["packages/reflex-framework/src/*"],
-      "reflex-system": ["packages/reflex-system/src/index.ts"],
-      "reflex-system/*": ["packages/reflex-system/src/*"],
-      "reflex-ui": ["packages/reflex-ui/src/index.ts"],
-      "reflex-ui/*": ["packages/reflex-ui/src/*"],
-      "reflex-mods": ["packages/reflex-mods/src/index.ts"],
-      "reflex-mods/*": ["packages/reflex-mods/src/*"]
+      "reflex-core": ["./packages/reflex-core/src"],
+      "reflex-core/*": ["./packages/reflex-core/src/*"],
+      "reflex-framework": ["./packages/reflex-framework/src/index.ts"],
+      "reflex-framework/*": ["./packages/reflex-framework/src/*"],
+      "foundry-system": ["./packages/foundry-system/src/index.ts"],
+      "foundry-system/*": ["./packages/foundry-system/src/*"],
+      "reflex-ui": ["./packages/reflex-ui/src/index.ts"],
+      "reflex-ui/*": ["./packages/reflex-ui/src/*"],
+      "reflex-mods": ["./packages/reflex-mods/src/index.ts"],
+      "reflex-mods/*": ["./packages/reflex-mods/src/*"]
     },
   },
   "include": [

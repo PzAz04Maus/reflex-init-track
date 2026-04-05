@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "../..",
     "composite": true,
     "declaration": true,
     "declarationMap": true,
@@ -8,8 +9,8 @@
     "outDir": "build",
     "types": ["fvtt-types"],
     "paths": {
-      "reflex-framework": ["packages/reflex-framework/build/index.d.ts"],
-      "reflex-framework/*": ["packages/reflex-framework/build/*"]
+      "reflex-framework": ["packages/reflex-framework/src/index.ts"],
+      "reflex-framework/*": ["packages/reflex-framework/src/*"]
     }
   },
   "include": ["src/**/*.ts"],

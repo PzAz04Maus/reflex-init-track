@@ -26,7 +26,7 @@ The current source of truth is package-based.
 - `packages/reflex-mods/`
   - Extension/mod support package
 
-- `packages/reflex-system/`
+- `packages/foundry-system/`
   - System integration and packaging layer
 
 - `dev/`
@@ -48,7 +48,7 @@ Prefer this dependency flow:
 - `reflex-core -> reflex-framework`
 - `reflex-logistics -> reflex-core`
 - `reflex-mods -> reflex-core` or lower-level packages as needed
-- `reflex-system -> core/framework/logistics` as integration requires
+- `foundry-system -> core/framework/logistics` as integration requires
 
 Avoid:
 

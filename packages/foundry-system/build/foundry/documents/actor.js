@@ -1,4 +1,4 @@
-import { clamp } from "../../../reflex-core/src/utils/clamp";
+import { clamp } from "../../../../reflex-framework/src/utils/clamp";
 export class ReflexActor extends Actor {
     prepareDerivedData() {
         super.prepareDerivedData();

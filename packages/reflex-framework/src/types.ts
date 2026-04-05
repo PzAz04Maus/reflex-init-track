@@ -8,10 +8,32 @@ export interface InitiativeState {
 	joinedMidFight?: boolean;
 }
 
+export type ActionCadence = "tactical" | "operational" | "free";
+
+export type ActionStatus =
+	| "available"
+	| "declared"
+	| "resolving"
+	| "resolved"
+	| "interrupted";
+
+export type ActionMetadataValue = string | number | boolean | null;
+
 export interface ActionState {
 	id: string;
+	key?: string;
 	name: string;
 	cost: number;
+	cadence?: ActionCadence;
+	category?: string;
+	status?: ActionStatus;
+	summary?: string;
+	detail?: string;
+	tags?: string[];
+	declaredTick?: number | null;
+	resolvedTick?: number | null;
+	source?: string;
+	metadata?: Record<string, ActionMetadataValue>;
 }
 
 export interface CombatState {

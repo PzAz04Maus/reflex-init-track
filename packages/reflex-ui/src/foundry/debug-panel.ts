@@ -1,4 +1,4 @@
-import { MODULE_ID } from 'reflex-system/foundry';
+import { MODULE_ID } from 'foundry-system/foundry';
 
 const MixedApplication = HandlebarsApplicationMixin.mixed(ApplicationV2);
 

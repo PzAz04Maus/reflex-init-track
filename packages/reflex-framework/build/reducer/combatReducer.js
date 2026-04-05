@@ -1,4 +1,5 @@
 import { advanceTurn } from "../advanceTurn";
+import { createPendingAction } from "../combat";
 import { withActors } from "../selectors/combatSelectors";
 // Reducer kept framework-side so apps can consume a stable state transition API.
 export function combatReducer(state, action) {
@@ -18,11 +19,9 @@ export function combatReducer(state, action) {
             return withActors(state, state.actors.map((actor) => actor.id === action.actorId
                 ? {
                     ...actor,
-                    action: {
-                        id: actor.action?.id ?? "",
-                        name: actor.action?.name ?? "",
-                        cost: action.actionCost,
-                    },
+                    action: actor.action
+                        ? { ...actor.action, cost: action.actionCost }
+                        : createPendingAction(`${actor.id}:pending-action`, actor.name, action.actionCost),
                 }
                 : actor));
         case "toggleJoined":

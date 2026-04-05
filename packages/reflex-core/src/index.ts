@@ -10,9 +10,25 @@ export {
 	withActors,
 } from 'reflex-framework';
 export {
-	addActor,
+	COMBAT_ACTIONS,
+	COMBAT_RULES_SOURCE,
+	PAUSE_MOVEMENT_MULTIPLIER,
+	STANCE_EFFECTS,
+	TACTICAL_MOVEMENT_EFFECTS,
+	computeInitiative,
 	computeMargin,
 	computeOodaAdjustedInit,
+	createCombatAction,
+	getBaseInitiative,
+	getChangeStanceTickCost,
+	getPauseMovementDistance,
+	getWaitTickCost,
+	resolveExchangeContinuation,
+	resolvePauseContinuation,
+	startExchange,
+} from 'reflex-framework/combat';
+export {
+	addActor,
 	joinMidFightInitialInit,
 	updateActorCost,
 } from 'reflex-framework/rules/advanceTurn';

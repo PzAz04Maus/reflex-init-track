@@ -1,14 +1,14 @@
 export class ReflexItemSheet extends ItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["reflex-system", "sheet", "item"],
+      classes: ["foundry-system", "sheet", "item"],
       width: 500,
       height: 420
     });
   }
 
   override get template(): string {
-    return `systems/reflex-system/templates/item/item-sheet.hbs`;
+    return `systems/foundry-system/templates/item/item-sheet.hbs`;
   }
 
   override async getData(options?: any): Promise<Record<string, unknown>> {

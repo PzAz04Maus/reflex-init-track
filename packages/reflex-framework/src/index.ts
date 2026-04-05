@@ -1,4 +1,5 @@
 export * from './types';
+export * from './combat';
 export * from './state/getNextActor';
 export * from './selectors/combatSelectors';
 export * from './advanceTurn';

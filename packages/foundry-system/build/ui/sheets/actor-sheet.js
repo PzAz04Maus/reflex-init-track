@@ -1,13 +1,13 @@
 export class ReflexActorSheet extends ActorSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["reflex-system", "sheet", "actor"],
+            classes: ["foundry-system", "sheet", "actor"],
             width: 650,
             height: 680
         });
     }
     get template() {
-        return `systems/reflex-system/templates/actor/actor-sheet.hbs`;
+        return `systems/foundry-system/templates/actor/actor-sheet.hbs`;
     }
     async getData(options) {
         const context = await super.getData(options);

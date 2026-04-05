@@ -1,0 +1,1 @@
+{"version":3,"file":"store.d.ts","sourceRoot":"","sources":["../../src/foundry/store.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,aAAa,CAAC;AAG/C,wBAAsB,gBAAgB,CAAC,OAAO,EAAE,GAAG,GAAG,OAAO,CAAC,WAAW,GAAG,IAAI,CAAC,CAIhF;AAED,wBAAsB,gBAAgB,CAAC,OAAO,EAAE,GAAG,EAAE,MAAM,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC,CAAG"}

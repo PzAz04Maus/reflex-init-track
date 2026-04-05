@@ -1,5 +1,6 @@
 import { advanceTurn } from "../advanceTurn";
 import type { CombatState, CharacterRecord } from "../types";
+import { createPendingAction } from "../combat";
 import { withActors } from "../selectors/combatSelectors";
 
 export type CombatAction =
@@ -40,11 +41,9 @@ export function combatReducer(state: CombatState, action: CombatAction): CombatS
           actor.id === action.actorId
             ? {
                 ...actor,
-                action: {
-                  id: actor.action?.id ?? "",
-                  name: actor.action?.name ?? "",
-                  cost: action.actionCost,
-                },
+                action: actor.action
+                  ? { ...actor.action, cost: action.actionCost }
+                  : createPendingAction(`${actor.id}:pending-action`, actor.name, action.actionCost),
               }
             : actor
         )

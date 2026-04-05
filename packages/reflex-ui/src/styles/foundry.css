@@ -35,6 +35,12 @@
   opacity: 0.8;
 }
 
+.reflex-action-copy {
+  font-size: 0.85em;
+  line-height: 1.35;
+  margin-top: 0.25rem;
+}
+
 .badge {
   border: 1px solid currentColor;
   border-radius: 999px;

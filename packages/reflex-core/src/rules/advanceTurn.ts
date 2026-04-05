@@ -1,4 +1,5 @@
 import type { CombatState, CharacterRecord, CharacterId, InitiativeState } from '../types';
+import { computeMargin, computeOodaAdjustedInit, createPendingAction } from 'reflex-framework/combat';
 
 // AddActorInput now requires character to be a CharacterRecord
 export interface AddActorInput {
@@ -6,16 +7,6 @@ export interface AddActorInput {
   state?: Partial<InitiativeState>;
 }
 import { selectActors, withActors } from 'reflex-framework';
-
-// Calculate margin for roll
-export function computeMargin(roll: number, target: number): number {
-  return roll - target;
-}
-
-// Calculate OODA-adjusted initiative
-export function computeOodaAdjustedInit(baseInit: number, roll: number, target: number): number {
-  return baseInit + computeMargin(roll, target);
-}
 
 
 // Used for late joiners
@@ -56,7 +47,7 @@ export function updateActorCost(state: CombatState, characterId: CharacterId, ac
           ...actor,
           action: actor.action
             ? { ...actor.action, cost: actionCost }
-            : { id: characterId, name: actor.name, cost: actionCost }
+            : { ...createPendingAction(`${characterId}:pending-action`, actor.name, actionCost), id: characterId }
         }
       : actor
   ));

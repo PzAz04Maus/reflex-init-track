@@ -10,7 +10,7 @@ const foundryBootstrapDir = path.resolve(__dirname, '..', 'build', 'src', 'vtt',
 const foundryUiDistDir = path.resolve(__dirname, '..', 'build', 'packages', 'reflex-ui', 'src', 'foundry');
 const foundryStyles = path.resolve(__dirname, '..', 'packages', 'reflex-ui', 'src', 'styles', 'foundry.css');
 const foundryTemplatesDir = path.resolve(__dirname, '..', 'packages', 'reflex-ui', 'src', 'templates', 'foundry');
-const moduleJson = path.resolve(__dirname, '..', 'packages', 'reflex-system', 'src', 'foundry', 'module.json');
+const moduleJson = path.resolve(__dirname, '..', 'packages', 'foundry-system', 'src', 'foundry', 'module.json');
 
 // Target directory
 const targetDir = process.argv[2] || path.resolve(__dirname, '..', 'build', 'reflex-module');
@@ -29,7 +29,7 @@ assertExists(foundryBootstrapDir, 'build/src/vtt/foundry directory');
 assertExists(foundryUiDistDir, 'build/packages/reflex-ui/src/foundry directory');
 assertExists(foundryStyles, 'packages/reflex-ui/src/styles/foundry.css');
 assertExists(foundryTemplatesDir, 'packages/reflex-ui/src/templates/foundry directory');
-assertExists(moduleJson, 'packages/reflex-system/src/foundry/module.json');
+assertExists(moduleJson, 'packages/foundry-system/src/foundry/module.json');
 
 function copyFile(src, dest) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });

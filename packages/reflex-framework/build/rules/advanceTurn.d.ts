@@ -1,10 +1,9 @@
 import type { CombatState, CharacterRecord, CharacterId, InitiativeState } from './../types';
+export { computeMargin, computeOodaAdjustedInit } from '../combat';
 export interface AddActorInput {
     character: CharacterRecord;
     state?: Partial<InitiativeState>;
 }
-export declare function computeMargin(roll: number, target: number): number;
-export declare function computeOodaAdjustedInit(baseInit: number, roll: number, target: number): number;
 export declare function joinMidFightInitialInit(actors: CharacterRecord[], baseInit: number): number;
 /**
  * Add a CharacterRecord to the combat state.

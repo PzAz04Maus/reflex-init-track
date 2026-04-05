@@ -13,6 +13,6 @@
   "references": [
     { "path": "../reflex-framework" },
     { "path": "../reflex-core" },
-    { "path": "../reflex-system" }
+    { "path": "../foundry-system" }
   ]
 }

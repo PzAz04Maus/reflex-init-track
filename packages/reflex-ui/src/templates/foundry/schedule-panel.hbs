@@ -40,6 +40,15 @@
             data-actor-id='{{id}}'
             {{#unless isOwner}}disabled{{/unless}}
           />
+          {{#if actionCadence}}
+            <div class='reflex-subtle'>{{actionCadence}} {{actionCategory}}</div>
+          {{/if}}
+          {{#if actionSummary}}
+            <div class='reflex-action-copy'>{{actionSummary}}</div>
+          {{/if}}
+          {{#if actionDetail}}
+            <div class='reflex-subtle'>{{actionDetail}}</div>
+          {{/if}}
         </div>
         <div>
           {{#if isActive}}<span class='badge'>Acting</span>{{/if}}

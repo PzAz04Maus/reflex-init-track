@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "src",
+    "outDir": "build"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../reflex-core" },
+    { "path": "../reflex-framework" }
+  ]
+}
