@@ -38,6 +38,23 @@ export interface InjuryRecord {
 	virtual?: boolean;
 }
 
+export interface InjuryTrack {
+	location: HitLocation;
+	actual: InjurySeverity;
+	virtual: InjurySeverity;
+	effective: InjurySeverity;
+}
+
+export interface CharacterHealthState {
+	baseWoundThreshold: number;
+	thresholdsByLocation: Record<HitLocation, WoundThresholdProfile>;
+	injuries: Record<HitLocation, InjuryTrack>;
+	inShock: boolean;
+	unstable: boolean;
+	unconscious: boolean;
+	dead: boolean;
+}
+
 export type ActionCadence = "tactical" | "operational" | "free";
 
 export type ActionStatus =
@@ -71,6 +88,11 @@ export interface CombatantState {
 	stance: Stance;
 	tacticalMovementRate: TacticalMovementRate;
 	dominantHand?: DominantHand;
+	movementCapFromHealth?: TacticalMovementRate | null;
+	woundPenalty?: number;
+	physicalWoundPenalty?: number;
+	healthInjuryThreat?: number;
+	baseThreatLevel?: number;
 	pressChoice: PressHoldChoice | null;
 	lastResolvedChoice: PressHoldChoice | null;
 	pressBonus: number;
@@ -160,6 +182,7 @@ export interface CharacterRecord {
 	actorUuid?: string | null;
 	combatantId?: string | null;
 	data: CharacterData;
+	health?: CharacterHealthState;
 	bio: CharacterBio;
 	equipment: EquipmentRecord;
 	init: InitiativeState;

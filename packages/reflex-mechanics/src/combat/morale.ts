@@ -1,4 +1,4 @@
-import type { CharacterId, EncumbranceLevel, InjurySeverity } from '../types';
+import type { CharacterHealthState, CharacterId, EncumbranceLevel, InjurySeverity } from '../types';
 import { computeMargin } from './initiative';
 
 export const MORALE_RULES_SOURCE = 'Twilight 2013 Core OEF PDF pp.157-161';
@@ -177,6 +177,15 @@ export function resolveSurprise(isSurprised: boolean): SurpriseResolution {
 
 export function getThreatFromInjury(severity: InjurySeverity): number {
   return INJURY_THREAT_BY_SEVERITY[severity];
+}
+
+export function getThreatFromHealthState(health: CharacterHealthState): number {
+  const mostSevereInjury = Object.values(health.injuries).reduce<InjurySeverity>(
+    (worst, track) => INJURY_THREAT_BY_SEVERITY[track.effective] > INJURY_THREAT_BY_SEVERITY[worst] ? track.effective : worst,
+    'none',
+  );
+
+  return getThreatFromInjury(mostSevereInjury);
 }
 
 export function getThreatFromConditions(conditions: ThreatCondition[]): number {

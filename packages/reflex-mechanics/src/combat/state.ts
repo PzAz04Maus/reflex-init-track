@@ -4,17 +4,64 @@ import type {
 	CharacterRecord,
 	CombatState,
 	CombatantState,
+	HitLocation,
+	InjurySeverity,
+	TacticalMovementRate,
 	PressHoldChoice,
 } from '../types';
 import { withActors } from 'reflex-framework';
 import { getActionResolutionWindow, resolveSustainedFire } from './advanced';
+import { advanceHealthInstability, ensureCharacterHealthState, getDerivedHealthCombatEffects, resolveDamageToCharacter, setVirtualInjurySeverity } from './damage';
 import { resolveExchangeContinuation, resolvePauseContinuation } from './flow';
 import { startExchange } from './initiative';
+import { getThreatFromHealthState } from './morale';
 
 export interface DeclareActionInStateOptions {
 	targetActorId?: CharacterId | null;
 	weaponId?: string | null;
 	usesTracer?: boolean;
+}
+
+const MOVEMENT_RATE_ORDER: TacticalMovementRate[] = ['crawl', 'stagger', 'walk', 'trot', 'run', 'sprint'];
+
+function clampMovementRateToCap(
+	rate: TacticalMovementRate,
+	cap: TacticalMovementRate | null | undefined,
+): TacticalMovementRate {
+	if (!cap) {
+		return rate;
+	}
+
+	return MOVEMENT_RATE_ORDER.indexOf(rate) > MOVEMENT_RATE_ORDER.indexOf(cap) ? cap : rate;
+}
+
+function isPhysicalActionCategory(category?: string): boolean {
+	return category !== 'communication' && category !== 'observation' && category !== 'timing' && category !== 'tactics';
+}
+
+function syncCombatantFromHealth(actor: CharacterRecord, combatant: CombatantState): CombatantState {
+	const health = actor.health;
+	if (!health) {
+		return combatant;
+	}
+
+	const derived = getDerivedHealthCombatEffects(health);
+	const healthInjuryThreat = getThreatFromHealthState(health);
+	const baseThreatLevel = combatant.baseThreatLevel ?? 0;
+	const threatLevel = baseThreatLevel + healthInjuryThreat;
+	const moralePenalty = Math.max(0, threatLevel - actor.data.cuf);
+
+	return {
+		...combatant,
+		tacticalMovementRate: clampMovementRateToCap(combatant.tacticalMovementRate, derived.movementCap),
+		movementCapFromHealth: derived.movementCap,
+		woundPenalty: derived.allActionsPenalty,
+		physicalWoundPenalty: derived.physicalActionsPenalty,
+		healthInjuryThreat,
+		threatLevel,
+		moralePenalty,
+		broken: combatant.broken || moralePenalty >= 5,
+	};
 }
 
 export function createCombatantState(overrides: Partial<CombatantState> = {}): CombatantState {
@@ -23,6 +70,11 @@ export function createCombatantState(overrides: Partial<CombatantState> = {}): C
 		stance: 'standing',
 		tacticalMovementRate: 'walk',
 		dominantHand: 'right',
+		movementCapFromHealth: null,
+		woundPenalty: 0,
+		physicalWoundPenalty: 0,
+		healthInjuryThreat: 0,
+		baseThreatLevel: 0,
 		pressChoice: null,
 		lastResolvedChoice: null,
 		pressBonus: 0,
@@ -161,6 +213,7 @@ export function applyMoraleToCombatantInState(
 	broken: boolean,
 ): CombatState {
 	return withCombatantState(state, actorId, {
+		baseThreatLevel: threatLevel,
 		threatLevel,
 		moralePenalty: penalty,
 		broken,
@@ -198,16 +251,20 @@ export function declareActionInState(
 			}
 
 			const combatant = ensureCombatantState(actor);
+			const syncedCombatant = syncCombatantFromHealth(actor, combatant);
 			const isAttack = action.category === 'attack';
 			const sameAttackTrack = isAttack
 				&& options.targetActorId !== undefined
 				&& options.targetActorId !== null
 				&& options.weaponId !== undefined
 				&& options.weaponId !== null
-				&& combatant.sustainedFireTargetId === options.targetActorId
-				&& combatant.sustainedFireWeaponId === options.weaponId;
-			const sustainedFireSequence = isAttack ? (sameAttackTrack ? (combatant.sustainedFireSequence ?? 0) + 1 : 1) : 0;
+				&& syncedCombatant.sustainedFireTargetId === options.targetActorId
+				&& syncedCombatant.sustainedFireWeaponId === options.weaponId;
+			const sustainedFireSequence = isAttack ? (sameAttackTrack ? (syncedCombatant.sustainedFireSequence ?? 0) + 1 : 1) : 0;
 			const sustainedFire = resolveSustainedFire(sustainedFireSequence, options.usesTracer ?? false);
+			const woundPenalty = isPhysicalActionCategory(action.category)
+				? (syncedCombatant.physicalWoundPenalty ?? 0)
+				: (syncedCombatant.woundPenalty ?? 0);
 			const adjustedCost = action.cadence === 'tactical'
 				? Math.max(1, action.cost - sustainedFire.tickCostReduction)
 				: action.cost;
@@ -216,14 +273,14 @@ export function declareActionInState(
 				: null;
 			const updatedCombatant = isAttack
 				? {
-					...combatant,
+					...syncedCombatant,
 					queuedActionEndsOnTick: resolutionWindow?.endTick ?? null,
 					sustainedFireTargetId: options.targetActorId ?? null,
 					sustainedFireWeaponId: options.weaponId ?? null,
 					sustainedFireSequence,
 				}
 				: {
-					...resetSustainedFire(combatant),
+					...resetSustainedFire(syncedCombatant),
 					queuedActionEndsOnTick: resolutionWindow?.endTick ?? null,
 				};
 
@@ -241,7 +298,14 @@ export function declareActionInState(
 						sustainedFireSequence,
 						sustainedFire.tickCostReduction,
 						sustainedFire.tracerAttackBonus,
-					),
+						) ?? undefined,
+					...(woundPenalty !== 0 ? { metadata: { ...buildActionMetadata(
+						action,
+						options,
+						sustainedFireSequence,
+						sustainedFire.tickCostReduction,
+						sustainedFire.tracerAttackBonus,
+					), healthWoundPenalty: woundPenalty, movementCapFromHealth: syncedCombatant.movementCapFromHealth ?? null } } : {}),
 				},
 				combat: updatedCombatant,
 			};
@@ -306,6 +370,78 @@ export function interruptActionInState(
 				},
 			};
 		}),
+	);
+}
+
+export function applyDamageToActorInState(
+	state: CombatState,
+	actorId: CharacterId,
+	location: HitLocation,
+	damage: number,
+	options: {
+		virtual?: boolean;
+		fitnessCheckSucceeded?: boolean;
+		fitnessMargin?: number;
+		useDeadRightThere?: boolean;
+	} = {},
+): CombatState {
+	return withActors(
+		state,
+		state.actors.map((actor) => {
+			if (actor.id !== actorId) {
+				return actor;
+			}
+
+			const resolution = resolveDamageToCharacter(actor, location, damage, options);
+			const syncedCombat = syncCombatantFromHealth(actor, ensureCombatantState(actor));
+
+			return {
+				...actor,
+				health: resolution.health,
+				combat: syncCombatantFromHealth({ ...actor, health: resolution.health }, syncedCombat),
+			};
+		}),
+	);
+}
+
+export function setVirtualInjuryOnActorInState(
+	state: CombatState,
+	actorId: CharacterId,
+	location: HitLocation,
+	severity: InjurySeverity,
+): CombatState {
+	return withActors(
+		state,
+		state.actors.map((actor) => (
+			actor.id !== actorId
+				? actor
+				: {
+					...actor,
+					health: setVirtualInjurySeverity(ensureCharacterHealthState(actor), location, severity),
+					combat: syncCombatantFromHealth(
+						{ ...actor, health: setVirtualInjurySeverity(ensureCharacterHealthState(actor), location, severity) },
+						ensureCombatantState(actor),
+					),
+				}
+		)),
+	);
+}
+
+export function advanceInstabilityForActorInState(state: CombatState, actorId: CharacterId): CombatState {
+	return withActors(
+		state,
+		state.actors.map((actor) => (
+			actor.id !== actorId || !actor.health
+				? actor
+				: {
+					...actor,
+					health: advanceHealthInstability(actor.health),
+					combat: syncCombatantFromHealth(
+						{ ...actor, health: advanceHealthInstability(actor.health) },
+						ensureCombatantState(actor),
+					),
+				}
+		)),
 	);
 }
 

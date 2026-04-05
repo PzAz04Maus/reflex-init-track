@@ -1,6 +1,9 @@
 import type {
+  CharacterHealthState,
+  CharacterRecord,
   CharacterData,
   HitLocation,
+  InjuryTrack,
   InjuryRecord,
   InjurySeverity,
   TacticalMovementRate,
@@ -84,6 +87,30 @@ export interface EquipmentDamageResolution {
   instantDestroyed: boolean;
 }
 
+export interface CharacterDamageResolution {
+  health: CharacterHealthState;
+  previousSeverity: InjurySeverity;
+  effectiveSeverity: InjurySeverity;
+  enteredShock: boolean;
+  becameUnstable: boolean;
+  becameUnconscious: boolean;
+  died: boolean;
+  injury: InjuryResolution;
+}
+
+export interface ApplyInjuryOptions {
+  virtual?: boolean;
+  fitnessCheckSucceeded?: boolean;
+  fitnessMargin?: number;
+}
+
+export interface DerivedHealthCombatEffects {
+  mostSevereInjury: InjurySeverity;
+  allActionsPenalty: number;
+  physicalActionsPenalty: number;
+  movementCap: TacticalMovementRate | null;
+}
+
 const INJURY_ORDER: InjurySeverity[] = ['none', 'slight', 'moderate', 'serious', 'critical', 'drt', 'dead'];
 
 const LIMB_LOCATIONS: HitLocation[] = ['leftArm', 'rightArm', 'leftLeg', 'rightLeg'];
@@ -105,6 +132,45 @@ const EQUIPMENT_DURABILITY_BY_MATERIAL: Record<EquipmentMaterial, { armor: numbe
   steel: { armor: 4, thresholdModifier: 4 },
   titanium: { armor: 5, thresholdModifier: 5 },
 };
+
+function createInjuryTrack(location: HitLocation): InjuryTrack {
+  return {
+    location,
+    actual: 'none',
+    virtual: 'none',
+    effective: 'none',
+  };
+}
+
+function createInjuryTracks(): Record<HitLocation, InjuryTrack> {
+  return {
+    head: createInjuryTrack('head'),
+    torso: createInjuryTrack('torso'),
+    leftArm: createInjuryTrack('leftArm'),
+    rightArm: createInjuryTrack('rightArm'),
+    leftLeg: createInjuryTrack('leftLeg'),
+    rightLeg: createInjuryTrack('rightLeg'),
+  };
+}
+
+function recalculateEffectiveTrack(track: InjuryTrack): InjuryTrack {
+  return {
+    ...track,
+    effective: getWorseInjurySeverity(track.actual, track.virtual),
+  };
+}
+
+function worsenForInstability(severity: InjurySeverity): InjurySeverity {
+  if (severity === 'none' || severity === 'dead' || severity === 'drt') {
+    return severity;
+  }
+
+  if (severity === 'critical') {
+    return 'dead';
+  }
+
+  return worsenInjurySeverity(severity);
+}
 
 function clampSeverityIndex(index: number): number {
   return Math.max(0, Math.min(index, INJURY_ORDER.length - 1));
@@ -151,6 +217,30 @@ export function getAllWoundThresholds(
     leftLeg: getWoundThresholds(base, 'leftLeg', useDeadRightThere),
     rightLeg: getWoundThresholds(base, 'rightLeg', useDeadRightThere),
   };
+}
+
+export function createCharacterHealthState(
+  data: Pick<CharacterData, 'fitness' | 'muscle'>,
+  useDeadRightThere = false,
+): CharacterHealthState {
+  const baseWoundThreshold = getBaseWoundThreshold(data);
+
+  return {
+    baseWoundThreshold,
+    thresholdsByLocation: getAllWoundThresholds(data, useDeadRightThere),
+    injuries: createInjuryTracks(),
+    inShock: false,
+    unstable: false,
+    unconscious: false,
+    dead: false,
+  };
+}
+
+export function ensureCharacterHealthState(
+  character: Pick<CharacterRecord, 'data'> & { health?: CharacterHealthState },
+  useDeadRightThere = false,
+): CharacterHealthState {
+  return character.health ?? createCharacterHealthState(character.data, useDeadRightThere);
 }
 
 export function parsePenetrationMultiplier(penetration: ProtectionPenetration): number {
@@ -343,6 +433,151 @@ export function resolveInstabilityCycle(injuries: InjuryRecord[]): InstabilityRe
     injuries: worsened,
     bleedsOut,
     headCausedUnconsciousness,
+  };
+}
+
+export function getMostSevereInjury(health: CharacterHealthState): InjurySeverity {
+  return Object.values(health.injuries).reduce<InjurySeverity>(
+    (worst, track) => getWorseInjurySeverity(worst, track.effective),
+    'none',
+  );
+}
+
+export function getDerivedHealthCombatEffects(health: CharacterHealthState): DerivedHealthCombatEffects {
+  const tracks = Object.values(health.injuries);
+  const headPenalty = tracks
+    .filter((track) => track.location === 'head')
+    .reduce((penalty, track) => Math.min(penalty, getInjuryPenalty(track.location, track.effective).skillPenalty), 0);
+  const torsoPenalty = tracks
+    .filter((track) => track.location === 'torso')
+    .reduce((penalty, track) => Math.min(penalty, getInjuryPenalty(track.location, track.effective).skillPenalty), 0);
+  const legCaps = tracks
+    .filter((track) => track.location === 'leftLeg' || track.location === 'rightLeg')
+    .map((track) => getInjuryPenalty(track.location, track.effective).movementCap)
+    .filter((cap): cap is TacticalMovementRate => cap !== undefined);
+  const movementPriority: TacticalMovementRate[] = ['crawl', 'stagger', 'walk', 'trot', 'run', 'sprint'];
+  const movementCap = legCaps.length === 0
+    ? null
+    : legCaps.reduce<TacticalMovementRate>(
+      (slowest, current) => (
+        movementPriority.indexOf(current) < movementPriority.indexOf(slowest) ? current : slowest
+      ),
+      legCaps[0],
+    );
+
+  return {
+    mostSevereInjury: getMostSevereInjury(health),
+    allActionsPenalty: headPenalty,
+    physicalActionsPenalty: Math.min(headPenalty, torsoPenalty),
+    movementCap,
+  };
+}
+
+export function applyResolvedInjuryToHealth(
+  health: CharacterHealthState,
+  injury: InjuryResolution,
+  options: ApplyInjuryOptions = {},
+): CharacterDamageResolution {
+  const existingTrack = health.injuries[injury.location] ?? createInjuryTrack(injury.location);
+  const updatedTrack = recalculateEffectiveTrack({
+    ...existingTrack,
+    actual: options.virtual ? existingTrack.actual : getWorseInjurySeverity(existingTrack.actual, injury.severity),
+    virtual: options.virtual ? getWorseInjurySeverity(existingTrack.virtual, injury.severity) : existingTrack.virtual,
+  });
+  const penalty = getInjuryPenalty(injury.location, updatedTrack.effective, injury.thresholds.critical);
+  const enteredShock = penalty.automaticShock || (penalty.shockCheckRequired && options.fitnessCheckSucceeded === false);
+  const becameUnstable = penalty.unstableCheckRequired
+    && options.fitnessCheckSucceeded === false
+    && (injury.severity === 'critical'
+      || Math.abs(options.fitnessMargin ?? 0) > (penalty.unstableOnFailureMarginGreaterThan ?? Number.POSITIVE_INFINITY));
+  const unstable = health.unstable || becameUnstable;
+  const unconscious = health.unconscious
+    || penalty.unconscious === true
+    || (injury.location === 'head' && unstable)
+    || updatedTrack.effective === 'drt'
+    || updatedTrack.effective === 'dead';
+  const dead = health.dead || updatedTrack.effective === 'drt' || updatedTrack.effective === 'dead';
+  const nextHealth: CharacterHealthState = {
+    ...health,
+    injuries: {
+      ...health.injuries,
+      [injury.location]: updatedTrack,
+    },
+    inShock: health.inShock || enteredShock,
+    unstable,
+    unconscious,
+    dead,
+  };
+
+  return {
+    health: nextHealth,
+    previousSeverity: existingTrack.effective,
+    effectiveSeverity: updatedTrack.effective,
+    enteredShock: !health.inShock && nextHealth.inShock,
+    becameUnstable: !health.unstable && nextHealth.unstable,
+    becameUnconscious: !health.unconscious && nextHealth.unconscious,
+    died: !health.dead && nextHealth.dead,
+    injury,
+  };
+}
+
+export function resolveDamageToCharacter(
+  character: Pick<CharacterRecord, 'data'> & { health?: CharacterHealthState },
+  location: HitLocation,
+  damage: number,
+  options: ApplyInjuryOptions & { useDeadRightThere?: boolean } = {},
+): CharacterDamageResolution {
+  const health = ensureCharacterHealthState(character, options.useDeadRightThere ?? false);
+  const injury = resolveDamageToLocation(location, damage, health.thresholdsByLocation[location]);
+
+  return applyResolvedInjuryToHealth(health, injury, options);
+}
+
+export function setVirtualInjurySeverity(
+  health: CharacterHealthState,
+  location: HitLocation,
+  severity: InjurySeverity,
+): CharacterHealthState {
+  const updatedTrack = recalculateEffectiveTrack({
+    ...(health.injuries[location] ?? createInjuryTrack(location)),
+    virtual: severity,
+  });
+
+  return {
+    ...health,
+    injuries: {
+      ...health.injuries,
+      [location]: updatedTrack,
+    },
+    unconscious: health.unconscious || (location === 'head' && updatedTrack.effective === 'critical'),
+    dead: health.dead || updatedTrack.effective === 'dead' || updatedTrack.effective === 'drt',
+  };
+}
+
+export function advanceHealthInstability(health: CharacterHealthState): CharacterHealthState {
+  if (!health.unstable || health.dead) {
+    return health;
+  }
+
+  const injuries = Object.fromEntries(
+    Object.entries(health.injuries).map(([location, track]) => {
+      const worsenedTrack = recalculateEffectiveTrack({
+        ...track,
+        actual: worsenForInstability(track.actual),
+      });
+
+      return [location, worsenedTrack];
+    }),
+  ) as Record<HitLocation, InjuryTrack>;
+
+  const dead = Object.values(injuries).some((track) => track.actual === 'dead' || track.effective === 'dead');
+  const unconscious = dead || health.unconscious || injuries.head.effective === 'critical' || injuries.head.effective === 'dead';
+
+  return {
+    ...health,
+    injuries,
+    unconscious,
+    dead,
   };
 }
 
