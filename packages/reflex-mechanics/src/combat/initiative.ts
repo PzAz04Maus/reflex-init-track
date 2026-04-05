@@ -15,6 +15,7 @@ export interface ExchangeParticipantInput {
 	encumbrance: EncumbranceLevel;
 	ooda: number;
 	roll: number;
+	baseInitiativeOverride?: number;
 	pressed?: boolean;
 	pressBonus?: number;
 }
@@ -67,10 +68,11 @@ export function computeInitiative(
 	encumbrance: EncumbranceLevel,
 	roll: number,
 	target: number,
+	baseInitiativeOverride?: number,
 	pressed = false,
 	pressBonus = pressed ? 5 : 0,
 ): InitiativeComputation {
-	const baseInitiative = getBaseInitiative(encumbrance);
+	const baseInitiative = baseInitiativeOverride ?? getBaseInitiative(encumbrance);
 	const effectivePressBonus = pressBonus;
 	const margin = computeMargin(roll, target);
 	const succeeded = margin > 0;
@@ -92,6 +94,7 @@ export function startExchange(participants: ExchangeParticipantInput[]): Exchang
 			participant.encumbrance,
 			participant.roll,
 			participant.ooda,
+			participant.baseInitiativeOverride,
 			participant.pressed ?? false,
 			participant.pressBonus ?? (participant.pressed ? 5 : 0),
 		),

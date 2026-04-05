@@ -1,4 +1,5 @@
 import type {
+	ActionState,
 	CharacterId,
 	CharacterRecord,
 	CombatState,
@@ -6,22 +7,63 @@ import type {
 	PressHoldChoice,
 } from '../types';
 import { withActors } from 'reflex-framework';
+import { getActionResolutionWindow, resolveSustainedFire } from './advanced';
 import { resolveExchangeContinuation, resolvePauseContinuation } from './flow';
 import { startExchange } from './initiative';
+
+export interface DeclareActionInStateOptions {
+	targetActorId?: CharacterId | null;
+	weaponId?: string | null;
+	usesTracer?: boolean;
+}
 
 export function createCombatantState(overrides: Partial<CombatantState> = {}): CombatantState {
 	return {
 		encumbrance: 'moderate',
 		stance: 'standing',
 		tacticalMovementRate: 'walk',
+		dominantHand: 'right',
 		pressChoice: null,
 		lastResolvedChoice: null,
 		pressBonus: 0,
 		broken: false,
+		surprised: false,
+		threatLevel: 0,
+		moralePenalty: 0,
 		initiativeRoll: null,
 		initiativeTarget: null,
 		lastComputedInitiative: null,
+		queuedActionEndsOnTick: null,
+		sustainedFireTargetId: null,
+		sustainedFireWeaponId: null,
+		sustainedFireSequence: 0,
 		...overrides,
+	};
+}
+
+function resetSustainedFire(combatant: CombatantState): CombatantState {
+	return {
+		...combatant,
+		sustainedFireTargetId: null,
+		sustainedFireWeaponId: null,
+		sustainedFireSequence: 0,
+	};
+}
+
+function buildActionMetadata(
+	action: ActionState,
+	options: DeclareActionInStateOptions,
+	sustainedFireSequence: number,
+	tickCostReduction: number,
+	tracerAttackBonus: number,
+): ActionState['metadata'] {
+	return {
+		...(action.metadata ?? {}),
+		...(options.targetActorId ? { targetActorId: options.targetActorId } : {}),
+		...(options.weaponId ? { weaponId: options.weaponId } : {}),
+		sustainedFireSequence,
+		sustainedFireTickReduction: tickCostReduction,
+		sustainedFireTracerBonus: tracerAttackBonus,
 	};
 }
 
@@ -68,6 +110,7 @@ export function applyExchangeStart(
 				encumbrance: combatant.encumbrance,
 				ooda: actor.data.ooda,
 				roll,
+				baseInitiativeOverride: combatant.surprised ? 0 : undefined,
 				pressBonus: combatant.pressBonus,
 			};
 		});
@@ -100,9 +143,166 @@ export function applyExchangeStart(
 					pressChoice: null,
 					lastResolvedChoice: null,
 					pressBonus: 0,
+					surprised: false,
 					initiativeRoll: participant.roll,
 					initiativeTarget: participant.target,
 					lastComputedInitiative: participant.initiative,
+				},
+			};
+		}),
+	);
+}
+
+export function applyMoraleToCombatantInState(
+	state: CombatState,
+	actorId: CharacterId,
+	threatLevel: number,
+	penalty: number,
+	broken: boolean,
+): CombatState {
+	return withCombatantState(state, actorId, {
+		threatLevel,
+		moralePenalty: penalty,
+		broken,
+	});
+}
+
+export function applySurpriseToCombatantsInState(
+	state: CombatState,
+	actorIds: readonly CharacterId[],
+	surprised = true,
+): CombatState {
+	const surprisedIds = new Set(actorIds);
+
+	return withActors(
+		state,
+		state.actors.map((actor) => (
+			surprisedIds.has(actor.id)
+				? { ...actor, combat: { ...ensureCombatantState(actor), surprised } }
+				: actor
+		)),
+	);
+}
+
+export function declareActionInState(
+	state: CombatState,
+	actorId: CharacterId,
+	action: ActionState,
+	options: DeclareActionInStateOptions = {},
+): CombatState {
+	return withActors(
+		state,
+		state.actors.map((actor) => {
+			if (actor.id !== actorId) {
+				return actor;
+			}
+
+			const combatant = ensureCombatantState(actor);
+			const isAttack = action.category === 'attack';
+			const sameAttackTrack = isAttack
+				&& options.targetActorId !== undefined
+				&& options.targetActorId !== null
+				&& options.weaponId !== undefined
+				&& options.weaponId !== null
+				&& combatant.sustainedFireTargetId === options.targetActorId
+				&& combatant.sustainedFireWeaponId === options.weaponId;
+			const sustainedFireSequence = isAttack ? (sameAttackTrack ? (combatant.sustainedFireSequence ?? 0) + 1 : 1) : 0;
+			const sustainedFire = resolveSustainedFire(sustainedFireSequence, options.usesTracer ?? false);
+			const adjustedCost = action.cadence === 'tactical'
+				? Math.max(1, action.cost - sustainedFire.tickCostReduction)
+				: action.cost;
+			const resolutionWindow = action.cadence === 'tactical'
+				? getActionResolutionWindow(state.currentTick, adjustedCost)
+				: null;
+			const updatedCombatant = isAttack
+				? {
+					...combatant,
+					queuedActionEndsOnTick: resolutionWindow?.endTick ?? null,
+					sustainedFireTargetId: options.targetActorId ?? null,
+					sustainedFireWeaponId: options.weaponId ?? null,
+					sustainedFireSequence,
+				}
+				: {
+					...resetSustainedFire(combatant),
+					queuedActionEndsOnTick: resolutionWindow?.endTick ?? null,
+				};
+
+			return {
+				...actor,
+				action: {
+					...action,
+					cost: adjustedCost,
+					status: 'declared',
+					declaredTick: action.cadence === 'tactical' ? state.currentTick : action.declaredTick ?? null,
+					resolvedTick: resolutionWindow?.endTick ?? action.resolvedTick ?? null,
+					metadata: buildActionMetadata(
+						action,
+						options,
+						sustainedFireSequence,
+						sustainedFire.tickCostReduction,
+						sustainedFire.tracerAttackBonus,
+					),
+				},
+				combat: updatedCombatant,
+			};
+		}),
+	);
+}
+
+export function resolveActionsEndingOnTick(state: CombatState, tick = state.currentTick): CombatState {
+	return withActors(
+		state,
+		state.actors.map((actor) => {
+			if (!actor.action || actor.action.resolvedTick !== tick || actor.action.status === 'interrupted') {
+				return actor;
+			}
+
+			return {
+				...actor,
+				action: {
+					...actor.action,
+					status: 'resolved',
+				},
+				combat: {
+					...ensureCombatantState(actor),
+					queuedActionEndsOnTick: null,
+				},
+			};
+		}),
+	);
+}
+
+export function interruptActionInState(
+	state: CombatState,
+	actorId: CharacterId,
+	interruptingResolvedTick: number,
+	interruptingActorId?: CharacterId,
+): CombatState {
+	return withActors(
+		state,
+		state.actors.map((actor) => {
+			if (actor.id !== actorId || !actor.action || actor.action.resolvedTick == null) {
+				return actor;
+			}
+
+			if (interruptingResolvedTick <= actor.action.resolvedTick) {
+				return actor;
+			}
+
+			return {
+				...actor,
+				action: {
+					...actor.action,
+					status: 'interrupted',
+					metadata: {
+						...(actor.action.metadata ?? {}),
+						...(interruptingActorId ? { interruptedByActorId: interruptingActorId } : {}),
+						interruptedAtTick: interruptingResolvedTick,
+					},
+				},
+				combat: {
+					...resetSustainedFire(ensureCombatantState(actor)),
+					queuedActionEndsOnTick: null,
 				},
 			};
 		}),

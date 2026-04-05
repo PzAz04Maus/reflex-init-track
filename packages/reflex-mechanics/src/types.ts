@@ -18,6 +18,26 @@ export type Stance = "standing" | "kneeling" | "sitting" | "prone";
 
 export type TacticalMovementRate = "sprint" | "run" | "trot" | "walk" | "stagger" | "crawl";
 
+export type DominantHand = 'left' | 'right';
+
+export type HitLocation = 'head' | 'torso' | 'leftArm' | 'rightArm' | 'leftLeg' | 'rightLeg';
+
+export type InjurySeverity = 'none' | 'slight' | 'moderate' | 'serious' | 'critical' | 'drt' | 'dead';
+
+export interface WoundThresholdProfile {
+	slight: number;
+	moderate: number;
+	serious: number;
+	critical: number;
+	drt?: number;
+}
+
+export interface InjuryRecord {
+	location: HitLocation;
+	severity: InjurySeverity;
+	virtual?: boolean;
+}
+
 export type ActionCadence = "tactical" | "operational" | "free";
 
 export type ActionStatus =
@@ -50,13 +70,21 @@ export interface CombatantState {
 	encumbrance: EncumbranceLevel;
 	stance: Stance;
 	tacticalMovementRate: TacticalMovementRate;
+	dominantHand?: DominantHand;
 	pressChoice: PressHoldChoice | null;
 	lastResolvedChoice: PressHoldChoice | null;
 	pressBonus: number;
 	broken: boolean;
+	surprised?: boolean;
+	threatLevel?: number;
+	moralePenalty?: number;
 	initiativeRoll?: number | null;
 	initiativeTarget?: number | null;
 	lastComputedInitiative?: number | null;
+	queuedActionEndsOnTick?: number | null;
+	sustainedFireTargetId?: CharacterId | null;
+	sustainedFireWeaponId?: string | null;
+	sustainedFireSequence?: number;
 }
 
 export interface CombatState {
