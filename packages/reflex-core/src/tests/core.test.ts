@@ -1,3 +1,3 @@
-import { advanceTurn, getNextActor } from 'reflex-core';
+import { advanceTurn, getNextActor } from 'reflex-framework';
 
 // File intentionally left blank to disable tests due to data model changes.

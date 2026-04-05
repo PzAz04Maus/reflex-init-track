@@ -1,9 +1,10 @@
+import type { ItemDamageProfile } from "../types";
 import type { WeaponPenetration, WeaponRangeProfile, WeaponSpeedProfile } from "../types/weapons";
 export interface VehicleArmamentAmmunition {
     id: string;
     name: string;
     source: string[];
-    damage: number;
+    damage: ItemDamageProfile[];
     penetration?: WeaponPenetration;
     effects?: string[];
     weightText?: string;

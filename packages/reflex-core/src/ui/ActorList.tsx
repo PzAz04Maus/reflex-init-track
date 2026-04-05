@@ -1,4 +1,4 @@
-import type { CharacterRecord } from "reflex-core";
+import type { CharacterRecord } from "../types";
 import { useMemo, memo } from "react";
 
 interface ActorListProps {

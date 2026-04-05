@@ -1,5 +1,6 @@
-import type { RangeBandName } from "reflex-core";
+import type { RangeBandName } from "reflex-core/rangeBands";
 
+import type { ItemDamageProfile } from "../types";
 import type { WeaponPenetration, WeaponRangeProfile, WeaponSpeedProfile } from "../types/weapons";
 import { sources } from "./shared";
 
@@ -33,11 +34,19 @@ function penetration(optimum: string, maximum?: string): WeaponPenetration {
   return { optimum, maximum };
 }
 
+function directDamage(damage: number): ItemDamageProfile[] {
+  return [{ damage }];
+}
+
+function explosiveDamage(damage: number, radiusMeters: number, blast: number, frag: number): ItemDamageProfile[] {
+  return [{ damage, blast, frag, area: { kind: "radius", meters: radiusMeters } }];
+}
+
 export interface VehicleArmamentAmmunition {
   id: string;
   name: string;
   source: string[];
-  damage: number;
+  damage: ItemDamageProfile[];
   penetration?: WeaponPenetration;
   effects?: string[];
   weightText?: string;
@@ -83,7 +92,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:l21a1-rarden:apds",
         name: "APDS",
         source: sources(288),
-        damage: 27,
+        damage: directDamage(27),
         penetration: penetration("x1", "x1"),
         weightText: "0.7 kg per round; 33 kg per case of twelve 3-round clips.",
         barterValue: "GG1,750",
@@ -94,8 +103,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:l21a1-rarden:he",
         name: "HE",
         source: sources(288),
-        damage: 10,
-        effects: ["Radius 5 m", "Blast 10", "Frag 4"],
+        damage: explosiveDamage(10, 5, 10, 4),
         weightText: "0.7 kg per round; 33 kg per case of twelve 3-round clips.",
         barterValue: "GG450",
         streetPrice: 900,
@@ -141,7 +149,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:2a42:apds",
         name: "APDS",
         source: sources(289),
-        damage: 21,
+        damage: directDamage(21),
         penetration: penetration("x1", "x1"),
         weightText: "0.8 kg per round; 32 kg per case of 33 linked rounds.",
         barterValue: "GG1,500",
@@ -152,7 +160,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:2a42:api",
         name: "API",
         source: sources(289),
-        damage: 18,
+        damage: directDamage(18),
         penetration: penetration("x1", "x2"),
         weightText: "0.8 kg per round; 32 kg per case of 33 linked rounds.",
         barterValue: "GG450",
@@ -163,8 +171,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:2a42:frag",
         name: "Frag",
         source: sources(289),
-        damage: 5,
-        effects: ["Radius 10 m", "Blast 5", "Frag 6"],
+        damage: explosiveDamage(5, 10, 5, 6),
         weightText: "0.8 kg per round; 32 kg per case of 33 linked rounds.",
         barterValue: "GG350",
         streetPrice: 700,
@@ -190,7 +197,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:m242:apds",
         name: "APDS",
         source: sources(289),
-        damage: 22,
+        damage: directDamage(22),
         penetration: penetration("x1", "x1"),
         weightText: "0.5 kg per round; 18 kg per case of 30 linked rounds.",
         barterValue: "GG1,500",
@@ -201,7 +208,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:m242:api",
         name: "API",
         source: sources(289),
-        damage: 20,
+        damage: directDamage(20),
         penetration: penetration("x1", "x2"),
         weightText: "0.5 kg per round; 18 kg per case of 30 linked rounds.",
         barterValue: "GG500",
@@ -212,8 +219,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:m242:he",
         name: "HE",
         source: sources(289),
-        damage: 10,
-        effects: ["Radius 5 m", "Blast 10", "Frag 4"],
+        damage: explosiveDamage(10, 5, 10, 4),
         weightText: "0.5 kg per round; 18 kg per case of 30 linked rounds.",
         barterValue: "GG400",
         streetPrice: 800,
@@ -241,7 +247,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:l44:apds",
         name: "APDS",
         source: sources(291, 292),
-        damage: 176,
+        damage: directDamage(176),
         penetration: penetration("x1", "x1"),
         weightText: "22.3 kg per round.",
         barterValue: "GG1,100",
@@ -252,8 +258,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:l44:heat",
         name: "HEAT",
         source: sources(291, 292),
-        damage: 115,
-        effects: ["Radius 10 m", "Blast 14", "Frag 3"],
+        damage: explosiveDamage(115, 10, 14, 3),
         weightText: "22.3 kg per round.",
         barterValue: "GG400",
         streetPrice: 800,
@@ -280,7 +285,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:d10:apds",
         name: "APDS",
         source: sources(292),
-        damage: 108,
+        damage: directDamage(108),
         penetration: penetration("x1", "x1"),
         weightText: "25 kg per round.",
         barterValue: "GG450",
@@ -291,8 +296,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:d10:he",
         name: "HE",
         source: sources(292),
-        damage: 12,
-        effects: ["Radius 10 m", "Blast 14", "Frag 3"],
+        damage: explosiveDamage(12, 10, 14, 3),
         weightText: "25 kg per round.",
         barterValue: "GG150",
         streetPrice: 300,
@@ -302,8 +306,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:d10:frag",
         name: "Frag",
         source: sources(292),
-        damage: 3,
-        effects: ["Radius 15 m", "Blast 10", "Frag 2"],
+        damage: explosiveDamage(3, 15, 10, 2),
         weightText: "25 kg per round.",
         barterValue: "GG200",
         streetPrice: 400,
@@ -330,7 +333,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:2a46m:apds",
         name: "APDS",
         source: sources(292),
-        damage: 166,
+        damage: directDamage(166),
         penetration: penetration("x1", "x1"),
         weightText: "25 kg per round.",
         barterValue: "GG900",
@@ -341,8 +344,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:2a46m:he",
         name: "HE",
         source: sources(292),
-        damage: 18,
-        effects: ["Radius 20 m", "Blast 18", "Frag 5"],
+        damage: explosiveDamage(18, 20, 18, 5),
         weightText: "25 kg per round.",
         barterValue: "GG300",
         streetPrice: 600,
@@ -352,8 +354,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:2a46m:heat",
         name: "HEAT",
         source: sources(292),
-        damage: 75,
-        effects: ["Radius 10 m", "Blast 14", "Frag 3"],
+        damage: explosiveDamage(75, 10, 14, 3),
         weightText: "25 kg per round.",
         barterValue: "GG400",
         streetPrice: 800,
@@ -381,8 +382,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:at14:heat",
         name: "AT-14 (HEAT)",
         source: sources(266),
-        damage: 185,
-        effects: ["Radius 24 m", "Blast 24", "Frag 3"],
+        damage: explosiveDamage(185, 24, 24, 3),
         weightText: "27 kg per missile.",
         barterValue: "GG2,500",
         streetPrice: 20000,
@@ -409,8 +409,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:tow:2a",
         name: "TOW 2A (HEAT)",
         source: sources(266),
-        damage: 165,
-        effects: ["Radius 20 m", "Blast 20", "Frag 3"],
+        damage: explosiveDamage(165, 20, 20, 3),
         weightText: "22.6 kg per missile.",
         barterValue: "GG1,900",
         streetPrice: 15000,
@@ -419,8 +418,7 @@ export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
         id: "vehicle-weapon-ammo:tow:2b",
         name: "TOW 2B (HEAT)",
         source: sources(266),
-        damage: 130,
-        effects: ["Radius 16 m", "Blast 16", "Frag 3"],
+        damage: explosiveDamage(130, 16, 16, 3),
         weightText: "22.6 kg per missile.",
         barterValue: "GG2,200",
         streetPrice: 17000,

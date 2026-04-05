@@ -6,10 +6,14 @@
     "declarationMap": true,
     "rootDir": "src",
     "outDir": "build",
-    "types": ["fvtt-types"]
+    "types": ["fvtt-types"],
+    "paths": {
+      "reflex-framework": ["packages/reflex-framework/build/index.d.ts"],
+      "reflex-framework/*": ["packages/reflex-framework/build/*"]
+    }
   },
   "include": ["src/**/*.ts"],
   "references": [
-
+	{ "path": "../reflex-framework" }
   ]
 }

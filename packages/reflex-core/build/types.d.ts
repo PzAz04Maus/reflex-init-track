@@ -55,7 +55,7 @@ interface ConsumableEntry extends BaseEquipmentEntry {
     } | null;
 }
 type EquipmentEntry = WeaponEntry | ConsumableEntry;
-interface EquipmentRecord {
+export interface EquipmentRecord {
     byId: Record<string, EquipmentEntry>;
     order: string[];
 }

@@ -1,3 +1,5 @@
+import type { ItemDamageProfile } from "./types";
+
 const SOURCE_BOOK = "Twilight 2013 Core OEF PDF";
 
 function source(page: number): string {
@@ -8,11 +10,19 @@ function sources(...pages: number[]): string[] {
   return pages.map(source);
 }
 
+function directDamage(damage: number): ItemDamageProfile[] {
+  return [{ damage }];
+}
+
+function explosiveDamage(damage: number, radiusMeters: number, blast: number, frag: number): ItemDamageProfile[] {
+  return [{ damage, blast, frag, area: { kind: "radius", meters: radiusMeters } }];
+}
+
 export interface LightSupportWeaponAmmunition {
   id: string;
   name: string;
   source: string[];
-  damage?: number;
+  damage?: ItemDamageProfile[];
   damageText?: string;
   effects?: string[];
   weightText: string;
@@ -102,8 +112,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:40x46mm:he",
         name: "40x46mm HE",
         source: sources(265),
-        damage: 8,
-        effects: ["Radius 5 m", "Blast 8", "Frag 4"],
+        damage: explosiveDamage(8, 5, 8, 4),
         weightText: "0.2 kg per grenade",
         barterValue: "GG15",
         streetPrice: 30,
@@ -113,8 +122,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:40x46mm:hedp",
         name: "40x46mm HEDP",
         source: sources(265),
-        damage: 15,
-        effects: ["Radius 5 m", "Blast 8", "Frag 4"],
+        damage: explosiveDamage(15, 5, 8, 4),
         weightText: "0.2 kg per grenade",
         barterValue: "GG20",
         streetPrice: 40,
@@ -135,8 +143,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:40x46mm:stun",
         name: "40x46mm Stun",
         source: sources(265),
-        damage: 3,
-        effects: ["N/A"],
+        damage: directDamage(3),
         weightText: "0.2 kg per grenade",
         barterValue: "GG15",
         streetPrice: 25,
@@ -187,8 +194,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:37mm:stun",
         name: "37mm Stun",
         source: sources(265),
-        damage: 3,
-        effects: ["N/A"],
+        damage: directDamage(3),
         weightText: "0.2 kg per grenade",
         barterValue: "GG15",
         streetPrice: 25,
@@ -215,10 +221,10 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     ammoOptions: [
       { id: "ordnance-ammo:40x46mm:chem-smoke", name: "40x46mm Chem (Smoke)", source: sources(265), damageText: "-", effects: ["Radius 5 m"], weightText: "0.2 kg per grenade", barterValue: "GG10", streetPrice: 20, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:smoke"] },
       { id: "ordnance-ammo:40x46mm:chem-tear-gas", name: "40x46mm Chem (Tear Gas)", source: sources(265), damageText: "-", effects: ["Radius 5 m"], weightText: "0.2 kg per grenade", barterValue: "GG15", streetPrice: 30, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:tear-gas"] },
-      { id: "ordnance-ammo:40x46mm:he", name: "40x46mm HE", source: sources(265), damage: 8, effects: ["Radius 5 m", "Blast 8", "Frag 4"], weightText: "0.2 kg per grenade", barterValue: "GG15", streetPrice: 30, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:explosive"] },
-      { id: "ordnance-ammo:40x46mm:hedp", name: "40x46mm HEDP", source: sources(265), damage: 15, effects: ["Radius 5 m", "Blast 8", "Frag 4"], weightText: "0.2 kg per grenade", barterValue: "GG20", streetPrice: 40, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:dual-purpose"] },
+      { id: "ordnance-ammo:40x46mm:he", name: "40x46mm HE", source: sources(265), damage: explosiveDamage(8, 5, 8, 4), weightText: "0.2 kg per grenade", barterValue: "GG15", streetPrice: 30, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:explosive"] },
+      { id: "ordnance-ammo:40x46mm:hedp", name: "40x46mm HEDP", source: sources(265), damage: explosiveDamage(15, 5, 8, 4), weightText: "0.2 kg per grenade", barterValue: "GG20", streetPrice: 40, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:dual-purpose"] },
       { id: "ordnance-ammo:40x46mm:illum", name: "40x46mm Illum", source: sources(265), damageText: "-", effects: ["Radius 100 m", "1 minute"], weightText: "0.2 kg per grenade", barterValue: "GG10", streetPrice: 20, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:illumination"] },
-      { id: "ordnance-ammo:40x46mm:stun", name: "40x46mm Stun", source: sources(265), damage: 3, effects: ["N/A"], weightText: "0.2 kg per grenade", barterValue: "GG15", streetPrice: 25, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:stun"] },
+      { id: "ordnance-ammo:40x46mm:stun", name: "40x46mm Stun", source: sources(265), damage: directDamage(3), weightText: "0.2 kg per grenade", barterValue: "GG15", streetPrice: 25, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:stun"] },
     ],
   },
   {
@@ -281,8 +287,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:40mm-russian:he",
         name: "40mm Russian HE",
         source: sources(265),
-        damage: 4,
-        effects: ["Radius 7 m", "Blast 2", "Frag 7"],
+        damage: explosiveDamage(4, 7, 2, 7),
         weightText: "0.3 kg per grenade",
         barterValue: "GG15",
         streetPrice: 30,
@@ -292,8 +297,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:40mm-russian:stun",
         name: "40mm Russian Stun",
         source: sources(265),
-        damage: 4,
-        effects: ["N/A"],
+        damage: directDamage(4),
         weightText: "0.3 kg per grenade",
         barterValue: "GG15",
         streetPrice: 25,
@@ -340,8 +344,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:30mm:he",
         name: "30mm HE",
         source: sources(265),
-        damage: 8,
-        effects: ["Radius 6 m", "Blast 8", "Frag 5"],
+        damage: explosiveDamage(8, 6, 8, 5),
         weightText: "0.4 kg per grenade",
         barterValue: "GG15",
         streetPrice: 30,
@@ -366,7 +369,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     streetPrice: 14000,
     description: "Lighter successor to the AGS-17 with its own dedicated tripod.",
     traits: ["ordnance:automatic-grenade-launcher", "ordnance:crew-served", "ordnance:requires-emplacement"],
-    ammoOptions: [{ id: "ordnance-ammo:30mm:he", name: "30mm HE", source: sources(265), damage: 8, effects: ["Radius 6 m", "Blast 8", "Frag 5"], weightText: "0.4 kg per grenade", barterValue: "GG15", streetPrice: 30, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:explosive"] }],
+    ammoOptions: [{ id: "ordnance-ammo:30mm:he", name: "30mm HE", source: sources(265), damage: explosiveDamage(8, 6, 8, 5), weightText: "0.4 kg per grenade", barterValue: "GG15", streetPrice: 30, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:explosive"] }],
   },
   {
     id: "ordnance:agl:mk-19:40x53mm-hv",
@@ -390,8 +393,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:40x53mm-hv:he",
         name: "40x53mm HV HE",
         source: sources(265),
-        damage: 8,
-        effects: ["Radius 5 m", "Blast 8", "Frag 4"],
+        damage: explosiveDamage(8, 5, 8, 4),
         weightText: "0.4 kg per grenade",
         barterValue: "GG20",
         streetPrice: 40,
@@ -401,8 +403,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
         id: "ordnance-ammo:40x53mm-hv:hedp",
         name: "40x53mm HV HEDP",
         source: sources(265),
-        damage: 15,
-        effects: ["Radius 5 m", "Blast 8", "Frag 4"],
+        damage: explosiveDamage(15, 5, 8, 4),
         weightText: "0.4 kg per grenade",
         barterValue: "GG25",
         streetPrice: 50,
@@ -428,8 +429,8 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "Lighter American successor to the Mk. 19.",
     traits: ["ordnance:automatic-grenade-launcher", "ordnance:crew-served", "ordnance:requires-emplacement"],
     ammoOptions: [
-      { id: "ordnance-ammo:40x53mm-hv:he", name: "40x53mm HV HE", source: sources(265), damage: 8, effects: ["Radius 5 m", "Blast 8", "Frag 4"], weightText: "0.4 kg per grenade", barterValue: "GG20", streetPrice: 40, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:explosive"] },
-      { id: "ordnance-ammo:40x53mm-hv:hedp", name: "40x53mm HV HEDP", source: sources(265), damage: 15, effects: ["Radius 5 m", "Blast 8", "Frag 4"], weightText: "0.4 kg per grenade", barterValue: "GG25", streetPrice: 50, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:dual-purpose"] },
+      { id: "ordnance-ammo:40x53mm-hv:he", name: "40x53mm HV HE", source: sources(265), damage: explosiveDamage(8, 5, 8, 4), weightText: "0.4 kg per grenade", barterValue: "GG20", streetPrice: 40, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:explosive"] },
+      { id: "ordnance-ammo:40x53mm-hv:hedp", name: "40x53mm HV HEDP", source: sources(265), damage: explosiveDamage(15, 5, 8, 4), weightText: "0.4 kg per grenade", barterValue: "GG25", streetPrice: 50, traits: ["ordnance:grenade", "ordnance:not-hand-thrown", "ordnance:dual-purpose"] },
     ],
   },
   {
@@ -449,9 +450,9 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "Disposable Swedish light support launcher used by NATO and partner forces.",
     traits: ["ordnance:rocket-launcher", "ordnance:disposable", "ordnance:single-shot"],
     ammoOptions: [
-      { id: "ordnance-ammo:at4:he", name: "AT4 (HE)", source: sources(264), damage: 18, effects: ["Radius 18 m", "Blast 18", "Frag 3"], weightText: "Included in launcher", barterValue: "GG190", streetPrice: 1500, traits: ["ordnance:rocket", "ordnance:disposable"] },
-      { id: "ordnance-ammo:at4:heat", name: "AT4 (HEAT)", source: sources(264), damage: 70, effects: ["Radius 9 m", "Blast 9", "Frag 1"], weightText: "Included in launcher", barterValue: "GG190", streetPrice: 1500, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] },
-      { id: "ordnance-ammo:at4:heat-improved", name: "AT4 (HEAT, Improved)", source: sources(264), damage: 90, effects: ["Radius 9 m", "Blast 9", "Frag 1"], weightText: "Included in launcher", barterValue: "GG310", streetPrice: 2500, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] },
+      { id: "ordnance-ammo:at4:he", name: "AT4 (HE)", source: sources(264), damage: explosiveDamage(18, 18, 18, 3), weightText: "Included in launcher", barterValue: "GG190", streetPrice: 1500, traits: ["ordnance:rocket", "ordnance:disposable"] },
+      { id: "ordnance-ammo:at4:heat", name: "AT4 (HEAT)", source: sources(264), damage: explosiveDamage(70, 9, 9, 1), weightText: "Included in launcher", barterValue: "GG190", streetPrice: 1500, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] },
+      { id: "ordnance-ammo:at4:heat-improved", name: "AT4 (HEAT, Improved)", source: sources(264), damage: explosiveDamage(90, 9, 9, 1), weightText: "Included in launcher", barterValue: "GG310", streetPrice: 2500, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] },
     ],
   },
   {
@@ -471,7 +472,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "Legacy American disposable antitank rocket launcher.",
     traits: ["ordnance:rocket-launcher", "ordnance:disposable", "ordnance:single-shot"],
     ammoOptions: [
-      { id: "ordnance-ammo:m72-law:heat", name: "M72 LAW (HEAT)", source: sources(264), damage: 55, effects: ["Radius 7 m", "Blast 7", "Frag 1"], weightText: "Included in launcher", barterValue: "GG110", streetPrice: 900, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] },
+      { id: "ordnance-ammo:m72-law:heat", name: "M72 LAW (HEAT)", source: sources(264), damage: explosiveDamage(55, 7, 7, 1), weightText: "Included in launcher", barterValue: "GG110", streetPrice: 900, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] },
     ],
   },
   {
@@ -490,7 +491,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     streetPrice: 800,
     description: "Disposable Soviet launcher derived closely from the M72 concept.",
     traits: ["ordnance:rocket-launcher", "ordnance:disposable", "ordnance:single-shot"],
-    ammoOptions: [{ id: "ordnance-ammo:rpg-18:heat", name: "RPG-18 (HEAT)", source: sources(264), damage: 60, effects: ["Radius 7 m", "Blast 7", "Frag 1"], weightText: "Included in launcher", barterValue: "GG100", streetPrice: 800, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] }],
+    ammoOptions: [{ id: "ordnance-ammo:rpg-18:heat", name: "RPG-18 (HEAT)", source: sources(264), damage: explosiveDamage(60, 7, 7, 1), weightText: "Included in launcher", barterValue: "GG100", streetPrice: 800, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] }],
   },
   {
     id: "ordnance:rocket:rpg-22",
@@ -508,7 +509,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     streetPrice: 1000,
     description: "Scaled-up Soviet disposable launcher with improved anti-armor performance.",
     traits: ["ordnance:rocket-launcher", "ordnance:disposable", "ordnance:single-shot"],
-    ammoOptions: [{ id: "ordnance-ammo:rpg-22:heat", name: "RPG-22 (HEAT)", source: sources(264), damage: 65, effects: ["Radius 7 m", "Blast 7", "Frag 1"], weightText: "Included in launcher", barterValue: "GG125", streetPrice: 1000, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] }],
+    ammoOptions: [{ id: "ordnance-ammo:rpg-22:heat", name: "RPG-22 (HEAT)", source: sources(264), damage: explosiveDamage(65, 7, 7, 1), weightText: "Included in launcher", barterValue: "GG125", streetPrice: 1000, traits: ["ordnance:rocket", "ordnance:disposable", "ordnance:heat"] }],
   },
   {
     id: "ordnance:rocket:carl-gustav",
@@ -527,9 +528,9 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "Long-lived Swedish reusable launcher with an integral Mag-1 optic.",
     traits: ["ordnance:rocket-launcher", "ordnance:reusable", "vision:mag-1"],
     ammoOptions: [
-      { id: "ordnance-ammo:carl-gustav:he", name: "Carl Gustav HE", source: sources(265), damage: 20, effects: ["Radius 20 m", "Blast 20", "Frag 3"], weightText: "3.1 kg per rocket", barterValue: "GG80", streetPrice: 800, traits: ["ordnance:rocket", "ordnance:explosive"] },
-      { id: "ordnance-ammo:carl-gustav:heat", name: "Carl Gustav HEAT", source: sources(265), damage: 80, effects: ["Radius 5 m", "Blast 10", "Frag 1"], weightText: "4 kg per rocket", barterValue: "GG150", streetPrice: 1500, traits: ["ordnance:rocket", "ordnance:heat"] },
-      { id: "ordnance-ammo:carl-gustav:hedp", name: "Carl Gustav HEDP", source: sources(265), damage: 25, effects: ["Radius 20 m", "Blast 20", "Frag 2"], weightText: "3.3 kg per rocket", barterValue: "GG120", streetPrice: 1200, traits: ["ordnance:rocket", "ordnance:dual-purpose"] },
+      { id: "ordnance-ammo:carl-gustav:he", name: "Carl Gustav HE", source: sources(265), damage: explosiveDamage(20, 20, 20, 3), weightText: "3.1 kg per rocket", barterValue: "GG80", streetPrice: 800, traits: ["ordnance:rocket", "ordnance:explosive"] },
+      { id: "ordnance-ammo:carl-gustav:heat", name: "Carl Gustav HEAT", source: sources(265), damage: explosiveDamage(80, 5, 10, 1), weightText: "4 kg per rocket", barterValue: "GG150", streetPrice: 1500, traits: ["ordnance:rocket", "ordnance:heat"] },
+      { id: "ordnance-ammo:carl-gustav:hedp", name: "Carl Gustav HEDP", source: sources(265), damage: explosiveDamage(25, 20, 20, 2), weightText: "3.3 kg per rocket", barterValue: "GG120", streetPrice: 1200, traits: ["ordnance:rocket", "ordnance:dual-purpose"] },
       { id: "ordnance-ammo:carl-gustav:chem-smoke", name: "Carl Gustav Chem (Smoke)", source: sources(265), damageText: "N/A", effects: ["Radius 20 m"], weightText: "3.1 kg per rocket", barterValue: "GG60", streetPrice: 600, traits: ["ordnance:rocket", "ordnance:smoke"] },
       { id: "ordnance-ammo:carl-gustav:illum", name: "Carl Gustav Illum", source: sources(265), damageText: "N/A", effects: ["Radius 400 m", "1 minute"], weightText: "3.1 kg per rocket", barterValue: "GG75", streetPrice: 750, traits: ["ordnance:rocket", "ordnance:illumination"] },
     ],
@@ -551,9 +552,9 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "Iconic Soviet reusable antitank launcher used worldwide.",
     traits: ["ordnance:rocket-launcher", "ordnance:reusable"],
     ammoOptions: [
-      { id: "ordnance-ammo:rpg-7:frag", name: "RPG-7 Frag", source: sources(265), damage: 14, effects: ["Radius 15 m", "Blast 4", "Frag 6"], weightText: "2 kg per rocket", barterValue: "GG30", streetPrice: 300, traits: ["ordnance:rocket", "ordnance:explosive"] },
-      { id: "ordnance-ammo:rpg-7:heat", name: "RPG-7 HEAT", source: sources(265), damage: 55, effects: ["Radius 4 m", "Blast 7", "Frag 2"], weightText: "2.6 kg per rocket", barterValue: "GG30", streetPrice: 300, traits: ["ordnance:rocket", "ordnance:heat"] },
-      { id: "ordnance-ammo:rpg-7:heat-enhanced", name: "RPG-7 HEAT, Enhanced", source: sources(265), damage: 110, effects: ["Radius 4 m", "Blast 10", "Frag 1"], weightText: "4.5 kg per rocket", barterValue: "GG75", streetPrice: 750, traits: ["ordnance:rocket", "ordnance:heat", "ordnance:tandem-charge"] },
+      { id: "ordnance-ammo:rpg-7:frag", name: "RPG-7 Frag", source: sources(265), damage: explosiveDamage(14, 15, 4, 6), weightText: "2 kg per rocket", barterValue: "GG30", streetPrice: 300, traits: ["ordnance:rocket", "ordnance:explosive"] },
+      { id: "ordnance-ammo:rpg-7:heat", name: "RPG-7 HEAT", source: sources(265), damage: explosiveDamage(55, 4, 7, 2), weightText: "2.6 kg per rocket", barterValue: "GG30", streetPrice: 300, traits: ["ordnance:rocket", "ordnance:heat"] },
+      { id: "ordnance-ammo:rpg-7:heat-enhanced", name: "RPG-7 HEAT, Enhanced", source: sources(265), damage: explosiveDamage(110, 4, 10, 1), weightText: "4.5 kg per rocket", barterValue: "GG75", streetPrice: 750, traits: ["ordnance:rocket", "ordnance:heat", "ordnance:tandem-charge"] },
     ],
   },
   {
@@ -573,7 +574,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "Heavy Russian reusable launcher firing tandem-charge anti-armor rockets.",
     traits: ["ordnance:rocket-launcher", "ordnance:reusable"],
     ammoOptions: [
-      { id: "ordnance-ammo:rpg-29:heat", name: "RPG-29 HEAT", source: sources(265), damage: 135, effects: ["Radius 6 m", "Blast 13", "Frag 1"], weightText: "6.7 kg per rocket", barterValue: "GG110", streetPrice: 1100, traits: ["ordnance:rocket", "ordnance:heat", "ordnance:tandem-charge"] },
+      { id: "ordnance-ammo:rpg-29:heat", name: "RPG-29 HEAT", source: sources(265), damage: explosiveDamage(135, 6, 13, 1), weightText: "6.7 kg per rocket", barterValue: "GG110", streetPrice: 1100, traits: ["ordnance:rocket", "ordnance:heat", "ordnance:tandem-charge"] },
     ],
   },
   {
@@ -594,8 +595,8 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     traits: ["ordnance:guided-missile-launcher", "ordnance:wire-guided", "ordnance:tripod-included"],
     notes: ["AT-7 missiles use range M/S. AT-13 missiles use range O/Ex."],
     ammoOptions: [
-      { id: "ordnance-ammo:at-7:heat", name: "AT-7 (HEAT)", source: sources(265), damage: 75, effects: ["Radius 7 m", "Blast 8", "Frag 2"], weightText: "6.3 kg per missile", barterValue: "GG750", streetPrice: 6000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"], notes: ["Use range M/S when firing this missile."] },
-      { id: "ordnance-ammo:at-13:heat", name: "AT-13 (HEAT)", source: sources(265), damage: 165, effects: ["Radius 20 m", "Blast 20", "Frag 3"], weightText: "13.8 kg per missile", barterValue: "GG1,900", streetPrice: 15000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"], notes: ["Use range O/Ex when firing this missile."] },
+      { id: "ordnance-ammo:at-7:heat", name: "AT-7 (HEAT)", source: sources(265), damage: explosiveDamage(75, 7, 8, 2), weightText: "6.3 kg per missile", barterValue: "GG750", streetPrice: 6000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"], notes: ["Use range M/S when firing this missile."] },
+      { id: "ordnance-ammo:at-13:heat", name: "AT-13 (HEAT)", source: sources(265), damage: explosiveDamage(165, 20, 20, 3), weightText: "13.8 kg per missile", barterValue: "GG1,900", streetPrice: 15000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"], notes: ["Use range O/Ex when firing this missile."] },
     ],
   },
   {
@@ -615,7 +616,7 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "Heavy laser-homing ATGM system replacing earlier Soviet infantry designs.",
     traits: ["ordnance:guided-missile-launcher", "ordnance:laser-homing"],
     ammoOptions: [
-      { id: "ordnance-ammo:at-14:heat", name: "AT-14 (HEAT)", source: sources(265), damage: 185, effects: ["Radius 24 m", "Blast 24", "Frag 3"], weightText: "27 kg per missile", barterValue: "GG2,500", streetPrice: 20000, traits: ["ordnance:missile", "ordnance:laser-homing", "ordnance:heat"] },
+      { id: "ordnance-ammo:at-14:heat", name: "AT-14 (HEAT)", source: sources(265), damage: explosiveDamage(185, 24, 24, 3), weightText: "27 kg per missile", barterValue: "GG2,500", streetPrice: 20000, traits: ["ordnance:missile", "ordnance:laser-homing", "ordnance:heat"] },
     ],
   },
   {
@@ -635,8 +636,8 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "European wire-guided ATGM launcher exported worldwide.",
     traits: ["ordnance:guided-missile-launcher", "ordnance:wire-guided", "ordnance:tripod-included"],
     ammoOptions: [
-      { id: "ordnance-ammo:milan-2:heat", name: "MILAN-2 (HEAT)", source: sources(265), damage: 140, effects: ["Radius 18 m", "Blast 18", "Frag 3"], weightText: "6.7 kg per missile", barterValue: "GG1,300", streetPrice: 10000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"] },
-      { id: "ordnance-ammo:milan-3:heat", name: "MILAN-3 (HEAT)", source: sources(265), damage: 165, effects: ["Radius 20 m", "Blast 20", "Frag 3"], weightText: "7.2 kg per missile", barterValue: "GG1,900", streetPrice: 15000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"] },
+      { id: "ordnance-ammo:milan-2:heat", name: "MILAN-2 (HEAT)", source: sources(265), damage: explosiveDamage(140, 18, 18, 3), weightText: "6.7 kg per missile", barterValue: "GG1,300", streetPrice: 10000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"] },
+      { id: "ordnance-ammo:milan-3:heat", name: "MILAN-3 (HEAT)", source: sources(265), damage: explosiveDamage(165, 20, 20, 3), weightText: "7.2 kg per missile", barterValue: "GG1,900", streetPrice: 15000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"] },
     ],
   },
   {
@@ -656,8 +657,8 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     description: "American wire-guided BGM-71 launcher family used by infantry and vehicle mounts.",
     traits: ["ordnance:guided-missile-launcher", "ordnance:wire-guided"],
     ammoOptions: [
-      { id: "ordnance-ammo:tow-2a:heat", name: "TOW 2A (HEAT)", source: sources(265), damage: 165, effects: ["Radius 20 m", "Blast 20", "Frag 3"], weightText: "22.6 kg per missile", barterValue: "GG1,900", streetPrice: 15000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"] },
-      { id: "ordnance-ammo:tow-2b:heat", name: "TOW 2B (HEAT)", source: sources(265, 266), damage: 130, effects: ["Radius 16 m", "Blast 16", "Frag 3"], weightText: "22.6 kg per missile", barterValue: "GG2,200", streetPrice: 17000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat", "ordnance:top-attack"], notes: ["On a success with margin 5+, roll 1d6: 1-4 hull rear, 5-6 turret rear."] },
+      { id: "ordnance-ammo:tow-2a:heat", name: "TOW 2A (HEAT)", source: sources(265), damage: explosiveDamage(165, 20, 20, 3), weightText: "22.6 kg per missile", barterValue: "GG1,900", streetPrice: 15000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat"] },
+      { id: "ordnance-ammo:tow-2b:heat", name: "TOW 2B (HEAT)", source: sources(265, 266), damage: explosiveDamage(130, 16, 16, 3), weightText: "22.6 kg per missile", barterValue: "GG2,200", streetPrice: 17000, traits: ["ordnance:missile", "ordnance:wire-guided", "ordnance:heat", "ordnance:top-attack"], notes: ["On a success with margin 5+, roll 1d6: 1-4 hull rear, 5-6 turret rear."] },
     ],
   },
   {
@@ -678,9 +679,9 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     traits: ["ordnance:mortar", "ordnance:indirect-fire-only", "ordnance:crew-served"],
     notes: ["A normal 3-person crew may fire up to 6 rounds per operational action."],
     ammoOptions: [
-      { id: "ordnance-ammo:60mm-mortar:he", name: "60mm Mortar HE", source: sources(266), damage: 9, effects: ["Radius 10 m", "Blast 9", "Frag 7"], weightText: "1.7 kg per shell", barterValue: "GG50", streetPrice: 500, traits: ["ordnance:mortar-shell", "ordnance:explosive"] },
+      { id: "ordnance-ammo:60mm-mortar:he", name: "60mm Mortar HE", source: sources(266), damage: explosiveDamage(9, 10, 9, 7), weightText: "1.7 kg per shell", barterValue: "GG50", streetPrice: 500, traits: ["ordnance:mortar-shell", "ordnance:explosive"] },
       { id: "ordnance-ammo:60mm-mortar:illum", name: "60mm Mortar Illum", source: sources(266), damageText: "N/A", effects: ["Radius 400 m", "1 minute"], weightText: "1.7 kg per shell", barterValue: "GG60", streetPrice: 600, traits: ["ordnance:mortar-shell", "ordnance:illumination"] },
-      { id: "ordnance-ammo:60mm-mortar:wp", name: "60mm Mortar WP", source: sources(266), damage: 4, effects: ["Radius 6 m", "Blast 4", "Frag 6"], weightText: "1.7 kg per shell", barterValue: "GG75", streetPrice: 750, traits: ["ordnance:mortar-shell", "ordnance:white-phosphorus"] },
+      { id: "ordnance-ammo:60mm-mortar:wp", name: "60mm Mortar WP", source: sources(266), damage: explosiveDamage(4, 6, 4, 6), weightText: "1.7 kg per shell", barterValue: "GG75", streetPrice: 750, traits: ["ordnance:mortar-shell", "ordnance:white-phosphorus"] },
     ],
   },
   {
@@ -701,9 +702,9 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     traits: ["ordnance:mortar", "ordnance:indirect-fire-only", "ordnance:crew-served"],
     notes: ["Maximum rate of fire is 3 rounds per operational action with a full 5-person crew."],
     ammoOptions: [
-      { id: "ordnance-ammo:81mm-mortar:he", name: "81mm Mortar HE", source: sources(266), damage: 14, effects: ["Radius 14 m", "Blast 14", "Frag 7"], weightText: "4 kg per shell", barterValue: "GG60", streetPrice: 600, traits: ["ordnance:mortar-shell", "ordnance:explosive"] },
+      { id: "ordnance-ammo:81mm-mortar:he", name: "81mm Mortar HE", source: sources(266), damage: explosiveDamage(14, 14, 14, 7), weightText: "4 kg per shell", barterValue: "GG60", streetPrice: 600, traits: ["ordnance:mortar-shell", "ordnance:explosive"] },
       { id: "ordnance-ammo:81mm-mortar:illum", name: "81mm Mortar Illum", source: sources(266), damageText: "N/A", effects: ["Radius 1 km", "1 minute"], weightText: "4 kg per shell", barterValue: "GG75", streetPrice: 750, traits: ["ordnance:mortar-shell", "ordnance:illumination"] },
-      { id: "ordnance-ammo:81mm-mortar:wp", name: "81mm Mortar WP", source: sources(266), damage: 4, effects: ["Radius 10 m", "Blast 4", "Frag 6"], weightText: "4.7 kg per shell", barterValue: "GG90", streetPrice: 900, traits: ["ordnance:mortar-shell", "ordnance:white-phosphorus"] },
+      { id: "ordnance-ammo:81mm-mortar:wp", name: "81mm Mortar WP", source: sources(266), damage: explosiveDamage(4, 10, 4, 6), weightText: "4.7 kg per shell", barterValue: "GG90", streetPrice: 900, traits: ["ordnance:mortar-shell", "ordnance:white-phosphorus"] },
     ],
   },
   {
@@ -724,9 +725,9 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     traits: ["ordnance:mortar", "ordnance:indirect-fire-only", "ordnance:crew-served"],
     notes: ["Maximum rate of fire is 3 rounds per operational action with a full 5-person crew."],
     ammoOptions: [
-      { id: "ordnance-ammo:82mm-mortar:he", name: "82mm Mortar HE", source: sources(266), damage: 14, effects: ["Radius 14 m", "Blast 14", "Frag 7"], weightText: "4 kg per shell", barterValue: "GG60", streetPrice: 600, traits: ["ordnance:mortar-shell", "ordnance:explosive"] },
+      { id: "ordnance-ammo:82mm-mortar:he", name: "82mm Mortar HE", source: sources(266), damage: explosiveDamage(14, 14, 14, 7), weightText: "4 kg per shell", barterValue: "GG60", streetPrice: 600, traits: ["ordnance:mortar-shell", "ordnance:explosive"] },
       { id: "ordnance-ammo:82mm-mortar:illum", name: "82mm Mortar Illum", source: sources(266), damageText: "N/A", effects: ["Radius 1 km", "1 minute"], weightText: "4 kg per shell", barterValue: "GG75", streetPrice: 750, traits: ["ordnance:mortar-shell", "ordnance:illumination"] },
-      { id: "ordnance-ammo:82mm-mortar:wp", name: "82mm Mortar WP", source: sources(266), damage: 4, effects: ["Radius 10 m", "Blast 4", "Frag 6"], weightText: "4.7 kg per shell", barterValue: "GG90", streetPrice: 900, traits: ["ordnance:mortar-shell", "ordnance:white-phosphorus"] },
+      { id: "ordnance-ammo:82mm-mortar:wp", name: "82mm Mortar WP", source: sources(266), damage: explosiveDamage(4, 10, 4, 6), weightText: "4.7 kg per shell", barterValue: "GG90", streetPrice: 900, traits: ["ordnance:mortar-shell", "ordnance:white-phosphorus"] },
     ],
   },
   {
@@ -747,9 +748,9 @@ export const LIGHT_SUPPORT_WEAPONS: LightSupportWeaponSystem[] = [
     traits: ["ordnance:mortar", "ordnance:indirect-fire-only", "ordnance:crew-served"],
     notes: ["Maximum rate of fire is 2 rounds per operational action with a full 5-person crew."],
     ammoOptions: [
-      { id: "ordnance-ammo:120mm-mortar:he", name: "120mm Mortar HE", source: sources(266), damage: 28, effects: ["Radius 22 m", "Blast 28", "Frag 8"], weightText: "13.7 kg per shell", barterValue: "GG90", streetPrice: 900, traits: ["ordnance:mortar-shell", "ordnance:explosive"] },
+      { id: "ordnance-ammo:120mm-mortar:he", name: "120mm Mortar HE", source: sources(266), damage: explosiveDamage(28, 22, 28, 8), weightText: "13.7 kg per shell", barterValue: "GG90", streetPrice: 900, traits: ["ordnance:mortar-shell", "ordnance:explosive"] },
       { id: "ordnance-ammo:120mm-mortar:illum", name: "120mm Mortar Illum", source: sources(266), damageText: "N/A", effects: ["Radius 1.5 km", "1 minute"], weightText: "13.7 kg per shell", barterValue: "GG120", streetPrice: 1200, traits: ["ordnance:mortar-shell", "ordnance:illumination"] },
-      { id: "ordnance-ammo:120mm-mortar:wp", name: "120mm Mortar WP", source: sources(266), damage: 5, effects: ["Radius 18 m", "Blast 5", "Frag 7"], weightText: "13.7 kg per shell", barterValue: "GG140", streetPrice: 1400, traits: ["ordnance:mortar-shell", "ordnance:white-phosphorus"] },
+      { id: "ordnance-ammo:120mm-mortar:wp", name: "120mm Mortar WP", source: sources(266), damage: explosiveDamage(5, 18, 5, 7), weightText: "13.7 kg per shell", barterValue: "GG140", streetPrice: 1400, traits: ["ordnance:mortar-shell", "ordnance:white-phosphorus"] },
     ],
   },
 ];

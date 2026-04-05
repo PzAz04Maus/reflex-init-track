@@ -1,4 +1,4 @@
-import type { CombatState, CharacterRecord, CharacterId, InitiativeState } from 'reflex-core';
+import type { CombatState, CharacterRecord, CharacterId, InitiativeState } from '../types';
 export interface AddActorInput {
     character: CharacterRecord;
     state?: Partial<InitiativeState>;

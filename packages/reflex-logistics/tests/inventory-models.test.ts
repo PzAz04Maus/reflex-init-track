@@ -400,7 +400,7 @@ test("communication electronics are present and tagged for radio pouches", () =>
   assert.ok(tacticalRadio);
   assert.equal(tacticalRadio?.tags?.includes("radio"), true);
   assert.equal(tacticalRadio?.tags?.includes("communication"), true);
-  assert.equal(tacticalRadio?.notes?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
+  assert.equal(tacticalRadio?.source?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
 });
 
 test("non-electronic signal items are isolated in signal catalog", () => {
@@ -409,7 +409,7 @@ test("non-electronic signal items are isolated in signal catalog", () => {
 
   assert.ok(signalWhistle);
   assert.equal(signalWhistle?.tags?.includes("non-electronic"), true);
-  assert.equal(signalWhistle?.notes?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
+  assert.equal(signalWhistle?.source?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
   assert.equal(electronicLeak, undefined);
 });
 

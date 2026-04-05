@@ -1,4 +1,4 @@
-import type { CombatState, InitiativeState, CharacterData, CharacterBio, EquipmentRecord } from "reflex-core";
+import type { CombatState, InitiativeState, CharacterData, CharacterBio, EquipmentRecord } from "./types";
 
 const makeInit = (val: number, joined: boolean): InitiativeState => ({
   base: val,

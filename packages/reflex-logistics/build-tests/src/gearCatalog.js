@@ -31,7 +31,7 @@ __exportStar(require("./closeCombatCatalog"), exports);
 __exportStar(require("./demolitionsCatalog"), exports);
 __exportStar(require("./electronicsCatalog"), exports);
 __exportStar(require("./genericCatalog"), exports);
-__exportStar(require("./heavyOrdnance"), exports);
+__exportStar(require("./lightSupportWeapons"), exports);
 __exportStar(require("./rangedCatalog"), exports);
 __exportStar(require("./weaponAttachmentsCatalog"), exports);
 exports.GEAR_CATALOG = [

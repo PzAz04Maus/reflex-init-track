@@ -299,14 +299,14 @@ const consumablesCatalog_1 = require("../src/consumablesCatalog");
     strict_1.default.ok(tacticalRadio);
     strict_1.default.equal(tacticalRadio?.tags?.includes("radio"), true);
     strict_1.default.equal(tacticalRadio?.tags?.includes("communication"), true);
-    strict_1.default.equal(tacticalRadio?.notes?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
+    strict_1.default.equal(tacticalRadio?.source?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
 });
 (0, node_test_1.default)("non-electronic signal items are isolated in signal catalog", () => {
     const signalWhistle = signalCatalog_1.SIGNAL_CATALOG.find((item) => item.id === "signal:whistle");
     const electronicLeak = electronicsCatalog_1.ELECTRONICS_CATALOG.find((item) => item.id === "signal:whistle");
     strict_1.default.ok(signalWhistle);
     strict_1.default.equal(signalWhistle?.tags?.includes("non-electronic"), true);
-    strict_1.default.equal(signalWhistle?.notes?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
+    strict_1.default.equal(signalWhistle?.source?.includes("Source: Twilight 2013 Core OEF PDF p.221"), true);
     strict_1.default.equal(electronicLeak, undefined);
 });
 (0, node_test_1.default)("nutrition helpers parse calorie and unit traits from consumables", () => {

@@ -1,4 +1,4 @@
-import { selectActors, withActors } from 'reflex-core';
+import { selectActors, withActors } from 'reflex-framework';
 // Calculate margin for roll
 export function computeMargin(roll, target) {
     return roll - target;

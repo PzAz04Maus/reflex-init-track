@@ -77,7 +77,8 @@ test("vehicle armament section captures dedicated heavy-weapon mechanics and amm
   assert.ok(rarden);
   assert.ok(bushmaster);
   assert.ok(tow);
-  assert.equal(rarden.ammoOptions?.[0]?.damage, 27);
+  assert.equal(rarden.ammoOptions?.[0]?.damage?.[0]?.damage, 27);
+  assert.equal(rarden.ammoOptions?.find((ammo) => ammo.id === "vehicle-weapon-ammo:l21a1-rarden:he")?.damage?.[0]?.frag, 4);
   assert.equal(rarden.notes?.includes("One 6-tick Reload action loads a single 3-round clip."), true);
   assert.equal(bushmaster.powerRequirement, "0.75 kW");
   assert.equal(bushmaster.ammoOptions?.find((ammo) => ammo.id === "vehicle-weapon-ammo:m242:api")?.penetration?.maximum, "x2");

@@ -16,6 +16,7 @@ function defineDemolitionItem(input) {
         source: [source(input.page)],
         tags: input.tags,
         traits: input.traits,
+        damage: input.damage,
         description: input.description,
     });
 }
@@ -29,7 +30,8 @@ exports.DEMOLITION_CATALOG = [
         page: 268,
         tags: ["demolition", "mine", "anti-personnel"],
         traits: ["demolition:mine", "demolition:pressure-trigger:5kg"],
-        description: "Fragmentation mine. Damage 8; Radius 2 m; Blast 4; Frag 6. Triggered by 5 kg of direct pressure.",
+        damage: [{ damage: 8, blast: 4, frag: 6, area: { kind: "radius", meters: 2 } }],
+        description: "Fragmentation mine. Triggered by 5 kg of direct pressure.",
     }),
     defineDemolitionItem({
         id: "demolition:mine:antitank-blast",
@@ -40,7 +42,8 @@ exports.DEMOLITION_CATALOG = [
         page: 268,
         tags: ["demolition", "mine", "anti-vehicle"],
         traits: ["demolition:mine", "demolition:pressure-trigger:150kg", "demolition:blast-mine"],
-        description: "Blast antitank mine. Damage 20; Radius 10 m; Blast 20; Frag 3. Triggered by 150 kg of direct pressure.",
+        damage: [{ damage: 20, blast: 20, frag: 3, area: { kind: "radius", meters: 10 } }],
+        description: "Blast antitank mine. Triggered by 150 kg of direct pressure.",
     }),
     defineDemolitionItem({
         id: "demolition:mine:antitank-shaped",
@@ -51,7 +54,8 @@ exports.DEMOLITION_CATALOG = [
         page: 268,
         tags: ["demolition", "mine", "anti-vehicle"],
         traits: ["demolition:mine", "demolition:pressure-trigger:150kg", "demolition:shaped-charge"],
-        description: "Shaped-charge antitank mine. Damage 40; Radius 5 m; Blast 10; Frag 2. Triggered by 150 kg of direct pressure.",
+        damage: [{ damage: 40, blast: 10, frag: 2, area: { kind: "radius", meters: 5 } }],
+        description: "Shaped-charge antitank mine. Triggered by 150 kg of direct pressure.",
     }),
     defineDemolitionItem({
         id: "demolition:mine:bounding",
@@ -62,7 +66,8 @@ exports.DEMOLITION_CATALOG = [
         page: 268,
         tags: ["demolition", "mine", "anti-personnel"],
         traits: ["demolition:mine", "demolition:pressure-trigger", "demolition:tripwire-compatible", "demolition:bounding"],
-        description: "Bounding antipersonnel mine. Damage 5; Radius 15 m; Blast 5; Frag 7. Jumps to chest height before detonation.",
+        damage: [{ damage: 5, blast: 5, frag: 7, area: { kind: "radius", meters: 15 } }],
+        description: "Bounding antipersonnel mine. Jumps to chest height before detonation.",
     }),
     defineDemolitionItem({
         id: "demolition:mine:directional",
@@ -73,7 +78,8 @@ exports.DEMOLITION_CATALOG = [
         page: 268,
         tags: ["demolition", "mine", "directional"],
         traits: ["demolition:mine", "demolition:tripwire-compatible", "demolition:command-detonation-capable", "demolition:cone-fragmentation"],
-        description: "Directional fragmentation mine. Damage 7; Blast 7; Frag 8 in a 60-degree cone, plus normal secondary effects.",
+        damage: [{ damage: 7, blast: 7, frag: 8, area: { kind: "cone", degrees: 60 }, notes: ["Includes normal secondary effects."] }],
+        description: "Directional fragmentation mine.",
     }),
     defineDemolitionItem({
         id: "demolition:explosive:anfo-30l-sack",

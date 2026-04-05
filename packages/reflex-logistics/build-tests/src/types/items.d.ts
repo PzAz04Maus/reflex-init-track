@@ -1,12 +1,26 @@
 import type { ItemCarryProfile, InventoryLocation, PowerRequirementStats, PowerSupplyStats, VoucherPool } from "./common";
 import type { WeaponAttachmentStats } from "./weapons";
+export interface ItemDamageArea {
+    kind: "radius" | "cone";
+    meters?: number;
+    degrees?: number;
+}
+export interface ItemDamageProfile {
+    damage: number;
+    blast?: number;
+    frag?: number;
+    area?: ItemDamageArea;
+    notes?: string[];
+}
 export interface ItemDefinitionInit {
     id: string;
     name: string;
     weight: number;
     tags?: string[];
     traits?: string[];
+    notes?: string[];
     source?: string[];
+    damage?: ItemDamageProfile[];
     barterValue?: string;
     streetPrice?: number | string;
     duration?: string;
@@ -35,6 +49,8 @@ export declare class ItemDefinition {
     tags?: string[];
     traits?: string[];
     notes?: string[];
+    source?: string[];
+    damage?: ItemDamageProfile[];
     barterValue?: string;
     streetPrice?: number | string;
     duration?: string;

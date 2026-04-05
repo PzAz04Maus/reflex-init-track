@@ -1,5 +1,18 @@
 export * from './types';
-export * from './state/getNextActor';
-export * from './selectors/combatSelectors';
-export * from './advanceTurn';
-export * from './createInitialState';
+export * from './rangeBands';
+export {
+	advanceTurn,
+	createInitialState,
+	getNextActor,
+	getNextActors,
+	selectActorById,
+	selectActors,
+	withActors,
+} from 'reflex-framework';
+export {
+	addActor,
+	computeMargin,
+	computeOodaAdjustedInit,
+	joinMidFightInitialInit,
+	updateActorCost,
+} from 'reflex-framework/rules/advanceTurn';

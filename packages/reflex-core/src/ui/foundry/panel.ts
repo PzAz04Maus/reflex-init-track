@@ -1,5 +1,5 @@
-import { advanceTurn, getNextActors, selectActors } from 'reflex-core';
-import type { CharacterRecord } from 'reflex-core';
+import { advanceTurn, getNextActors, selectActors } from 'reflex-framework';
+import type { CharacterRecord } from '../../types';
 import { MODULE_ID } from '../../vtt/foundry/constants.js';
 import { getScheduleState, setScheduleState } from '../../vtt/foundry/store.js';
 

@@ -6,7 +6,7 @@ export * from "./closeCombatCatalog";
 export * from "./demolitionsCatalog";
 export * from "./electronicsCatalog";
 export * from "./genericCatalog";
-export * from "./heavyOrdnance";
+export * from "./lightSupportWeapons";
 export * from "./rangedCatalog";
 export * from "./weaponAttachmentsCatalog";
 export declare const GEAR_CATALOG: ItemDefinition[];

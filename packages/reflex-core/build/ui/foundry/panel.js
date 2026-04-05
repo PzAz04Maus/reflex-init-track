@@ -1,4 +1,4 @@
-import { advanceTurn, getNextActors, selectActors } from 'reflex-core';
+import { advanceTurn, getNextActors, selectActors } from 'reflex-framework';
 import { MODULE_ID } from '../../vtt/foundry/constants.js';
 import { getScheduleState, setScheduleState } from '../../vtt/foundry/store.js';
 export class ReflexSchedulerPanel extends foundry.applications.api.ApplicationV2 {

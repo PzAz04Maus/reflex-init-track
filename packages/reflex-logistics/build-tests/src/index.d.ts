@@ -3,7 +3,7 @@ export * from "./closeCombatCatalog";
 export * from "./containerCatalog";
 export * from "./demolitionsCatalog";
 export * from "./gearCatalog";
-export * from "./heavyOrdnance";
+export * from "./lightSupportWeapons";
 export * from "./equipmentLayouts";
 export * from "./inventory";
 export * from "./nutrition";

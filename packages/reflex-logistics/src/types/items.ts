@@ -7,6 +7,28 @@ import type {
 } from "./common";
 import type { WeaponAttachmentStats } from "./weapons";
 
+export interface ItemDamageArea {
+  kind: "radius" | "cone";
+  meters?: number;
+  degrees?: number;
+}
+
+export interface ItemDamageProfile {
+  damage: number;
+  blast?: number;
+  frag?: number;
+  area?: ItemDamageArea;
+  notes?: string[];
+}
+
+function cloneDamageProfile(damage?: ItemDamageProfile[]): ItemDamageProfile[] | undefined {
+  return damage?.map((profile) => ({
+    ...profile,
+    ...(profile.area ? { area: { ...profile.area } } : {}),
+    ...(profile.notes ? { notes: [...profile.notes] } : {}),
+  }));
+}
+
 function clonePowerSupply(powerSupply?: PowerSupplyStats): PowerSupplyStats | undefined {
   return powerSupply
     ? {
@@ -52,6 +74,7 @@ export interface ItemDefinitionInit {
   traits?: string[];
   notes?: string[];
   source?: string[];
+  damage?: ItemDamageProfile[];
   barterValue?: string;
   streetPrice?: number | string;
   duration?: string;
@@ -82,6 +105,8 @@ export class ItemDefinition {
   tags?: string[];
   traits?: string[];
   notes?: string[];
+  source?: string[];
+  damage?: ItemDamageProfile[];
   barterValue?: string;
   streetPrice?: number | string;
   duration?: string;
@@ -103,6 +128,8 @@ export class ItemDefinition {
     this.tags = input.tags;
     this.traits = input.traits ? [...input.traits] : undefined;
     this.notes = input.notes ? [...input.notes] : undefined;
+    this.source = input.source ? [...input.source] : undefined;
+    this.damage = cloneDamageProfile(input.damage);
     this.barterValue = input.barterValue;
     this.streetPrice = input.streetPrice;
     this.duration = input.duration;
@@ -125,7 +152,9 @@ export class ItemDefinition {
       weight: this.weight,
       tags: this.tags,
       traits: this.traits ? [...this.traits] : undefined,
-      source: this.notes ? [...this.notes] : undefined,
+      notes: this.notes ? [...this.notes] : undefined,
+      source: this.source ? [...this.source] : undefined,
+      damage: cloneDamageProfile(this.damage),
       barterValue: this.barterValue,
       streetPrice: this.streetPrice,
       duration: this.duration,

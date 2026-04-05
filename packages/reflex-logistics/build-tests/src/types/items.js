@@ -1,6 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ItemInstance = exports.ItemDefinition = void 0;
+function cloneDamageProfile(damage) {
+    return damage?.map((profile) => ({
+        ...profile,
+        ...(profile.area ? { area: { ...profile.area } } : {}),
+        ...(profile.notes ? { notes: [...profile.notes] } : {}),
+    }));
+}
 function clonePowerSupply(powerSupply) {
     return powerSupply
         ? {
@@ -43,6 +50,8 @@ class ItemDefinition {
     tags;
     traits;
     notes;
+    source;
+    damage;
     barterValue;
     streetPrice;
     duration;
@@ -62,7 +71,9 @@ class ItemDefinition {
         this.weight = input.weight;
         this.tags = input.tags;
         this.traits = input.traits ? [...input.traits] : undefined;
-        this.notes = input.source ? [...input.source] : undefined;
+        this.notes = input.notes ? [...input.notes] : undefined;
+        this.source = input.source ? [...input.source] : undefined;
+        this.damage = cloneDamageProfile(input.damage);
         this.barterValue = input.barterValue;
         this.streetPrice = input.streetPrice;
         this.duration = input.duration;
@@ -84,7 +95,9 @@ class ItemDefinition {
             weight: this.weight,
             tags: this.tags,
             traits: this.traits ? [...this.traits] : undefined,
-            source: this.notes ? [...this.notes] : undefined,
+            notes: this.notes ? [...this.notes] : undefined,
+            source: this.source ? [...this.source] : undefined,
+            damage: cloneDamageProfile(this.damage),
             barterValue: this.barterValue,
             streetPrice: this.streetPrice,
             duration: this.duration,

@@ -1,6 +1,6 @@
 import { useReducer, useState, useCallback } from "react";
 import { combatReducer } from "reflex-framework/reducer/combatReducer";
-import { getNextActors } from "reflex-core";
+import { getNextActors } from "reflex-framework";
 import { mockCombatState } from "./mockdata";
 import { ActorList } from "./components/ActorList";
 

@@ -19,7 +19,7 @@ __exportStar(require("./closeCombatCatalog"), exports);
 __exportStar(require("./containerCatalog"), exports);
 __exportStar(require("./demolitionsCatalog"), exports);
 __exportStar(require("./gearCatalog"), exports);
-__exportStar(require("./heavyOrdnance"), exports);
+__exportStar(require("./lightSupportWeapons"), exports);
 __exportStar(require("./equipmentLayouts"), exports);
 __exportStar(require("./inventory"), exports);
 __exportStar(require("./nutrition"), exports);

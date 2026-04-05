@@ -3,14 +3,12 @@ declare function loadTemplates(paths: string[]): Promise<void>;
 import { addActor, createInitialState } from 'reflex-core';
 import type { CombatState, CharacterData, EquipmentRecord } from 'reflex-core';
 import { ReflexSchedulerPanel } from './panel.js';
-import { ReflexDebugPanel } from './debug-panel.js';
 // Register the debug panel template using the new namespaced loadTemplates and module-relative path
 Hooks.once('init', () => {
   foundry.applications.handlebars.loadTemplates([
     'modules/reflex/templates/foundry/debug-panel.hbs'
   ]);
 });
-import { getScheduleState, setScheduleState } from './store.js';
 
 let panel: ReflexSchedulerPanel | null = null;
 
