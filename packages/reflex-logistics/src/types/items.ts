@@ -50,6 +50,7 @@ export interface ItemDefinitionInit {
   weight: number;
   tags?: string[];
   traits?: string[];
+  notes?: string[];
   source?: string[];
   barterValue?: string;
   streetPrice?: number | string;
@@ -101,7 +102,7 @@ export class ItemDefinition {
     this.weight = input.weight;
     this.tags = input.tags;
     this.traits = input.traits ? [...input.traits] : undefined;
-    this.notes = input.source ? [...input.source] : undefined;
+    this.notes = input.notes ? [...input.notes] : undefined;
     this.barterValue = input.barterValue;
     this.streetPrice = input.streetPrice;
     this.duration = input.duration;

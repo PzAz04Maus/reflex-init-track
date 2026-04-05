@@ -13,6 +13,22 @@ function cloneSpeedProfile(s) {
         return s;
     return cloneGroundSpeed(s);
 }
+function cloneFuelStats(fuel) {
+    return {
+        ...fuel,
+        types: [...fuel.types],
+    };
+}
+function cloneMovementMode(mode) {
+    return {
+        ...mode,
+        travelSpeed: mode.travelSpeed ? cloneSpeedProfile(mode.travelSpeed) : undefined,
+        combatSpeed: mode.combatSpeed ? cloneSpeedProfile(mode.combatSpeed) : undefined,
+        fuel: mode.fuel ? cloneFuelStats(mode.fuel) : undefined,
+        traits: mode.traits ? [...mode.traits] : undefined,
+        notes: mode.notes ? [...mode.notes] : undefined,
+    };
+}
 function cloneArmorStats(armor) {
     const out = {};
     for (const [key, entry] of Object.entries(armor)) {
@@ -24,11 +40,15 @@ function cloneVehicleStats(v) {
     return {
         ...v,
         crew: { ...v.crew },
-        fuel: { ...v.fuel, types: [...v.fuel.types] },
-        travelSpeed: cloneSpeedProfile(v.travelSpeed),
-        combatSpeed: cloneSpeedProfile(v.combatSpeed),
+        movementModes: v.movementModes.map(cloneMovementMode),
         armor: v.armor ? cloneArmorStats(v.armor) : undefined,
-        systems: v.systems ? { ...v.systems, armament: v.systems.armament ? [...v.systems.armament] : undefined } : undefined,
+        systems: v.systems
+            ? {
+                ...v.systems,
+                armament: v.systems.armament ? [...v.systems.armament] : undefined,
+                armamentIds: v.systems.armamentIds ? [...v.systems.armamentIds] : undefined,
+            }
+            : undefined,
         equipment: v.equipment ? { ...v.equipment } : undefined,
         traits: v.traits ? [...v.traits] : undefined,
         notes: v.notes ? [...v.notes] : undefined,
@@ -61,6 +81,12 @@ class VehicleDefinition extends items_1.ItemDefinition {
     }
     hasAmphibiousGear() {
         return this.vehicle.equipment?.amphibiousRunningGear ?? false;
+    }
+    getPrimaryMovementMode() {
+        return this.vehicle.movementModes[0];
+    }
+    getMovementMode(id) {
+        return this.vehicle.movementModes.find((mode) => mode.id === id);
     }
     getArmorFacing(key) {
         return this.vehicle.armor?.[key];

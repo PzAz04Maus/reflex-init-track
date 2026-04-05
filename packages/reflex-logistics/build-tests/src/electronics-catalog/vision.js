@@ -5,10 +5,6 @@ const helpers_1 = require("./helpers");
 //We have a series of unpowered optics in the electronics catalog.
 //We should separate those into a "vision" catalog, and then have the powered ones in the electronics catalog reference them as appropriate. This will make it easier to maintain the relationships between powered and unpowered versions of the same item, and also make it easier to find all vision-related items in one place.
 //We should also tag them with the Vision tag.
-//we should have special rules or special exceptions placed into their own section of the catalog, and then have the individual items reference those rules as needed. 
-//Such as traits or mechanics. For example, Night vision reduces vision width, and thermal imaging treats all lighting conditions as adequate light. These should be traits that can be referenced by the items, rather than having the rules written into the item descriptions.
-//In the future this will allow us to search for keys to apply these traits to the rolls automatically
-// and also make it easier to maintain the rules in one place rather than having them scattered across item descriptions.
 exports.MAGNIFICATION_ITEMS = [
     (0, helpers_1.defineElectronicItem)({
         id: "vision:binoculars-standard-mag-2",
@@ -59,7 +55,7 @@ exports.MAGNIFICATION_ITEMS = [
         id: "vision:laser-designator",
         name: "Laser Designator",
         weight: 16,
-        tags: ["vision-enhancement", "magnification", "laser-designator", "targeting", "gps"],
+        tags: ["vision-enhancement", "magnification", "laser-designator", "targeting"],
         barterValue: "GG7,500",
         streetPrice: 30000,
         powerRequirement: "1 lg spec/5 hrs",
@@ -67,7 +63,8 @@ exports.MAGNIFICATION_ITEMS = [
         batterySize: "lg spec",
         runtimeHours: 5,
         traits: ["Mag-3"],
-        description: "Multi-function targeting device for guiding laser-homing munitions, combining a Mag-3 spotting scope with additional ranging, laser, and GPS functions.",
+        description: "Multi-function targeting device for guiding laser-homing munitions.",
+        notes: ["Combines a Mag-3 spotting scope with additional ranging, laser, and GPS functions."],
     }),
     (0, helpers_1.defineElectronicItem)({
         id: "vision:spotting-scope-mag-5",
@@ -151,7 +148,7 @@ exports.NIGHT_VISION_ITEMS = [
         batterySize: "sm",
         runtimeHours: 40,
         description: "Helmet-mounted binocular night-vision goggles.",
-        traits: ["night-vision-binocular-fov-limited", "night-vision-full-optics-no-reflex"],
+        notes: ["Restrict field of vision but give the wearer full advantage of night-vision optics except reflex sights."],
     }),
     (0, helpers_1.defineBatteryDevice)({
         id: "vision:nvgs-monocular",
@@ -191,7 +188,7 @@ exports.THERMAL_IMAGING_ITEMS = [
         powerRequirement: "charge/6 hrs",
         runtimeHours: 6,
         description: "Portable thermal imager usable for observation and search.",
-        traits: ["thermal-human-detection-sniping", "thermal-adequate-light"],
+        notes: ["Detects human-sized heat sources out to Sniping range.", "Treats all lighting conditions as adequate light."],
     }),
     (0, helpers_1.defineRechargeableDevice)({
         id: "vision:thermal-imager-mag-1",

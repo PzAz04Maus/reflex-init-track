@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CIVILIAN_VEHICLES = void 0;
-const vehicles_1 = require("../types/vehicles");
-function def(init) {
-    return new vehicles_1.VehicleDefinition(init);
-}
-// Source: Twilight 2013 Core OEF PDF p.279 (written p.277 — vehicle catalog begins)
+const animalDrawnVehicles_1 = require("./animalDrawnVehicles");
+const civilianGroundVehicles_1 = require("./civilianGroundVehicles");
+const civilianWatercraft_1 = require("./civilianWatercraft");
+// Source: Twilight 2013 Core OEF PDF p.284+ (civilian and non-combat vehicle catalog pages in this pass)
 exports.CIVILIAN_VEHICLES = [
-// Entries will be added as the catalog pages are ingested.
+    ...civilianGroundVehicles_1.CIVILIAN_GROUND_VEHICLES,
+    ...civilianWatercraft_1.CIVILIAN_WATERCRAFT,
+    ...animalDrawnVehicles_1.ANIMAL_DRAWN_VEHICLES,
 ];

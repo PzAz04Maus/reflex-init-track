@@ -34,6 +34,22 @@ export interface VehicleGroundSpeed {
 /** Watercraft speeds: single value in km/hr (travel) or m/exchange (combat). */
 export type VehicleWaterSpeed = number;
 export type VehicleSpeedProfile = VehicleGroundSpeed | VehicleWaterSpeed;
+export type VehicleMovementKind = "ground" | "water" | "sail" | "towed" | "animal-drawn" | (string & {});
+export interface VehicleMovementMode {
+    id: string;
+    label: string;
+    kind: VehicleMovementKind;
+    /** Safe travel speed for this movement mode. */
+    travelSpeed?: VehicleSpeedProfile;
+    /** Safe combat speed for this movement mode. */
+    combatSpeed?: VehicleSpeedProfile;
+    /** Fuel used by this movement mode, if any. */
+    fuel?: VehicleFuelStats;
+    /** Stable lookup traits for rule handling. */
+    traits?: string[];
+    /** Human-readable notes that belong to this specific movement mode. */
+    notes?: string[];
+}
 /** Crew and passenger capacity (p.276).
  * e.g. "2+2" → { crew: 2, passengers: 2 }
  */
@@ -42,8 +58,9 @@ export interface VehicleCrewConfig {
     passengers?: number;
 }
 /** Per-facing armor rating entry (p.277).
- * Key convention: section + facing — e.g. "HF", "HS", "HR", "TF", "TS", "TR", "Susp".
- * H=Hull, T=Turret, Susp=Suspension; F=Front, S=Side, R=Rear.
+ * Common key conventions:
+ * Ground vehicles: section + facing — e.g. "HF", "HS", "HR", "TF", "TS", "TR", "Susp".
+ * Watercraft: "Hull", "Superstructure", "Waterline".
  */
 export interface VehicleArmorEntry {
     rating: number;
@@ -58,6 +75,8 @@ export type VehicleArmorStats = Record<string, VehicleArmorEntry>;
 export interface VehicleSystems {
     /** Permanent weapon systems and mounting points. */
     armament?: string[];
+    /** Stable references into ranged-weapon or vehicle-armament catalogs. */
+    armamentIds?: string[];
     /** Internal magazine/stowage capacity description. */
     ammo?: string;
     /** Communication systems integral to the vehicle. */
@@ -87,17 +106,20 @@ export interface VehicleStats {
     /** Watercraft only: litres of water the vessel can take before sinking (p.277). */
     buoyancy?: number;
     crew: VehicleCrewConfig;
-    /** Maximum cargo in kg, plus notes on special storage. */
-    cargoKg: number;
+    /** Original source text when the crew line contains variants or special roles. */
+    crewText?: string;
+    /** Maximum cargo in kg when the source provides a weight-based capacity. */
+    cargoKg?: number;
+    cargoText?: string;
+    /** Maximum trailer or towed load in kg, if explicitly listed. */
+    towingCapacityKg?: number;
     /** Laden weight (fuel + ammo + crew, no cargo/passengers) in kg. */
     weightKg: number;
+    weightText?: string;
     /** Maintenance requirement in hours per period of use. */
     maintenanceHours: number;
-    /** Safe travel speed — km/hr, road and cross-country or single for watercraft. */
-    travelSpeed: VehicleSpeedProfile;
-    /** Safe combat speed — m/exchange, road and cross-country or single for watercraft. */
-    combatSpeed: VehicleSpeedProfile;
-    fuel: VehicleFuelStats;
+    /** One or more propulsion profiles; first entry is the default mode. */
+    movementModes: VehicleMovementMode[];
     armor?: VehicleArmorStats;
     systems?: VehicleSystems;
     equipment?: VehicleEquipment;
@@ -118,6 +140,8 @@ export declare class VehicleDefinition extends ItemDefinition {
     isTracked(): boolean;
     hasNBC(): boolean;
     hasAmphibiousGear(): boolean;
+    getPrimaryMovementMode(): VehicleMovementMode | undefined;
+    getMovementMode(id: string): VehicleMovementMode | undefined;
     getArmorFacing(key: string): VehicleArmorEntry | undefined;
     instantiate(input?: Omit<VehicleInstanceInit, keyof VehicleDefinitionInit | "quantity"> & {
         quantity?: number;

@@ -1,0 +1,441 @@
+import type { RangeBandName } from "reflex-core";
+
+import type { WeaponPenetration, WeaponRangeProfile, WeaponSpeedProfile } from "../types/weapons";
+import { sources } from "./shared";
+
+const RANGE_BAND_MAP: Record<string, RangeBandName> = {
+  P: "Personal",
+  GF: "Gunfighting",
+  CQB: "CQB",
+  T: "Tight",
+  M: "Medium",
+  O: "Open",
+  S: "Sniping",
+  EX: "Extreme",
+};
+
+function parseRange(range: string): WeaponRangeProfile {
+  const [optimum, maximum] = range.split("/");
+
+  return {
+    optimum: RANGE_BAND_MAP[optimum],
+    maximum: maximum ? RANGE_BAND_MAP[maximum] : undefined,
+  };
+}
+
+function parseSpeed(speed: string): WeaponSpeedProfile {
+  const [hip, snap, aimed] = speed.split("/").map((value) => Number(value.replace(/[^0-9.-]/g, "")));
+
+  return { hip, snap, aimed };
+}
+
+function penetration(optimum: string, maximum?: string): WeaponPenetration {
+  return { optimum, maximum };
+}
+
+export interface VehicleArmamentAmmunition {
+  id: string;
+  name: string;
+  source: string[];
+  damage: number;
+  penetration?: WeaponPenetration;
+  effects?: string[];
+  weightText?: string;
+  barterValue: string;
+  streetPrice: number;
+  notes?: string[];
+  traits?: string[];
+}
+
+export interface VehicleArmamentSystem {
+  id: string;
+  name: string;
+  category: "autocannon" | "tank-gun" | "guided-missile-launcher" | "machine-gun-variant";
+  source: string[];
+  description: string;
+  capacity: string;
+  range: WeaponRangeProfile;
+  rateOfFire: string;
+  speed: WeaponSpeedProfile;
+  weightText?: string;
+  barterValue?: string;
+  streetPrice?: number;
+  powerRequirement?: string;
+  variantOfWeaponId?: string;
+  ammoOptions?: VehicleArmamentAmmunition[];
+  traits?: string[];
+  notes?: string[];
+}
+
+export const VEHICLE_ARMAMENTS: VehicleArmamentSystem[] = [
+  {
+    id: "vehicle-weapon:l21a1-rarden-30mm",
+    name: "L21A1 RARDEN 30mm Autocannon",
+    category: "autocannon",
+    source: sources(288),
+    description: "British clip-fed autocannon used on the FV510 Warrior and related vehicles.",
+    capacity: "9 rounds in three 3-round clips.",
+    range: parseRange("O/EX"),
+    rateOfFire: "S/B2",
+    speed: parseSpeed("8/12/18"),
+    ammoOptions: [
+      {
+        id: "vehicle-weapon-ammo:l21a1-rarden:apds",
+        name: "APDS",
+        source: sources(288),
+        damage: 27,
+        penetration: penetration("x1", "x1"),
+        weightText: "0.7 kg per round; 33 kg per case of twelve 3-round clips.",
+        barterValue: "GG1,750",
+        streetPrice: 3500,
+        notes: ["Costs are per case of twelve 3-round clips."],
+      },
+      {
+        id: "vehicle-weapon-ammo:l21a1-rarden:he",
+        name: "HE",
+        source: sources(288),
+        damage: 10,
+        effects: ["Radius 5 m", "Blast 10", "Frag 4"],
+        weightText: "0.7 kg per round; 33 kg per case of twelve 3-round clips.",
+        barterValue: "GG450",
+        streetPrice: 900,
+        notes: ["Costs are per case of twelve 3-round clips."],
+      },
+    ],
+    traits: [
+      "vehicle-weapon:rarden-clip-fed",
+      "vehicle-weapon:rarden-jam-check-when-ammo-drops-to-3-or-less",
+    ],
+    notes: [
+      "One 6-tick Reload action loads a single 3-round clip.",
+      "Whenever an attack action leaves the gun with 3 rounds or fewer, there is a 50% chance it jams and requires a full operational action to clear.",
+    ],
+  },
+  {
+    id: "vehicle-weapon:l94a1-chain-gun",
+    name: "L94A1 Chain Gun",
+    category: "machine-gun-variant",
+    source: sources(288),
+    description: "Electrically-driven 7.62mm chain gun used as the Warrior's coaxial secondary weapon.",
+    capacity: "Uses FN MAG-compatible belted ammunition.",
+    range: parseRange("O/EX"),
+    rateOfFire: "B6/B11",
+    speed: parseSpeed("5/8/11"),
+    powerRequirement: "0.4 kW",
+    variantOfWeaponId: "weapon:fn-mag:7-62x51mm",
+    traits: ["vehicle-weapon:requires-external-power"],
+    notes: ["For game purposes this is identical to the FN MAG except for its electrical power requirement."],
+  },
+  {
+    id: "vehicle-weapon:2a42-30mm",
+    name: "2A42 30mm Autocannon",
+    category: "autocannon",
+    source: sources(289),
+    description: "Dual-feed Soviet/Russian autocannon used on the BMP-2 and other combat vehicles and helicopters.",
+    capacity: "500 rounds split between two feed belts.",
+    range: parseRange("O/EX"),
+    rateOfFire: "S/B2/B4",
+    speed: parseSpeed("8/12/18"),
+    ammoOptions: [
+      {
+        id: "vehicle-weapon-ammo:2a42:apds",
+        name: "APDS",
+        source: sources(289),
+        damage: 21,
+        penetration: penetration("x1", "x1"),
+        weightText: "0.8 kg per round; 32 kg per case of 33 linked rounds.",
+        barterValue: "GG1,500",
+        streetPrice: 3000,
+        notes: ["Costs are per case of 33 linked rounds."],
+      },
+      {
+        id: "vehicle-weapon-ammo:2a42:api",
+        name: "API",
+        source: sources(289),
+        damage: 18,
+        penetration: penetration("x1", "x2"),
+        weightText: "0.8 kg per round; 32 kg per case of 33 linked rounds.",
+        barterValue: "GG450",
+        streetPrice: 900,
+        notes: ["Costs are per case of 33 linked rounds."],
+      },
+      {
+        id: "vehicle-weapon-ammo:2a42:frag",
+        name: "Frag",
+        source: sources(289),
+        damage: 5,
+        effects: ["Radius 10 m", "Blast 5", "Frag 6"],
+        weightText: "0.8 kg per round; 32 kg per case of 33 linked rounds.",
+        barterValue: "GG350",
+        streetPrice: 700,
+        notes: ["Costs are per case of 33 linked rounds."],
+      },
+    ],
+    traits: ["vehicle-weapon:dual-feed"],
+    notes: ["Switching between the two feed belts is a 1-tick action."],
+  },
+  {
+    id: "vehicle-weapon:m242-bushmaster-25mm",
+    name: "M242 Bushmaster 25mm Autocannon",
+    category: "autocannon",
+    source: sources(289, 295),
+    description: "Externally powered American/NATO autocannon used on the Bradley and some patrol boats.",
+    capacity: "Bradley mount: one 70-round box and one 230-round box; patrol boat mount: one 150-round box.",
+    range: parseRange("S/EX"),
+    rateOfFire: "S/B2",
+    speed: parseSpeed("8/12/18"),
+    powerRequirement: "0.75 kW",
+    ammoOptions: [
+      {
+        id: "vehicle-weapon-ammo:m242:apds",
+        name: "APDS",
+        source: sources(289),
+        damage: 22,
+        penetration: penetration("x1", "x1"),
+        weightText: "0.5 kg per round; 18 kg per case of 30 linked rounds.",
+        barterValue: "GG1,500",
+        streetPrice: 3000,
+        notes: ["Costs are per case of 30 linked rounds."],
+      },
+      {
+        id: "vehicle-weapon-ammo:m242:api",
+        name: "API",
+        source: sources(289),
+        damage: 20,
+        penetration: penetration("x1", "x2"),
+        weightText: "0.5 kg per round; 18 kg per case of 30 linked rounds.",
+        barterValue: "GG500",
+        streetPrice: 1000,
+        notes: ["Costs are per case of 30 linked rounds."],
+      },
+      {
+        id: "vehicle-weapon-ammo:m242:he",
+        name: "HE",
+        source: sources(289),
+        damage: 10,
+        effects: ["Radius 5 m", "Blast 10", "Frag 4"],
+        weightText: "0.5 kg per round; 18 kg per case of 30 linked rounds.",
+        barterValue: "GG400",
+        streetPrice: 800,
+        notes: ["Costs are per case of 30 linked rounds."],
+      },
+    ],
+    traits: ["vehicle-weapon:requires-external-power", "vehicle-weapon:dual-feed-in-bradley-mount"],
+    notes: [
+      "Switching between the Bradley's two ammunition boxes is a 1-tick action.",
+      "If the host vehicle engine is shut down or disabled, the weapon will not fire unless characters rig another 0.75 kW power source.",
+    ],
+  },
+  {
+    id: "vehicle-weapon:l44-120mm",
+    name: "L44 120mm Cannon",
+    category: "tank-gun",
+    source: sources(291, 292),
+    description: "Rheinmetall smoothbore main gun used on the Leopard 2 and other NATO main battle tanks.",
+    capacity: "1 round.",
+    range: parseRange("S/EX"),
+    rateOfFire: "S",
+    speed: parseSpeed("11/17/25"),
+    ammoOptions: [
+      {
+        id: "vehicle-weapon-ammo:l44:apds",
+        name: "APDS",
+        source: sources(291, 292),
+        damage: 176,
+        penetration: penetration("x1", "x1"),
+        weightText: "22.3 kg per round.",
+        barterValue: "GG1,100",
+        streetPrice: 2200,
+        notes: ["Costs are per individual round."],
+      },
+      {
+        id: "vehicle-weapon-ammo:l44:heat",
+        name: "HEAT",
+        source: sources(291, 292),
+        damage: 115,
+        effects: ["Radius 10 m", "Blast 14", "Frag 3"],
+        weightText: "22.3 kg per round.",
+        barterValue: "GG400",
+        streetPrice: 800,
+        notes: ["Costs are per individual round."],
+      },
+    ],
+    notes: [
+      "Reloading requires one operational action by the loader, gunner, or commander.",
+      "The loader can declare the reload before the gunner fires and complete it after the weapon cycles.",
+    ],
+  },
+  {
+    id: "vehicle-weapon:d10-100mm",
+    name: "D-10 100mm Cannon",
+    category: "tank-gun",
+    source: sources(292),
+    description: "WWII-era rifled tank gun used as the T-55's main armament.",
+    capacity: "1 round.",
+    range: parseRange("S/EX"),
+    rateOfFire: "S",
+    speed: parseSpeed("11/17/25"),
+    ammoOptions: [
+      {
+        id: "vehicle-weapon-ammo:d10:apds",
+        name: "APDS",
+        source: sources(292),
+        damage: 108,
+        penetration: penetration("x1", "x1"),
+        weightText: "25 kg per round.",
+        barterValue: "GG450",
+        streetPrice: 900,
+        notes: ["Costs are per individual round."],
+      },
+      {
+        id: "vehicle-weapon-ammo:d10:he",
+        name: "HE",
+        source: sources(292),
+        damage: 12,
+        effects: ["Radius 10 m", "Blast 14", "Frag 3"],
+        weightText: "25 kg per round.",
+        barterValue: "GG150",
+        streetPrice: 300,
+        notes: ["Costs are per individual round."],
+      },
+      {
+        id: "vehicle-weapon-ammo:d10:frag",
+        name: "Frag",
+        source: sources(292),
+        damage: 3,
+        effects: ["Radius 15 m", "Blast 10", "Frag 2"],
+        weightText: "25 kg per round.",
+        barterValue: "GG200",
+        streetPrice: 400,
+        notes: ["Costs are per individual round."],
+      },
+    ],
+    notes: [
+      "Reloading requires one operational action by the loader, gunner, or commander.",
+      "The loader can declare the reload before the gunner fires and complete it after the weapon cycles.",
+    ],
+  },
+  {
+    id: "vehicle-weapon:2a46m-125mm",
+    name: "2A46M 125mm Cannon",
+    category: "tank-gun",
+    source: sources(292),
+    description: "Soviet/Russian smoothbore tank gun mounted on the T-72 and several related designs.",
+    capacity: "1 round in the gun; T-72 autoloader carousel holds 22 rounds.",
+    range: parseRange("S/EX"),
+    rateOfFire: "S",
+    speed: parseSpeed("11/17/25"),
+    ammoOptions: [
+      {
+        id: "vehicle-weapon-ammo:2a46m:apds",
+        name: "APDS",
+        source: sources(292),
+        damage: 166,
+        penetration: penetration("x1", "x1"),
+        weightText: "25 kg per round.",
+        barterValue: "GG900",
+        streetPrice: 1800,
+        notes: ["Costs are per individual round."],
+      },
+      {
+        id: "vehicle-weapon-ammo:2a46m:he",
+        name: "HE",
+        source: sources(292),
+        damage: 18,
+        effects: ["Radius 20 m", "Blast 18", "Frag 5"],
+        weightText: "25 kg per round.",
+        barterValue: "GG300",
+        streetPrice: 600,
+        notes: ["Costs are per individual round."],
+      },
+      {
+        id: "vehicle-weapon-ammo:2a46m:heat",
+        name: "HEAT",
+        source: sources(292),
+        damage: 75,
+        effects: ["Radius 10 m", "Blast 14", "Frag 3"],
+        weightText: "25 kg per round.",
+        barterValue: "GG400",
+        streetPrice: 800,
+        notes: ["Costs are per individual round."],
+      },
+    ],
+    traits: ["vehicle-weapon:autoloader-compatible"],
+    notes: ["On the T-72, triggering the autoloader is a 1-tick action and the resulting Load action completes in 9 ticks."],
+  },
+  {
+    id: "vehicle-weapon:at14-launcher",
+    name: "AT-14 Launcher",
+    category: "guided-missile-launcher",
+    source: sources(264, 266, 289),
+    description: "Heavy laser-homing ATGM launcher used by infantry teams and vehicle mounts like the BMP-2.",
+    capacity: "1 missile.",
+    range: parseRange("O/EX"),
+    rateOfFire: "S",
+    speed: parseSpeed("8/12/18"),
+    weightText: "37 kg launcher system; infantry configuration also uses an 11 kg laser designator and a heavy tripod.",
+    barterValue: "GG25,000",
+    streetPrice: 200000,
+    ammoOptions: [
+      {
+        id: "vehicle-weapon-ammo:at14:heat",
+        name: "AT-14 (HEAT)",
+        source: sources(266),
+        damage: 185,
+        effects: ["Radius 24 m", "Blast 24", "Frag 3"],
+        weightText: "27 kg per missile.",
+        barterValue: "GG2,500",
+        streetPrice: 20000,
+      },
+    ],
+    traits: ["vehicle-weapon:laser-homing"],
+    notes: ["Vehicle installations mount the launch tube and designator permanently."],
+  },
+  {
+    id: "vehicle-weapon:tow-launcher",
+    name: "TOW Launcher",
+    category: "guided-missile-launcher",
+    source: sources(264, 266, 289),
+    description: "Tube-launched, optically tracked, wire-guided missile launcher used by infantry and vehicle mounts like the Bradley.",
+    capacity: "1 missile per tube.",
+    range: parseRange("O/EX"),
+    rateOfFire: "S",
+    speed: parseSpeed("8/12/18"),
+    weightText: "73 kg launcher system; requires a heavy tripod or vehicle mount.",
+    barterValue: "GG28,000",
+    streetPrice: 225000,
+    ammoOptions: [
+      {
+        id: "vehicle-weapon-ammo:tow:2a",
+        name: "TOW 2A (HEAT)",
+        source: sources(266),
+        damage: 165,
+        effects: ["Radius 20 m", "Blast 20", "Frag 3"],
+        weightText: "22.6 kg per missile.",
+        barterValue: "GG1,900",
+        streetPrice: 15000,
+      },
+      {
+        id: "vehicle-weapon-ammo:tow:2b",
+        name: "TOW 2B (HEAT)",
+        source: sources(266),
+        damage: 130,
+        effects: ["Radius 16 m", "Blast 16", "Frag 3"],
+        weightText: "22.6 kg per missile.",
+        barterValue: "GG2,200",
+        streetPrice: 17000,
+        traits: ["vehicle-weapon:top-attack"],
+        notes: [
+          "The missile flies over the target and detonates downward.",
+          "If an attack succeeds with a margin of success of 5 or more, roll 1d6: 1-4 hull rear, 5-6 turret rear.",
+        ],
+      },
+    ],
+    traits: ["vehicle-weapon:wire-guided"],
+    notes: ["The Bradley's twin launcher requires the gunner to expose himself through the hatch to reload both tubes."],
+  },
+];
+
+export const VEHICLE_ARMAMENTS_BY_ID = Object.fromEntries(
+  VEHICLE_ARMAMENTS.map((armament) => [armament.id, armament]),
+) as Record<string, VehicleArmamentSystem>;

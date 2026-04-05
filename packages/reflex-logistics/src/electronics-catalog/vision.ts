@@ -7,11 +7,6 @@ import { defineBatteryDevice, defineElectronicItem, defineRechargeableDevice } f
 
 //We should also tag them with the Vision tag.
 
-//we should have special rules or special exceptions placed into their own section of the catalog, and then have the individual items reference those rules as needed. 
-//Such as traits or mechanics. For example, Night vision reduces vision width, and thermal imaging treats all lighting conditions as adequate light. These should be traits that can be referenced by the items, rather than having the rules written into the item descriptions.
-//In the future this will allow us to search for keys to apply these traits to the rolls automatically
-// and also make it easier to maintain the rules in one place rather than having them scattered across item descriptions.
-
 export const MAGNIFICATION_ITEMS: ItemDefinition[] = [
 	defineElectronicItem({
 		id: "vision:binoculars-standard-mag-2",
@@ -62,7 +57,7 @@ export const MAGNIFICATION_ITEMS: ItemDefinition[] = [
 		id: "vision:laser-designator",
 		name: "Laser Designator",
 		weight: 16,
-		tags: ["vision-enhancement", "magnification", "laser-designator", "targeting", "gps"],
+		tags: ["vision-enhancement", "magnification", "laser-designator", "targeting"],
 		barterValue: "GG7,500",
 		streetPrice: 30000,
 		powerRequirement: "1 lg spec/5 hrs",
@@ -70,7 +65,8 @@ export const MAGNIFICATION_ITEMS: ItemDefinition[] = [
 		batterySize: "lg spec",
 		runtimeHours: 5,
 		traits: ["Mag-3"],
-		description: "Multi-function targeting device for guiding laser-homing munitions, combining a Mag-3 spotting scope with additional ranging, laser, and GPS functions.",
+		description: "Multi-function targeting device for guiding laser-homing munitions.",
+		notes: ["Combines a Mag-3 spotting scope with additional ranging, laser, and GPS functions."],
 	}),
 	defineElectronicItem({
 		id: "vision:spotting-scope-mag-5",
@@ -155,7 +151,7 @@ export const NIGHT_VISION_ITEMS: ItemDefinition[] = [
 		batterySize: "sm",
 		runtimeHours: 40,
 		description: "Helmet-mounted binocular night-vision goggles.",
-		traits: ["night-vision-binocular-fov-limited", "night-vision-full-optics-no-reflex"],
+		notes: ["Restrict field of vision but give the wearer full advantage of night-vision optics except reflex sights."],
 	}),
 	defineBatteryDevice({
 		id: "vision:nvgs-monocular",
@@ -196,7 +192,7 @@ export const THERMAL_IMAGING_ITEMS: ItemDefinition[] = [
 		powerRequirement: "charge/6 hrs",
 		runtimeHours: 6,
 		description: "Portable thermal imager usable for observation and search.",
-		traits: ["thermal-human-detection-sniping", "thermal-adequate-light"],
+		notes: ["Detects human-sized heat sources out to Sniping range.", "Treats all lighting conditions as adequate light."],
 	}),
 	defineRechargeableDevice({
 		id: "vision:thermal-imager-mag-1",

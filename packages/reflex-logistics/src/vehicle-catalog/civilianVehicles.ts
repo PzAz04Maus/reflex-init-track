@@ -1,12 +1,11 @@
-import type { VehicleDefinitionInit } from "../types/vehicles";
-import { VehicleDefinition } from "../types/vehicles";
+import { ANIMAL_DRAWN_VEHICLES } from "./animalDrawnVehicles";
+import { CIVILIAN_GROUND_VEHICLES } from "./civilianGroundVehicles";
+import { CIVILIAN_WATERCRAFT } from "./civilianWatercraft";
 
-function def(init: VehicleDefinitionInit): VehicleDefinition {
-  return new VehicleDefinition(init);
-}
+// Source: Twilight 2013 Core OEF PDF p.284+ (civilian and non-combat vehicle catalog pages in this pass)
 
-// Source: Twilight 2013 Core OEF PDF p.279 (written p.277 — vehicle catalog begins)
-
-export const CIVILIAN_VEHICLES: VehicleDefinition[] = [
-  // Entries will be added as the catalog pages are ingested.
+export const CIVILIAN_VEHICLES = [
+  ...CIVILIAN_GROUND_VEHICLES,
+  ...CIVILIAN_WATERCRAFT,
+  ...ANIMAL_DRAWN_VEHICLES,
 ];

@@ -4,13 +4,12 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "build",
-    "types": ["fvtt-types"],
-    "jsx": "react-jsx"
+    "types": ["fvtt-types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "main.tsx", "setupTests.ts"],
+  "include": ["src/**/*.ts"],
   "references": [
-    { "path": "../reflex-framework" }
+
   ]
 }

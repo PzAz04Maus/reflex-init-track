@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/vehicle-catalog/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,oBAAoB,CAAC;AACvD,OAAO,EAAE,iBAAiB,EAAE,MAAM,oBAAoB,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/vehicle-catalog/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,oBAAoB,CAAC;AACvD,OAAO,EAAE,iBAAiB,EAAE,MAAM,oBAAoB,CAAC;AACvD,cAAc,oBAAoB,CAAC;AACnC,cAAc,aAAa,CAAC"}

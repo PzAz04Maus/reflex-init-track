@@ -4,7 +4,8 @@ import { MODULE_ID } from '../../vtt/foundry/constants.js';
 import { getScheduleState, setScheduleState } from '../../vtt/foundry/store.js';
 
 export class ReflexSchedulerPanel extends foundry.applications.api.ApplicationV2 {
-  static DEFAULT_OPTIONS = foundry.utils.mergeObject(super.DEFAULT_OPTIONS, {
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: `${MODULE_ID}-panel`,
       classes: [MODULE_ID],
       title: 'Reflex Scheduler',
@@ -13,7 +14,7 @@ export class ReflexSchedulerPanel extends foundry.applications.api.ApplicationV2
       template: `modules/${MODULE_ID}/templates/foundry/schedule-panel.hbs`,
       resizable: true
     });
-
+  }
 
   async getData(_options = {}): Promise<any> {
     const combat = game.combats?.active;

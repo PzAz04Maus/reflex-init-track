@@ -1,3 +1,2 @@
-import { VehicleDefinition } from "../types/vehicles";
-export declare const MILITARY_VEHICLES: VehicleDefinition[];
+export declare const MILITARY_VEHICLES: import("..").VehicleDefinition[];
 //# sourceMappingURL=militaryVehicles.d.ts.map

@@ -64,6 +64,30 @@ export type VehicleWaterSpeed = number;
 
 export type VehicleSpeedProfile = VehicleGroundSpeed | VehicleWaterSpeed;
 
+export type VehicleMovementKind =
+  | "ground"
+  | "water"
+  | "sail"
+  | "towed"
+  | "animal-drawn"
+  | (string & {});
+
+export interface VehicleMovementMode {
+  id: string;
+  label: string;
+  kind: VehicleMovementKind;
+  /** Safe travel speed for this movement mode. */
+  travelSpeed?: VehicleSpeedProfile;
+  /** Safe combat speed for this movement mode. */
+  combatSpeed?: VehicleSpeedProfile;
+  /** Fuel used by this movement mode, if any. */
+  fuel?: VehicleFuelStats;
+  /** Stable lookup traits for rule handling. */
+  traits?: string[];
+  /** Human-readable notes that belong to this specific movement mode. */
+  notes?: string[];
+}
+
 // ---------------------------------------------------------------------------
 // Crew
 // ---------------------------------------------------------------------------
@@ -81,8 +105,9 @@ export interface VehicleCrewConfig {
 // ---------------------------------------------------------------------------
 
 /** Per-facing armor rating entry (p.277).
- * Key convention: section + facing — e.g. "HF", "HS", "HR", "TF", "TS", "TR", "Susp".
- * H=Hull, T=Turret, Susp=Suspension; F=Front, S=Side, R=Rear.
+ * Common key conventions:
+ * Ground vehicles: section + facing — e.g. "HF", "HS", "HR", "TF", "TS", "TR", "Susp".
+ * Watercraft: "Hull", "Superstructure", "Waterline".
  */
 export interface VehicleArmorEntry {
   rating: number;
@@ -103,6 +128,8 @@ export type VehicleArmorStats = Record<string, VehicleArmorEntry>;
 export interface VehicleSystems {
   /** Permanent weapon systems and mounting points. */
   armament?: string[];
+  /** Stable references into ranged-weapon or vehicle-armament catalogs. */
+  armamentIds?: string[];
   /** Internal magazine/stowage capacity description. */
   ammo?: string;
   /** Communication systems integral to the vehicle. */
@@ -141,20 +168,23 @@ export interface VehicleStats {
   suspension?: VehicleSuspension;
   /** Watercraft only: litres of water the vessel can take before sinking (p.277). */
   // currently I believe this mechanic is broken in the core rules, as it doesn't interact with buoyancy or weight at all. 
-  // TODO: It will need to be reworked if we want to support it properly.
+  // TODO: It will need to be developed firsthand if we want to support it properly.
   buoyancy?: number;
   crew: VehicleCrewConfig;
-  /** Maximum cargo in kg, plus notes on special storage. */
-  cargoKg: number;
+  /** Original source text when the crew line contains variants or special roles. */
+  crewText?: string;
+  /** Maximum cargo in kg when the source provides a weight-based capacity. */
+  cargoKg?: number;
+  cargoText?: string;
+  /** Maximum trailer or towed load in kg, if explicitly listed. */
+  towingCapacityKg?: number;
   /** Laden weight (fuel + ammo + crew, no cargo/passengers) in kg. */
   weightKg: number;
+  weightText?: string;
   /** Maintenance requirement in hours per period of use. */
   maintenanceHours: number;
-  /** Safe travel speed — km/hr, road and cross-country or single for watercraft. */
-  travelSpeed: VehicleSpeedProfile;
-  /** Safe combat speed — m/exchange, road and cross-country or single for watercraft. */
-  combatSpeed: VehicleSpeedProfile;
-  fuel: VehicleFuelStats;
+  /** One or more propulsion profiles; first entry is the default mode. */
+  movementModes: VehicleMovementMode[];
   armor?: VehicleArmorStats;
   systems?: VehicleSystems;
   equipment?: VehicleEquipment;
@@ -175,6 +205,24 @@ function cloneSpeedProfile(s: VehicleSpeedProfile): VehicleSpeedProfile {
   return cloneGroundSpeed(s);
 }
 
+function cloneFuelStats(fuel: VehicleFuelStats): VehicleFuelStats {
+  return {
+    ...fuel,
+    types: [...fuel.types],
+  };
+}
+
+function cloneMovementMode(mode: VehicleMovementMode): VehicleMovementMode {
+  return {
+    ...mode,
+    travelSpeed: mode.travelSpeed ? cloneSpeedProfile(mode.travelSpeed) : undefined,
+    combatSpeed: mode.combatSpeed ? cloneSpeedProfile(mode.combatSpeed) : undefined,
+    fuel: mode.fuel ? cloneFuelStats(mode.fuel) : undefined,
+    traits: mode.traits ? [...mode.traits] : undefined,
+    notes: mode.notes ? [...mode.notes] : undefined,
+  };
+}
+
 function cloneArmorStats(armor: VehicleArmorStats): VehicleArmorStats {
   const out: VehicleArmorStats = {};
   for (const [key, entry] of Object.entries(armor)) {
@@ -187,11 +235,15 @@ function cloneVehicleStats(v: VehicleStats): VehicleStats {
   return {
     ...v,
     crew: { ...v.crew },
-    fuel: { ...v.fuel, types: [...v.fuel.types] },
-    travelSpeed: cloneSpeedProfile(v.travelSpeed),
-    combatSpeed: cloneSpeedProfile(v.combatSpeed),
+    movementModes: v.movementModes.map(cloneMovementMode),
     armor: v.armor ? cloneArmorStats(v.armor) : undefined,
-    systems: v.systems ? { ...v.systems, armament: v.systems.armament ? [...v.systems.armament] : undefined } : undefined,
+    systems: v.systems
+      ? {
+          ...v.systems,
+          armament: v.systems.armament ? [...v.systems.armament] : undefined,
+          armamentIds: v.systems.armamentIds ? [...v.systems.armamentIds] : undefined,
+        }
+      : undefined,
     equipment: v.equipment ? { ...v.equipment } : undefined,
     traits: v.traits ? [...v.traits] : undefined,
     notes: v.notes ? [...v.notes] : undefined,
@@ -246,6 +298,14 @@ export class VehicleDefinition extends ItemDefinition {
 
   hasAmphibiousGear(): boolean {
     return this.vehicle.equipment?.amphibiousRunningGear ?? false;
+  }
+
+  getPrimaryMovementMode(): VehicleMovementMode | undefined {
+    return this.vehicle.movementModes[0];
+  }
+
+  getMovementMode(id: string): VehicleMovementMode | undefined {
+    return this.vehicle.movementModes.find((mode) => mode.id === id);
   }
 
   getArmorFacing(key: string): VehicleArmorEntry | undefined {
