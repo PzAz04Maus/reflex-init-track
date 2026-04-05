@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { CharacterRecord } from 'reflex-core';
+import type { CharacterRecord } from 'reflex-mechanics';
 
 interface ActorListProps {
   actors: CharacterRecord[];

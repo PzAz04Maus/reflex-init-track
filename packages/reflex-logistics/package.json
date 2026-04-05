@@ -7,6 +7,6 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "dependencies": {
-    "reflex-core": "workspace:*"
+    "reflex-mechanics": "workspace:*"
   }
 }

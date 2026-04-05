@@ -1,7 +1,8 @@
 // @ts-ignore: Foundry VTT global
 declare function loadTemplates(paths: string[]): Promise<void>;
-import { addActor, createInitialState } from 'reflex-core';
-import type { CombatState, CharacterData, EquipmentRecord } from 'reflex-core';
+import { addActor, createInitialState } from 'reflex-mechanics';
+import { createCombatantState, getBaseInitiative } from 'reflex-mechanics';
+import type { CombatState, CharacterData, EquipmentRecord } from 'reflex-mechanics';
 import { ReflexSchedulerPanel } from './panel.js';
 // Register the debug panel template using the new namespaced loadTemplates and module-relative path
 Hooks.once('init', () => {
@@ -54,11 +55,12 @@ function makeDefaultCharacterData(overrides: Partial<CharacterData> = {}): Chara
         bio: {}, // Fill with actual bio data if available
         equipment: emptyEquipment,
         init: {
-          base: 4, // Placeholder base initiative
+          base: getBaseInitiative('moderate'),
           initial: randomD20(),
           val: 0, // Will be computed elsewhere
           joined: false
         },
+        combat: createCombatantState(),
         action: null
       },
       state: {
@@ -75,7 +77,7 @@ export function registerReflexScheduler(): void {
 let panel: ReflexSchedulerPanel | null = null;
 panel = new ReflexSchedulerPanel();
 console.log('Reflex | Registering getSceneControlButtons hook');
-Hooks.on('getSceneControlButtons', (controls: any) => {
+Hooks.on('getSceneControlButtons' as any, (controls: any) => {
   const group = {
     name: 'reflex-scheduler',
     title: 'Reflex Scheduler',

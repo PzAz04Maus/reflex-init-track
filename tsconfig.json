@@ -11,8 +11,8 @@
     "skipLibCheck": true,
     "jsx": "react-jsx",
     "paths": {
-      "reflex-core": ["./packages/reflex-core/src"],
-      "reflex-core/*": ["./packages/reflex-core/src/*"],
+      "reflex-mechanics": ["./packages/reflex-mechanics/src"],
+      "reflex-mechanics/*": ["./packages/reflex-mechanics/src/*"],
       "reflex-framework": ["./packages/reflex-framework/src/index.ts"],
       "reflex-framework/*": ["./packages/reflex-framework/src/*"],
       "foundry-system": ["./packages/foundry-system/src/index.ts"],

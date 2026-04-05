@@ -1,5 +1,5 @@
-import { createCombatAction } from 'reflex-core';
-import type { CharacterBio, CharacterData, CombatState, EquipmentRecord, InitiativeState } from 'reflex-core';
+import { createCombatAction, createCombatantState } from 'reflex-mechanics';
+import type { CharacterBio, CharacterData, CombatState, EquipmentRecord, InitiativeState } from 'reflex-mechanics';
 
 const makeInit = (val: number, joined: boolean): InitiativeState => ({
   base: val,
@@ -27,11 +27,21 @@ const emptyEquipment: EquipmentRecord = { byId: {}, order: [] };
 export const mockCombatState: CombatState = {
   round: 1,
   lastActingIds: [],
+  phase: 'exchange',
+  currentTick: 20,
+  pausesSinceLastExchange: 0,
   actors: [
     {
       id: 'a1',
       name: 'Alpha',
       init: makeInit(20, true),
+      combat: createCombatantState({
+        encumbrance: 'light',
+        tacticalMovementRate: 'run',
+        initiativeRoll: 6,
+        initiativeTarget: 10,
+        lastComputedInitiative: 20,
+      }),
       action: createCombatAction('attack', {
         id: 'a1-action',
         cost: 5,
@@ -45,6 +55,12 @@ export const mockCombatState: CombatState = {
       id: 'a2',
       name: 'Bravo',
       init: makeInit(18, true),
+      combat: createCombatantState({
+        encumbrance: 'moderate',
+        stance: 'kneeling',
+        pressChoice: 'hold',
+        tacticalMovementRate: 'walk',
+      }),
       action: createCombatAction('block', {
         id: 'a2-action',
         cost: 4,
@@ -58,6 +74,12 @@ export const mockCombatState: CombatState = {
       id: 'a3',
       name: 'Charlie',
       init: makeInit(15, true),
+      combat: createCombatantState({
+        encumbrance: 'unencumbered',
+        tacticalMovementRate: 'trot',
+        pressChoice: 'press',
+        pressBonus: 5,
+      }),
       action: createCombatAction('move', {
         id: 'a3-action',
         cost: 5,
@@ -71,6 +93,11 @@ export const mockCombatState: CombatState = {
       id: 'a4',
       name: 'Delta',
       init: makeInit(10, false),
+      combat: createCombatantState({
+        encumbrance: 'heavy',
+        stance: 'prone',
+        tacticalMovementRate: 'crawl',
+      }),
       action: createCombatAction('wait', {
         id: 'a4-action',
         cost: 2,

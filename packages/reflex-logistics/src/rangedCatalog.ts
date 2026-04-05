@@ -1,5 +1,5 @@
 import { createRangedWeaponDefinition } from "./inventory";
-import type { RangeBandName } from "reflex-core/rangeBands";
+import type { RangeBandName } from "reflex-mechanics/rangeBands";
 import type { RangedWeaponDefinition, WeaponRangeProfile, WeaponSpeedProfile } from "./types";
 
 type WeaponCatalogEntry = {

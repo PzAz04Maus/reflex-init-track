@@ -1,4 +1,4 @@
-import type { CombatState, CharacterRecord } from "../types";
+import type { CombatState, CharacterRecord, CombatantState } from "../types";
 export type CombatAction = {
     type: "addActor";
     actor: CharacterRecord;
@@ -13,6 +13,13 @@ export type CombatAction = {
     type: "setActionCost";
     actorId?: string;
     actionCost: number;
+} | {
+    type: "setCombatantState";
+    actorId: string;
+    combat: Partial<CombatantState>;
+} | {
+    type: "setCombatState";
+    combat: Partial<Pick<CombatState, "phase" | "currentTick" | "pausesSinceLastExchange">>;
 } | {
     type: "toggleJoined";
     actorId: string;

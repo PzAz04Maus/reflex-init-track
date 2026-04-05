@@ -4,4 +4,3 @@ export * from './selectors/combatSelectors';
 export * from './advanceTurn';
 export * from './createInitialState';
 export * from './reducer/combatReducer';
-export * from './rules';

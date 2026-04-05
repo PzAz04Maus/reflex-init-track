@@ -13,7 +13,7 @@ The current source of truth is package-based.
   - Canonical engine primitives
   - Combat types, selectors, state helpers, reducers, math/calc support
 
-- `packages/reflex-core/`
+- `packages/reflex-mechanics/`
   - Primary rules package
 
 - `packages/reflex-ui`
@@ -45,14 +45,14 @@ The current source of truth is package-based.
 ## Dependency Direction
 Prefer this dependency flow:
 
-- `reflex-core -> reflex-framework`
-- `reflex-logistics -> reflex-core`
-- `reflex-mods -> reflex-core` or lower-level packages as needed
+- `reflex-mechanics -> reflex-framework`
+- `reflex-logistics -> reflex-mechanics`
+- `reflex-mods -> reflex-mechanics` or lower-level packages as needed
 - `foundry-system -> core/framework/logistics` as integration requires
 
 Avoid:
 
-- `reflex-framework -> reflex-core`
+- `reflex-framework -> reflex-mechanics`
 - `reflex-framework -> reflex-logistics`
 - new circular dependencies
 
@@ -70,7 +70,7 @@ When assisting in this repo, optimize for:
 Avoid:
 
 - reviving deleted architecture just to satisfy stale imports
-- duplicating the same rule logic across `reflex-framework`, `reflex-core`, and legacy wrappers
+- duplicating the same rule logic across `reflex-framework`, `reflex-mechanics`, and legacy wrappers
 - adding legacy wrappers/shims "just in case" for unreleased codepaths
 - putting rules in button handlers or Foundry event handlers
 - class-heavy designs when plain typed objects and functions are enough
@@ -81,7 +81,7 @@ Avoid:
 - If a file exists only as a compatibility wrapper, re-export the canonical module instead of copying code.
 
 ## Foundry Guidance
-- Foundry packaging and runtime assets should follow the active `reflex-core` implementation, not the removed `reflex-init` package.
+- Foundry packaging and runtime assets should follow the active `reflex-mechanics` implementation, not the removed `reflex-init` package.
 - Foundry v13 APIs use `ApplicationV2.DEFAULT_OPTIONS`, not `defaultOptions`.
 - Keep Foundry-specific reads/writes isolated from pure engine logic.
 

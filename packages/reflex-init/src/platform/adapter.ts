@@ -1,4 +1,5 @@
-import type { CombatState, CharacterData, EquipmentRecord } from "reflex-core";
+import { createCombatantState } from "reflex-mechanics";
+import type { CombatState, CharacterData, EquipmentRecord } from "reflex-mechanics";
 
 const emptyEquipment: EquipmentRecord = { byId: {}, order: [] };
 function makeDefaultCharacterData(overrides: Partial<CharacterData> = {}): CharacterData {
@@ -27,6 +28,9 @@ export function fromVttActors(actors: VttActorInput[]): CombatState {
   return {
     round: 1,
     lastActingIds: [],
+    phase: 'exchange',
+    currentTick: 0,
+    pausesSinceLastExchange: 0,
     actors: actors.map((actor) => ({
       id: actor.id,
       name: actor.name,
@@ -37,6 +41,7 @@ export function fromVttActors(actors: VttActorInput[]): CombatState {
       bio: {},
       equipment: emptyEquipment,
       init: { base: actor.initiative ?? 0, initial: actor.initiative ?? 0, val: actor.initiative ?? 0, joined: true },
+      combat: createCombatantState(),
       action: null
     })),
   };

@@ -1,13 +1,46 @@
 import { advanceTurn } from "../advanceTurn";
-import type { CombatState, CharacterRecord } from "../types";
-import { createPendingAction } from "../combat";
+import type { CombatState, CharacterRecord, CombatantState } from "../types";
 import { withActors } from "../selectors/combatSelectors";
+
+function createDefaultCombatantState(): CombatantState {
+  return {
+    encumbrance: 'moderate',
+    stance: 'standing',
+    tacticalMovementRate: 'walk',
+    pressChoice: null,
+    lastResolvedChoice: null,
+    pressBonus: 0,
+    broken: false,
+    initiativeRoll: null,
+    initiativeTarget: null,
+    lastComputedInitiative: null,
+  };
+}
+
+function createPendingAction(id: string, name: string, cost: number) {
+  return {
+    id,
+    key: 'pending',
+    name,
+    cost,
+    cadence: 'tactical' as const,
+    category: 'unmapped',
+    status: 'declared' as const,
+    summary: 'Declared action pending a specific combat rule mapping.',
+    tags: ['displayable', 'placeholder'],
+  };
+}
 
 export type CombatAction =
   | { type: "addActor"; actor: CharacterRecord }
   | { type: "removeActor"; actorId: string }
   | { type: "setTick"; actorId: string; tick: number }
   | { type: "setActionCost"; actorId?: string; actionCost: number }
+  | { type: "setCombatantState"; actorId: string; combat: Partial<CombatantState> }
+  | {
+      type: "setCombatState";
+      combat: Partial<Pick<CombatState, "phase" | "currentTick" | "pausesSinceLastExchange">>;
+    }
   | { type: "toggleJoined"; actorId: string }
   | { type: "advanceTurn" }
   | { type: "reset"; state: CombatState };
@@ -48,6 +81,23 @@ export function combatReducer(state: CombatState, action: CombatAction): CombatS
             : actor
         )
       );
+    case "setCombatantState":
+      return withActors(
+        state,
+        state.actors.map((actor) =>
+          actor.id === action.actorId
+            ? {
+                ...actor,
+                combat: { ...(actor.combat ?? createDefaultCombatantState()), ...action.combat },
+              }
+            : actor,
+        ),
+      );
+    case "setCombatState":
+      return {
+        ...state,
+        ...action.combat,
+      };
     case "toggleJoined":
       return withActors(
         state,

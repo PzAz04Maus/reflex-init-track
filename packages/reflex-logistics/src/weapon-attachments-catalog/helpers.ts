@@ -1,4 +1,4 @@
-import type { RangeBandName } from "reflex-core/rangeBands";
+import type { RangeBandName } from "reflex-mechanics/rangeBands";
 import { createItemDefinition } from "../inventory";
 import type {
   ItemDefinition,

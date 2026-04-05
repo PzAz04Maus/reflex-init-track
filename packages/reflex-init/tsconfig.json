@@ -10,7 +10,9 @@
   },
   "include": ["src/**/*.ts"],
   "references": [
-    { "path": "../reflex-core" },
-    { "path": "../reflex-framework" }
+    { "path": "../reflex-mechanics" },
+    { "path": "../reflex-framework" },
+    { "path": "../reflex-ui" },
+    { "path": "../foundry-system" }
   ]
 }

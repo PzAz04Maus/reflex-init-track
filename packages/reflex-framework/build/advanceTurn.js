@@ -27,7 +27,8 @@ export function advanceTurn(state) {
     });
     const nextState = withActors({
         ...state,
-        lastActingIds: actingIds
+        lastActingIds: actingIds,
+        currentTick: minVal,
     }, updatedActors);
     return {
         state: nextState,

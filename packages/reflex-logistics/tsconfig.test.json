@@ -8,12 +8,12 @@
     "types": ["fvtt-types", "node"],
     "baseUrl": ".",
     "paths": {
-      "reflex-core": ["../reflex-core/src/index.ts"],
-      "reflex-core/*": ["../reflex-core/src/*"]
+      "reflex-mechanics": ["../reflex-mechanics/src/index.ts"],
+      "reflex-mechanics/*": ["../reflex-mechanics/src/*"]
     }
   },
   "include": ["src/**/*.ts", "tests/**/*.ts"],
   "references": [
-    { "path": "../reflex-core" }
+    { "path": "../reflex-mechanics" }
   ]
 }

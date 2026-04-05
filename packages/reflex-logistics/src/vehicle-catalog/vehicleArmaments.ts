@@ -1,4 +1,4 @@
-import type { RangeBandName } from "reflex-core/rangeBands";
+import type { RangeBandName } from "reflex-mechanics/rangeBands";
 
 import type { ItemDamageProfile } from "../types";
 import type { WeaponPenetration, WeaponRangeProfile, WeaponSpeedProfile } from "../types/weapons";

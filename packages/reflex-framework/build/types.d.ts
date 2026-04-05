@@ -5,6 +5,11 @@ export interface InitiativeState {
     joined: boolean;
     joinedMidFight?: boolean;
 }
+export type CombatPhase = "exchange" | "pause" | "ended";
+export type PressHoldChoice = "press" | "hold";
+export type EncumbranceLevel = "overloaded" | "heavy" | "moderate" | "light" | "unencumbered";
+export type Stance = "standing" | "kneeling" | "sitting" | "prone";
+export type TacticalMovementRate = "sprint" | "run" | "trot" | "walk" | "stagger" | "crawl";
 export type ActionCadence = "tactical" | "operational" | "free";
 export type ActionStatus = "available" | "declared" | "resolving" | "resolved" | "interrupted";
 export type ActionMetadataValue = string | number | boolean | null;
@@ -24,10 +29,25 @@ export interface ActionState {
     source?: string;
     metadata?: Record<string, ActionMetadataValue>;
 }
+export interface CombatantState {
+    encumbrance: EncumbranceLevel;
+    stance: Stance;
+    tacticalMovementRate: TacticalMovementRate;
+    pressChoice: PressHoldChoice | null;
+    lastResolvedChoice: PressHoldChoice | null;
+    pressBonus: number;
+    broken: boolean;
+    initiativeRoll?: number | null;
+    initiativeTarget?: number | null;
+    lastComputedInitiative?: number | null;
+}
 export interface CombatState {
     actors: CharacterRecord[];
     lastActingIds: CharacterId[];
     round: number;
+    phase: CombatPhase;
+    currentTick: number;
+    pausesSinceLastExchange: number;
 }
 export interface TurnAdvanceResult {
     state: CombatState;
@@ -83,6 +103,7 @@ export interface CharacterRecord {
     bio: CharacterBio;
     equipment: EquipmentRecord;
     init: InitiativeState;
+    combat: CombatantState;
     action?: ActionState | null;
 }
 export interface CharacterData {

@@ -1,11 +1,11 @@
-import type { CombatState, CharacterRecord, CharacterId, InitiativeState } from 'reflex-core';
+import type { CombatState, CharacterRecord, CharacterId, InitiativeState } from 'reflex-mechanics';
 
 // AddActorInput now requires character to be a CharacterRecord
 export interface AddActorInput {
   character: CharacterRecord;
   state?: Partial<InitiativeState>;
 }
-import { selectActors, withActors } from 'reflex-core';
+import { selectActors, withActors } from 'reflex-mechanics';
 
 // Calculate margin for roll
 export function computeMargin(roll: number, target: number): number {

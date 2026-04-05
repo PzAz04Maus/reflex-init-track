@@ -34,7 +34,8 @@ export function advanceTurn(state: CombatState): TurnAdvanceResult {
   const nextState = withActors(
     {
       ...state,
-      lastActingIds: actingIds
+      lastActingIds: actingIds,
+      currentTick: minVal,
     },
     updatedActors
   );

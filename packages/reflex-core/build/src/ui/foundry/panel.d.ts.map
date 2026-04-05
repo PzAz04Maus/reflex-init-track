@@ -1,1 +1,0 @@
-{"version":3,"file":"panel.d.ts","sourceRoot":"","sources":["../../../../src/ui/foundry/panel.ts"],"names":[],"mappings":"AAKA,qBAAa,oBAAqB,SAAQ,OAAO,CAAC,YAAY,CAAC,GAAG,CAAC,aAAa;IAC9E,MAAM,CAAC,eAAe,MAQjB;IAGC,OAAO,CAAC,QAAQ,KAAK,GAAG,OAAO,CAAC,GAAG,CAAC;IAsB1C,iBAAiB,CAAC,IAAI,EAAE,MAAM,CAAC,WAAW,CAAC;CAc5C"}

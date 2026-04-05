@@ -1,4 +1,4 @@
-import type { CombatState } from 'reflex-core';
+import type { CombatState } from 'reflex-mechanics';
 import { COMBAT_FLAG, MODULE_ID } from './constants';
 
 export async function getScheduleState(_combat: any): Promise<CombatState | null> {

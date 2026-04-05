@@ -1,5 +1,5 @@
-import { advanceTurn, getNextActors, selectActors } from 'reflex-framework';
-import type { CharacterRecord } from 'reflex-core';
+import { advanceTurn, getNextActors, selectActors } from 'reflex-mechanics';
+import type { CharacterRecord } from 'reflex-mechanics';
 import { MODULE_ID, getScheduleState, setScheduleState } from 'foundry-system/foundry';
 
 export class ReflexSchedulerPanel extends foundry.applications.api.ApplicationV2 {
@@ -12,7 +12,7 @@ export class ReflexSchedulerPanel extends foundry.applications.api.ApplicationV2
     },
     position: {
       width: 760,
-      height: 'auto'
+      height: 'auto' as const
     }
   };
 

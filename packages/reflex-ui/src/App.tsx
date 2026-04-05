@@ -1,5 +1,5 @@
 import { useCallback, useReducer, useState } from 'react';
-import { getNextActors } from 'reflex-framework';
+import { createCombatantState, getNextActors } from 'reflex-mechanics';
 import { combatReducer } from 'reflex-framework/reducer/combatReducer';
 import { ActorList } from './components/ActorList';
 import { mockCombatState } from './mockdata';
@@ -49,6 +49,7 @@ export default function App() {
           order: [],
         },
         init: { base: minTick, initial: minTick, val: minTick, joined: true },
+        combat: createCombatantState(),
         action: null,
       },
     });
